@@ -233,7 +233,3 @@ node write.js
 Once the wallet signs and sends a transaction, we must wait until the TON blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
 
 Happy coding!
-
----
-
-*Tal is a founder of Orbs Network (https://orbs.com) and an official Ambassador of TON Blockchain. He's a passionate blockchain developer, open source advocate and a contributor to the TON ecosystem. He is also one of the main developers for TONcoin Fund (https://www.toncoin.fund). Follow Tal on GitHub (https://github.com/talkol) and Twitter (https://twitter.com/koltal).*

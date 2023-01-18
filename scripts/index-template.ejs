@@ -1,0 +1,36 @@
+<html>
+  <body>
+    <h1>TON Tutorials</h1>
+    <div style="display: flex;">
+      <div style="background: #ccc; min-width: 400px;">
+        <% for (const [index,option] of optionsArray.entries()) { %>
+          <h3><%= options[option].name %></h3>
+          <ul data-select="<%= option %>">
+            <% for (const value of optionsValuesArray[index]) { %>
+              <li data-value="<%= value %>">
+                <h4><%= options[option].options[value].name %></h4>
+                <% if (options[option].options[value].url) { %><a href="<%= options[option].options[value].url %>">docs</a><% } %>
+                <p class="pros">Pros: <%= options[option].options[value].pros %></p>
+                <p class="cons">Cons: <%= options[option].options[value].cons %></p>
+              </li>
+            <% } %>
+          </ul>
+        <% } %>
+        <h3>More Tutorials</h3>
+        <ul>
+          <li><a href="https://ton-community.github.io/tutorials/01-wallet">01-wallet</a></li>
+          <li><a href="https://ton-community.github.io/tutorials/02-contract">02-contract</a></li>
+          <li><a href="https://ton-community.github.io/tutorials/03-client">03-client</a></li>
+          <li><a href="https://ton-community.github.io/tutorials/04-testing">04-testing</a></li>
+        </ul>
+      </div>
+      <div style="flex: 1;">
+        <% for (const combination in markdowns) { %>
+          <pre data-combination="<%= combination %>" style="display: none;">
+            <%= markdowns[combination] %>
+          </pre>
+        <% } %>
+      </div>
+    </div>
+  </body>
+</html>
