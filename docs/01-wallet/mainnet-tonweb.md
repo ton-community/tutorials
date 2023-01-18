@@ -22,7 +22,6 @@ The simplest way to create a TON wallet is visit https://ton.org/wallets and cho
 
 The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose [TonKeeper](https://tonkeeper.com). Go ahead and install the TonKeeper app on your phone and run it.
 
-
 If you don't already have a wallet connected to the app, tap on the "Set up wallet" button. We're going to create a new wallet. After a few seconds, your wallet is created and TonKeeper displays your recovery phrase - the secret 24 words that give access to your wallet funds.
 
 ## Step 2: Backup the 24 word recovery phrase
@@ -47,7 +46,6 @@ An explorer is a tool that allows you to query data from the chain and investiga
 
 The mainnet version of Tonscan is available on https://tonscan.org - open it and input your wallet address.
 
-
 If this wallet is indeed new and hasn't been used before, its Tonscan page should show "State" as "Inactive". When you look under the "Contract" tab, you should see the message "This address doesn't contain any data in blockchain - it was either never used or the contract was deleted."
 
 <img src="https://i.imgur.com/r1POqo9.png" width=600 /><br>
@@ -61,7 +59,6 @@ Another interesting thing to notice is that the address shown in Tonscan may be 
 As you can see in the explorer, the TON balance of our wallet is currently zero. We will need to fund our wallet by asking somebody to transfer some TON coins to our address. But wait... isn't this dangerous? How can we transfer some coins to the smart contract before it is deployed?
 
 It turns out that this isn't a problem on TON. The TON blockchain maintains a list of accounts by address and stores the TON coin balance per address. Since our wallet smart contract has an address, it can have a balance, even before it has been deployed. Let's send 2 TON to our wallet address.
-
 
 Refresh the explorer after the coins have been sent. As you can see, the balance of the smart contract is now 2 TON. And the "State" remains "Inactive", meaning it still hasn't been deployed.
 
@@ -101,7 +98,6 @@ Let's create a new directory for our project and initialize it. Open terminal in
 npm init es6 --yes
 ```
 
-
 Next, we're going to install a JavaScript package named [TonWeb](https://github.com/toncenter/tonweb) that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:
 
 ```
@@ -115,7 +111,6 @@ The first thing we'll do is calculate the address of our wallet in code and see 
 Let's assume that your secret 24 word mnemonic is `unfold sugar water ...` - this is the phrase we backed up in step 2.
 
 Create the file `read.js` with the following content:
-
 
 ```ts
 import tonMnemonic from "tonweb-mnemonic";
@@ -142,3 +137,104 @@ node read.js
 
 ## Step 8: Read wallet state from the chain
 
+Let's take things up a notch and read some live state data from our wallet contract that will force us to connect to the live blockchain network. We're going to read the live wallet TON coin balance (we saw that on the explorer earlier). We're also going to read the wallet `seqno` - the sequence number of the last transaction that the wallet sent. Every time the wallet sends a transaction the seqno increments.
+
+To query info from the live network will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+
+Install it by opening terminal in the project directory and running:
+
+```
+npm install @orbs-network/ton-access
+```
+
+Add the following to `read.js`:
+
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import TonWeb from "tonweb";
+
+const endpoint = await getHttpEndpoint();
+const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+
+const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
+const wallet = new WalletClass(tonweb.provider, { 
+  publicKey: key.publicKey 
+});
+
+const balance = await tonweb.getBalance(walletAddress);
+console.log("balance:", TonWeb.utils.fromNano(balance));
+
+const seqno = await wallet.methods.seqno().call();
+console.log("seqno:", seqno);
+```
+
+For your convenience, the full contents of `read.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb/read.js).
+
+To see the balance and seqno, run using terminal:
+
+```
+node read.js
+```
+
+## Step 9: Send transfer transaction to the chain
+
+The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.
+
+Create a new file `write.js` with this content:
+
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import tonMnemonic from "tonweb-mnemonic";
+import TonWeb from "tonweb";
+
+const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+const key = await tonMnemonic.mnemonicToKeyPair(mnemonic.split(" "));
+
+const endpoint = await getHttpEndpoint();
+const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+
+const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
+const wallet = new WalletClass(tonweb.provider, {
+  publicKey: key.publicKey
+});
+
+// send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+const seqno = await wallet.methods.seqno().call() || 0;
+await wallet.methods.transfer({
+  secretKey: key.secretKey,
+  toAddress: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
+  amount: TonWeb.utils.toNano("0.001"), // 0.001 TON
+  seqno: seqno,
+  payload: "Hello", // optional comment
+  sendMode: 3,
+}).send();
+
+// wait until confirmed
+let currentSeqno = seqno;
+while (currentSeqno == seqno) {
+  console.log("waiting for transaction to confirm...");
+  await sleep(1500);
+  currentSeqno = await wallet.methods.seqno().call() || 0;
+}
+console.log("transaction confirmed!");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+For your convenience, the full contents of `write.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb/write.js).
+
+Execute the script by running in terminal:
+
+```
+node write.js
+```
+
+Once the wallet signs and sends a transaction, we must wait until the TON blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
+
+Happy coding!
+
+---
+
+*Tal is a founder of Orbs Network (https://orbs.com) and an official Ambassador of TON Blockchain. He's a passionate blockchain developer, open source advocate and a contributor to the TON ecosystem. He is also one of the main developers for TONcoin Fund (https://www.toncoin.fund). Follow Tal on GitHub (https://github.com/talkol) and Twitter (https://twitter.com/koltal).*

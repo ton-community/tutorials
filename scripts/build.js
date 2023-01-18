@@ -48,6 +48,7 @@ function handleCombination(combination, optionsArray, options, tutorial) {
     }
   }
   // keep everything else
-  content = content.replaceAll(/\-\-\-\n\w+\:\w+\n\-\-\-\n(.*?)\n\-\-\-\n/sg, "$1");
+  content = content.replaceAll(/\-\-\-\n[\w\:\s]+\w+\n\-\-\-\n(.*?)\n\-\-\-\n/sg, "$1");
+  content = content.replaceAll(/\n\n+/sg, "\n\n");
   fs.writeFileSync(`docs/${tutorial}/${filename}.md`, content);
 }

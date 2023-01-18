@@ -46,7 +46,6 @@ This wallet address isn't secret. You can share it with anyone you want and they
 
 An explorer is a tool that allows you to query data from the chain and investigate TON addresses. There are many [explorers](https://ton.app/explorers) to choose from. We're going to use Tonscan. Notice that mainnet and testnet have different explorers because those are different blockchains.
 
-
 The testnet version of Tonscan is available on https://testnet.tonscan.org - open it and input your wallet address.
 
 If this wallet is indeed new and hasn't been used before, its Tonscan page should show "State" as "Inactive". When you look under the "Contract" tab, you should see the message "This address doesn't contain any data in blockchain - it was either never used or the contract was deleted."
@@ -109,7 +108,6 @@ Next, we're going to install a JavaScript package named [ton](https://www.npmjs.
 npm install ton ton-crypto ton-core
 ```
 
-
 ## Step 7: Get the wallet address programatically
 
 The first thing we'll do is calculate the address of our wallet in code and see that it matches what we saw in the explorer. This action is completely offline since the wallet address is derived from the version of the wallet and the private key used to create it.
@@ -120,19 +118,18 @@ Create the file `read.js` with the following content:
 
 ```ts
 import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4 } from "ton"; // notice the correct wallet version here
+import { WalletContractV4 } from "ton";
 
 const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
 const key = await mnemonicToWalletKey(mnemonic.split(" "));
 
-const wallet = WalletContractV4.create({
+const wallet = WalletContractV4.create({ // notice the correct wallet version here
   publicKey: key.publicKey,
   workchain: 0
 });
 
 console.log(wallet.address.toString());
 ```
-
 
 To see the wallet address, run it using terminal:
 
@@ -142,3 +139,109 @@ node read.js
 
 ## Step 8: Read wallet state from the chain
 
+Let's take things up a notch and read some live state data from our wallet contract that will force us to connect to the live blockchain network. We're going to read the live wallet TON coin balance (we saw that on the explorer earlier). We're also going to read the wallet `seqno` - the sequence number of the last transaction that the wallet sent. Every time the wallet sends a transaction the seqno increments.
+
+To query info from the live network will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+
+Install it by opening terminal in the project directory and running:
+
+```
+npm install @orbs-network/ton-access
+```
+
+Add the following to `read.js`:
+
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { TonClient, fromNano } from "ton";
+
+const endpoint = await getHttpEndpoint({
+  network: "testnet"
+});
+const client = new TonClient({ endpoint });
+
+const balance = await client.getBalance(wallet.address);
+console.log("balance:", fromNano(balance));
+
+const walletContract = client.open(wallet);
+const seqno = await walletContract.getSeqno();
+console.log("seqno:", seqno);
+```
+
+For your convenience, the full contents of `read.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton/read.js).
+
+To see the balance and seqno, run using terminal:
+
+```
+node read.js
+```
+
+## Step 9: Send transfer transaction to the chain
+
+The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.
+
+Create a new file `write.js` with this content:
+
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, WalletContractV4, internal } from "ton";
+
+const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+const key = await mnemonicToWalletKey(mnemonic.split(" "));
+
+const wallet = WalletContractV4.create({ // notice the correct wallet version here
+  publicKey: key.publicKey,
+  workchain: 0
+});
+
+const endpoint = await getHttpEndpoint({
+  network: "testnet"
+});
+const client = new TonClient({ endpoint });
+
+// send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+const walletContract = client.open(wallet);
+const seqno = await walletContract.getSeqno();
+await walletContract.sendTransfer({
+  secretKey: key.secretKey,
+  seqno: seqno,
+  messages: [
+    internal({
+      to: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
+      value: "0.001", // 0.001 TON
+      body: "Hello", // optional comment
+      bounce: false,
+    })
+  ]
+});
+
+// wait until confirmed
+let currentSeqno = seqno;
+while (currentSeqno == seqno) {
+  console.log("waiting for transaction to confirm...");
+  await sleep(1500);
+  currentSeqno = await walletContract.getSeqno();
+}
+console.log("transaction confirmed!");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+For your convenience, the full contents of `write.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton/write.js).
+
+Execute the script by running in terminal:
+
+```
+node write.js
+```
+
+Once the wallet signs and sends a transaction, we must wait until the TON blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
+
+Happy coding!
+
+---
+
+*Tal is a founder of Orbs Network (https://orbs.com) and an official Ambassador of TON Blockchain. He's a passionate blockchain developer, open source advocate and a contributor to the TON ecosystem. He is also one of the main developers for TONcoin Fund (https://www.toncoin.fund). Follow Tal on GitHub (https://github.com/talkol) and Twitter (https://twitter.com/koltal).*

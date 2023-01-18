@@ -29,6 +29,6 @@
   ```
   MNEMONIC="unfold sugar water ..."
   ```
-  > The official mnemonic appears in Github repo secrets
+  > The official mnemonic appears in Github repo secrets since it's also used in CI
 - Run `npm run build`
 - Resulting files will be created in the `docs/` directory

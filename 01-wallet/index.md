@@ -159,12 +159,12 @@ library:npmton
 ---
 ```ts
 import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4 } from "ton"; // notice the correct wallet version here
+import { WalletContractV4 } from "ton";
 
 const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
 const key = await mnemonicToWalletKey(mnemonic.split(" "));
 
-const wallet = WalletContractV4.create({
+const wallet = WalletContractV4.create({ // notice the correct wallet version here
   publicKey: key.publicKey,
   workchain: 0
 });
@@ -204,3 +204,346 @@ node read.js
 
 ## Step 8: Read wallet state from the chain
 
+Let's take things up a notch and read some live state data from our wallet contract that will force us to connect to the live blockchain network. We're going to read the live wallet TON coin balance (we saw that on the explorer earlier). We're also going to read the wallet `seqno` - the sequence number of the last transaction that the wallet sent. Every time the wallet sends a transaction the seqno increments.
+
+To query info from the live network will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+
+Install it by opening terminal in the project directory and running:
+
+```
+npm install @orbs-network/ton-access
+```
+
+Add the following to `read.js`:
+
+---
+network:testnet library:npmton
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { TonClient, fromNano } from "ton";
+
+const endpoint = await getHttpEndpoint({
+  network: "testnet"
+});
+const client = new TonClient({ endpoint });
+
+const balance = await client.getBalance(wallet.address);
+console.log("balance:", fromNano(balance));
+
+const walletContract = client.open(wallet);
+const seqno = await walletContract.getSeqno();
+console.log("seqno:", seqno);
+```
+
+For your convenience, the full contents of `read.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton/read.js).
+
+---
+
+---
+network:mainnet library:npmton
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { TonClient, fromNano } from "ton";
+
+const endpoint = await getHttpEndpoint();
+const client = new TonClient({ endpoint });
+
+const balance = await client.getBalance(wallet.address);
+console.log("balance:", fromNano(balance));
+
+const walletContract = client.open(wallet);
+const seqno = await walletContract.getSeqno();
+console.log("seqno:", seqno);
+```
+
+For your convenience, the full contents of `read.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton/read.js).
+
+---
+
+---
+network:testnet library:tonweb
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import TonWeb from "tonweb";
+
+const endpoint = await getHttpEndpoint({
+  network: "testnet"
+});
+const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+
+const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
+const wallet = new WalletClass(tonweb.provider, { 
+  publicKey: key.publicKey 
+});
+
+const balance = await tonweb.getBalance(walletAddress);
+console.log("balance:", TonWeb.utils.fromNano(balance));
+
+const seqno = await wallet.methods.seqno().call();
+console.log("seqno:", seqno);
+```
+
+For your convenience, the full contents of `read.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb/read.js).
+
+---
+
+---
+network:mainnet library:tonweb
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import TonWeb from "tonweb";
+
+const endpoint = await getHttpEndpoint();
+const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+
+const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
+const wallet = new WalletClass(tonweb.provider, { 
+  publicKey: key.publicKey 
+});
+
+const balance = await tonweb.getBalance(walletAddress);
+console.log("balance:", TonWeb.utils.fromNano(balance));
+
+const seqno = await wallet.methods.seqno().call();
+console.log("seqno:", seqno);
+```
+
+For your convenience, the full contents of `read.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb/read.js).
+
+---
+
+To see the balance and seqno, run using terminal:
+
+```
+node read.js
+```
+
+## Step 9: Send transfer transaction to the chain
+
+The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.
+
+Create a new file `write.js` with this content:
+
+---
+network:testnet library:npmton
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, WalletContractV4, internal } from "ton";
+
+const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+const key = await mnemonicToWalletKey(mnemonic.split(" "));
+
+const wallet = WalletContractV4.create({ // notice the correct wallet version here
+  publicKey: key.publicKey,
+  workchain: 0
+});
+
+const endpoint = await getHttpEndpoint({
+  network: "testnet"
+});
+const client = new TonClient({ endpoint });
+
+// send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+const walletContract = client.open(wallet);
+const seqno = await walletContract.getSeqno();
+await walletContract.sendTransfer({
+  secretKey: key.secretKey,
+  seqno: seqno,
+  messages: [
+    internal({
+      to: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
+      value: "0.001", // 0.001 TON
+      body: "Hello", // optional comment
+      bounce: false,
+    })
+  ]
+});
+
+// wait until confirmed
+let currentSeqno = seqno;
+while (currentSeqno == seqno) {
+  console.log("waiting for transaction to confirm...");
+  await sleep(1500);
+  currentSeqno = await walletContract.getSeqno();
+}
+console.log("transaction confirmed!");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+For your convenience, the full contents of `write.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton/write.js).
+
+---
+
+---
+network:mainnet library:npmton
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, WalletContractV4, internal } from "ton";
+
+const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+const key = await mnemonicToWalletKey(mnemonic.split(" "));
+
+const wallet = WalletContractV4.create({ // notice the correct wallet version here
+  publicKey: key.publicKey,
+  workchain: 0
+});
+
+const endpoint = await getHttpEndpoint();
+const client = new TonClient({ endpoint });
+
+// send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+const walletContract = client.open(wallet);
+const seqno = await walletContract.getSeqno();
+await walletContract.sendTransfer({
+  secretKey: key.secretKey,
+  seqno: seqno,
+  messages: [
+    internal({
+      to: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
+      value: "0.001", // 0.001 TON
+      body: "Hello", // optional comment
+      bounce: false,
+    })
+  ]
+});
+
+// wait until confirmed
+let currentSeqno = seqno;
+while (currentSeqno == seqno) {
+  console.log("waiting for transaction to confirm...");
+  await sleep(1500);
+  currentSeqno = await walletContract.getSeqno();
+}
+console.log("transaction confirmed!");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+For your convenience, the full contents of `write.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton/write.js).
+
+---
+
+---
+network:testnet library:tonweb
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import tonMnemonic from "tonweb-mnemonic";
+import TonWeb from "tonweb";
+
+const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+const key = await tonMnemonic.mnemonicToKeyPair(mnemonic.split(" "));
+
+const endpoint = await getHttpEndpoint({
+  network: "testnet"
+});
+const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+
+const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
+const wallet = new WalletClass(tonweb.provider, {
+  publicKey: key.publicKey
+});
+
+// send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+const seqno = await wallet.methods.seqno().call() || 0;
+await wallet.methods.transfer({
+  secretKey: key.secretKey,
+  toAddress: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
+  amount: TonWeb.utils.toNano("0.001"), // 0.001 TON
+  seqno: seqno,
+  payload: "Hello", // optional comment
+  sendMode: 3,
+}).send();
+
+// wait until confirmed
+let currentSeqno = seqno;
+while (currentSeqno == seqno) {
+  console.log("waiting for transaction to confirm...");
+  await sleep(1500);
+  currentSeqno = await wallet.methods.seqno().call() || 0;
+}
+console.log("transaction confirmed!");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+For your convenience, the full contents of `write.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb/write.js).
+
+---
+
+---
+network:mainnet library:tonweb
+---
+```ts
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import tonMnemonic from "tonweb-mnemonic";
+import TonWeb from "tonweb";
+
+const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+const key = await tonMnemonic.mnemonicToKeyPair(mnemonic.split(" "));
+
+const endpoint = await getHttpEndpoint();
+const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+
+const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
+const wallet = new WalletClass(tonweb.provider, {
+  publicKey: key.publicKey
+});
+
+// send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+const seqno = await wallet.methods.seqno().call() || 0;
+await wallet.methods.transfer({
+  secretKey: key.secretKey,
+  toAddress: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
+  amount: TonWeb.utils.toNano("0.001"), // 0.001 TON
+  seqno: seqno,
+  payload: "Hello", // optional comment
+  sendMode: 3,
+}).send();
+
+// wait until confirmed
+let currentSeqno = seqno;
+while (currentSeqno == seqno) {
+  console.log("waiting for transaction to confirm...");
+  await sleep(1500);
+  currentSeqno = await wallet.methods.seqno().call() || 0;
+}
+console.log("transaction confirmed!");
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+For your convenience, the full contents of `write.js` are available [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb/write.js).
+
+---
+
+Execute the script by running in terminal:
+
+```
+node write.js
+```
+
+Once the wallet signs and sends a transaction, we must wait until the TON blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
+
+Happy coding!
+
+---
+
+*Tal is a founder of Orbs Network (https://orbs.com) and an official Ambassador of TON Blockchain. He's a passionate blockchain developer, open source advocate and a contributor to the TON ecosystem. He is also one of the main developers for TONcoin Fund (https://www.toncoin.fund). Follow Tal on GitHub (https://github.com/talkol) and Twitter (https://twitter.com/koltal).*
