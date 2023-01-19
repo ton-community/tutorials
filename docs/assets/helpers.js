@@ -95,7 +95,7 @@ const prepareCodeComponents = () => {
 const handleLinks = () => {
   document.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", (e) => {
-      link.setAttribute("target", "_blank");
+      link.setAttribute("target", "_self"); // was _blank
       e.stopPropagation();
     });
   });
