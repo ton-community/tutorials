@@ -7,6 +7,7 @@
       "testnet": {
         "name": "Testnet",
         "order": 1,
+        "url": "https://ton.org/docs/develop/smart-contracts/environment/testnet",
         "pros": "free to use",
         "cons": "less reliable, requires special wallets"
       },
