@@ -7,6 +7,9 @@ fs.rmSync("docs", { recursive: true, force: true });
 fs.mkdirSync("docs");
 fs.cpSync("scripts/assets", "docs/assets", { recursive: true, force: true });
 
+
+
+
 const dirs = fs.readdirSync(".", { withFileTypes: true });
 for (const dir of dirs) {
   if (dir.isDirectory() && dir.name.match(/\d\d\-\w+/)) {
@@ -88,3 +91,4 @@ function generateTutorialHtml(options, optionsArray, optionsValuesArray, tutoria
   };
   return template(data);
 }
+

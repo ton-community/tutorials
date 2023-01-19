@@ -1,6 +1,6 @@
-# TON Hello World part 1: Step by step guide for working with your first TON wallet
 
-> by Tal Kol
+# TON Hello World part 1: Step by step guide for working with your first TON wallet
+###  by Tal Kol
 
 The TON blockchain is [based](https://ton-blockchain.github.io/docs/ton.pdf) on the [TON coin](https://coinmarketcap.com/currencies/toncoin/) (previously labeled TonCoin). This cryptocurrency is used to pay for executing transactions (gas), much like ETH on the Ethereum blockchain. If you're participating in the TON ecosystem, most likely that you're already holding some TON and probably already have a wallet.
 

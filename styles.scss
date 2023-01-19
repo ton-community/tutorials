@@ -1,0 +1,407 @@
+$menu-bg: #F4F4F4;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+$main-font: "Poppins", sans-serif;
+$page-width: 1000px;
+$text-color: #1C1E21;
+$code-bg:#e9edf1;
+$link-color: #0099E5;
+.section-title {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 45px;
+  margin-bottom: 24px;
+  margin-top: 40px;
+}
+
+.grid{
+    max-width: $page-width;
+    width: calc(100% - 60px);
+}
+.text {
+  font-size: 18px;
+  line-height: 30px;
+}
+
+a{
+    color: $link-color;
+    border-bottom: '.75px solid #08c9';
+    background: #0088cc0d;
+  }
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $main-font;
+  color: $text-color;
+}
+
+.selectboxes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.selectbox {
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+
+  &-title {
+    position: absolute;
+    top: 0px;
+    padding: 0px 8px;
+    left: 20px;
+    background: $menu-bg;
+    top: -13%;
+    font-size: 17px;
+    font-weight: 700;
+    z-index: 1;
+  }
+  &-selected {
+    padding: 10px 47px 10px 25px;
+    width: 100%;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    border-radius: 20px;
+    position: relative;
+    &-value {
+      font-weight: 400;
+    }
+    img {
+      position: absolute;
+      right: 25px;
+      top: 50%;
+      transform: translate(0, -50%);
+      zoom: 0.6;
+    }
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    min-width: 100%;
+    max-width: 700px;
+    pointer-events: none;
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 1px);
+    border-radius: 10px;
+    background: white;
+    overflow: hidden;
+    transform: rotateX(40deg) scale(0.5);
+    transform-origin: top;
+    box-shadow: rgb(0 0 0 / 20%) 0px 5px 5px -3px,
+      rgb(0 0 0 / 14%) 0px 8px 10px 1px, rgb(0 0 0 / 12%) 0px 3px 14px 2px;
+
+    .option {
+      height: auto;
+      min-height: 40px;
+      padding: 17px 25px 17px 25px;
+      width: 100%;
+      list-style-type: unset;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+      &-name{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .text-p {
+        text-align: left;
+        margin-bottom: 0px;
+        a {
+          margin-left: 10px;
+          text-decoration: unset;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+      &-small{
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .pros, .cons {
+        opacity: 0.38;
+        @extend .text-p;
+        font-weight: 400;
+        font-size: 14px;
+        white-space: nowrap;
+        * {
+          @extend .text-p;
+          font-size: 14px;
+          margin-left: 0px !important;
+          pointer-events: none;
+        }
+      }
+
+      &:hover {
+        background: rgba(94, 117, 232, 0.1);
+      }
+      &-hidden {
+        display: none;
+      }
+    }
+  }
+  &-open {
+    z-index: 99;
+    .options {
+      transform: rotateX(0deg) scale(1);
+      transition: 0.25s all;
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
+
+.posts {
+  padding: 0px 30px 30px 0px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.post {
+ 
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  &-active {
+    display: block;
+  }
+  strong{
+    font-weight: 600;
+  }
+  
+  p {
+    @extend .text;
+    margin-bottom: 24px;
+  }
+  h3{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 40px;
+    line-height: 67px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+  h2 {
+    @extend .section-title;
+  }
+  .code {
+    margin-bottom: 24px;
+    width: 100%;
+    display: flex;
+    overflow: auto;
+    background: $code-bg;
+    padding: 24px 20px 24px 10px;
+    border-radius: 7px;
+    * {
+      line-height: 25px;
+      font-size: 14px;
+    }
+    code{
+    overflow: auto;
+    width: 100%;
+    }
+  }
+}
+
+nav {
+  height: 60px;
+  position: fixed;
+  background: white;
+  top: 0px;
+  left: 50%;
+  transform: translate(-50%);
+  @extend .grid;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.page {
+  max-width: $page-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 60px;
+  @extend .grid;
+}
+.main {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  
+}
+
+.menu {
+  background: $menu-bg;
+  padding: 50px 20px 50px 20px;
+  border-radius: 10px;
+  width: 300px;
+  position: sticky;
+  top: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.more{
+  h3{
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-decoration: underline;
+  }
+  ul{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
