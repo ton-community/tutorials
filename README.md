@@ -1,15 +1,15 @@
 # TON Tutorials
 
-### [01 - wallet](https://ton-community.github.io/tutorials/01-wallet)
+### [01. Working with your first wallet](https://ton-community.github.io/tutorials/01-wallet)
 > Create a wallet, fund it, initialize it, see in explorer, read/write to it with code
 
-### [02 - contract](https://ton-community.github.io/tutorials/02-contract)
+### [02. Writing your first smart contract](https://ton-community.github.io/tutorials/02-contract)
 > Create a simple counter smart contract, build and deploy it, read/write to it with code
 
-### [03 - client](https://ton-community.github.io/tutorials/03-client)
+### [03. Building your first web client](https://ton-community.github.io/tutorials/03-client)
 > Create a simple client (TWA+web) that interacts with the counter smart contract
 
-### [04 - testing](https://ton-community.github.io/tutorials/04-testing)
+### [04. Testing your first smart contract](https://ton-community.github.io/tutorials/04-testing)
 > Create a test suite for the counter smart contract to make sure it works as expected
 
 &nbsp;
