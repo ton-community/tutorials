@@ -52,8 +52,9 @@ const onOptionClick = (selectbox) => {
 };
 
 const prepareCodeComponents = () => {
-  const converter = new showdown.Converter();
-
+  const converter = new showdown.Converter({
+    literalMidWordUnderscores: true,
+  });
   getPosts().forEach((post) => {
     const text = post.innerText;
     post.innerHTML = converter.makeHtml(text);
