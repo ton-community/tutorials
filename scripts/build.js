@@ -82,8 +82,13 @@ function generateTutorialHtml(options, optionsArray, optionsValuesArray, tutoria
       markdowns[file.split(".")[0]] = fs.readFileSync(`docs/${tutorial}/${file}`).toString();
     }
   }
+  let title = "";
+  for (const markdown in markdowns) {
+    title = markdowns[markdown].match(/^#\s*(.+)$/m)[1];
+  }
   const template = ejs.compile(fs.readFileSync("scripts/index-template.ejs").toString());
   const data = {
+    title,
     options,
     optionsArray,
     optionsValuesArray,
