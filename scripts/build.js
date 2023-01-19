@@ -5,6 +5,7 @@ console.log("Searching for tutorials..");
 
 fs.rmSync("docs", { recursive: true, force: true });
 fs.mkdirSync("docs");
+fs.cpSync("scripts/assets", "docs/assets", { recursive: true, force: true });
 
 const dirs = fs.readdirSync(".", { withFileTypes: true });
 for (const dir of dirs) {

@@ -5,13 +5,13 @@
     "default": "testnet",
     "options": {
       "testnet": {
-        "name": "testnet",
+        "name": "Testnet",
         "order": 1,
         "pros": "free to use",
         "cons": "less reliable, requires special wallets"
       },
       "mainnet": {
-        "name": "mainnet",
+        "name": "Mainnet",
         "order": 2,
         "pros": "reliable, fast, works with all wallets",
         "cons": "not free to use (but very cheap)"
