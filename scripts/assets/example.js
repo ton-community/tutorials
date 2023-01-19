@@ -39,7 +39,8 @@ const onOptionClick = (selectbox) => {
 
   const onClick = (option) => {
     selectbox.classList.remove(activeClassName);
-    selected.innerText = option.querySelector(".option-name h4").innerText;
+    selected.querySelector("h3").innerText =
+      option.querySelector(".option-name h4").innerText;
     combination[combinationKey] = option.getAttribute("data-value");
     onPostSelect();
   };
@@ -67,19 +68,37 @@ const prepareCodeComponents = () => {
         language: "javascript",
       }).value;
       code.innerHTML = value;
+      const copyContainer = document.createElement("div");
+      const copySuccess = document.createElement("div");
+      copySuccess.classList.add("copy-success");
+    
+      const copyButton = document.createElement("button");
+      copyContainer.classList.add("copy");
+      copySuccess.innerText = "copied!";
+        copyContainer.appendChild(copySuccess);
+        copyContainer.appendChild(copyButton);
+      copyButton.addEventListener("click", async () => {
+        copyContainer.classList.add("copy-done");
+      
+        await navigator.clipboard.writeText(code.innerText);
+        setTimeout(() => {
+          copyContainer.classList.remove("copy-done");
+        }, 3000);
+      });
+      div.appendChild(copyContainer);
       pre.appendChild(code);
     });
   });
 };
 
 const handleLinks = () => {
-   document.querySelectorAll("a").forEach((link) => {
-     link.addEventListener("click", (e) => {
-       link.setAttribute("target", "_blank");
-       e.stopPropagation();
-     });
-   });
-}
+  document.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      link.setAttribute("target", "_blank");
+      e.stopPropagation();
+    });
+  });
+};
 
 window.onload = () => {
   getSelectBoxes().forEach((selectbox) => {
@@ -90,12 +109,10 @@ window.onload = () => {
 
     onOptionClick(selectbox);
     onOutsideClick(selectbox);
- 
   });
 
   prepareCodeComponents();
-      handleLinks();
-
+  handleLinks();
 };
 
 const wrap = (elToWrap, wrapper) => {

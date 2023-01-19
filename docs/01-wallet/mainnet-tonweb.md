@@ -1,6 +1,5 @@
 
 # TON Hello World part 1: Step by step guide for working with your first TON wallet
-###  by Tal Kol
 
 The TON blockchain is [based](https://ton-blockchain.github.io/docs/ton.pdf) on the [TON coin](https://coinmarketcap.com/currencies/toncoin/) (previously labeled TonCoin). This cryptocurrency is used to pay for executing transactions (gas), much like ETH on the Ethereum blockchain. If you're participating in the TON ecosystem, most likely that you're already holding some TON and probably already have a wallet.
 
@@ -18,7 +17,7 @@ Since TON transactions are very cheap, about 1 cent per transaction, investing j
 
 ## Step 1: Create a new wallet using an app
 
-The simplest way to create a TON wallet is visit https://ton.org/wallets and choose one of the wallet apps from the list. This page explains the difference between custodial and non-custodial wallets. With a non-custodial wallet, you own the wallet and hold its private key by yourself. With a custodial wallet, you trust somebody else to do this for you.
+The simplest way to create a TON wallet is visit [https://ton.org/wallets](https://ton.org/wallets) and choose one of the wallet apps from the list. This page explains the difference between custodial and non-custodial wallets. With a non-custodial wallet, you own the wallet and hold its private key by yourself. With a custodial wallet, you trust somebody else to do this for you.
 
 The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose [TonKeeper](https://tonkeeper.com). Go ahead and install the TonKeeper app on your phone and run it.
 
@@ -44,7 +43,7 @@ This wallet address isn't secret. You can share it with anyone you want and they
 
 An explorer is a tool that allows you to query data from the chain and investigate TON addresses. There are many [explorers](https://ton.app/explorers) to choose from. We're going to use Tonscan. Notice that mainnet and testnet have different explorers because those are different blockchains.
 
-The mainnet version of Tonscan is available on https://tonscan.org - open it and input your wallet address.
+The mainnet version of Tonscan is available on [https://tonscan.org](https://tonscan.org) - open it and input your wallet address.
 
 If this wallet is indeed new and hasn't been used before, its Tonscan page should show "State" as "Inactive". When you look under the "Contract" tab, you should see the message "This address doesn't contain any data in blockchain - it was either never used or the contract was deleted."
 
@@ -52,7 +51,7 @@ If this wallet is indeed new and hasn't been used before, its Tonscan page shoul
 
 Wallets in TON are also smart contracts! What this message means is that this smart contract hasn't been deployed yet and is therefore uninitialized. Deploying a smart contract means uploading its code onto the blockchain.
 
-Another interesting thing to notice is that the address shown in Tonscan may be different from the addres you typed in the search bar. There are multiple ways to encode the same TON address. You can use https://ton.org/address to see some additional representations and verify that they all share the same HEX public key.
+Another interesting thing to notice is that the address shown in Tonscan may be different from the addres you typed in the search bar. There are multiple ways to encode the same TON address. You can use [https://ton.org/address](https://ton.org/address) to see some additional representations and verify that they all share the same HEX public key.
 
 ## Step 4: Fund and deploy your wallet contract
 

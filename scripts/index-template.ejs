@@ -8,11 +8,19 @@
     <script src="https://cdn.jsdelivr.net/npm/showdown@2.0.3/dist/showdown.min.js"></script>
      <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="../assets/example.js"></script>
+        <!-- <script src="/scripts/assets/example.js"></script> -->
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+<meta property="og:title" content="TON Tutorials">
+<title>TON Tutorials</title>
   </head>
   <body class="page">
     <nav>
-      <h1>TON Tutorials</h1>
+      <div class="logo">
+        <img src = '../assets/logo.svg' />
+      <p>Tutorials</p>
+      </div>
     </nav>
     <div style="display: flex;" class="main">
       <div class="menu">
@@ -20,7 +28,10 @@
           <% for (const [index,option] of optionsArray.entries()) { %>
           <div class="selectbox" data-select="<%= option %>">
             <h3 class="selectbox-title"><%= options[option].name %></h3>
-            <div class="selectbox-selected"></div>
+           <div class="selectbox-selected">
+             <h3></h3>
+             <img src = '../assets/arrow-down.svg' />
+           </div>
           <ul class="options">
             <% for (const value of optionsValuesArray[index]) { %>
               <li data-value="<%= value %>" class="option">

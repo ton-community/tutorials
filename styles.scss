@@ -1,32 +1,33 @@
-$menu-bg: #F4F4F4;
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+$menu-bg: #f6f8fa;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 $main-font: "Poppins", sans-serif;
-$page-width: 1000px;
-$text-color: #1C1E21;
-$code-bg:#e9edf1;
-$link-color: #0099E5;
+$page-width: 1230px;
+$text-color: #1c1e21;
+$code-bg: #f6f8fa;
+$link-color: #0099e5;
 .section-title {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 500;
-  line-height: 45px;
+  line-height: 38px;
   margin-bottom: 24px;
   margin-top: 40px;
+  border-bottom: 1px solid hsla(210, 18%, 92%, 1);
+  padding-bottom: 10px;
 }
 
-.grid{
-    max-width: $page-width;
-    width: calc(100% - 60px);
+.grid {
+  max-width: $page-width;
+  width: calc(100% - 60px);
 }
 .text {
   font-size: 18px;
   line-height: 30px;
 }
 
-a{
-    color: $link-color;
-    border-bottom: '.75px solid #08c9';
-    background: #0088cc0d;
-  }
+a {
+  color: $link-color;
+  border-bottom: ".75px solid #08c9";
+}
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -200,9 +201,7 @@ body {
     border-radius: 5px;
     border-radius: 20px;
     position: relative;
-    &-value {
-      font-weight: 400;
-    }
+    font-weight: 300;
     img {
       position: absolute;
       right: 25px;
@@ -238,40 +237,66 @@ body {
       display: flex;
       align-items: center;
       flex-direction: column;
-      gap: 10px;
+      gap: 19px;
       align-items: flex-start;
-      &-name{
+
+      &-name {
         display: flex;
         align-items: center;
         gap: 20px;
+        h4 {
+          font-weight: 500;
+        }
+      }
+      a {
+        margin-left: 10px;
+        text-decoration: unset;
+        position: relative;
+        font-family: inherit;
+        &::after {
+          position: absolute;
+          content: "";
+          background: url("../assets/link.svg");
+          width: 12px;
+          height: 12px;
+          object-fit: contain;
+          background-size: contain;
+          right: -20px;
+          top: 50%;
+          transform: translate(0, -50%);
+        }
+        &:hover {
+          text-decoration: underline;
+        }
       }
       .text-p {
         text-align: left;
         margin-bottom: 0px;
-        a {
-          margin-left: 10px;
-          text-decoration: unset;
-          &:hover {
-            text-decoration: underline;
-          }
-        }
       }
-      &-small{
+      &-small {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
-      .pros, .cons {
-        opacity: 0.38;
+      .pros {
+        color: #2da44e;
+      }
+      .cons {
+        color: #cf222e;
+      }
+      .pros,
+      .cons {
+        opacity: 0.7;
         @extend .text-p;
         font-weight: 400;
-        font-size: 14px;
+        font-size: 11px;
         white-space: nowrap;
         * {
           @extend .text-p;
-          font-size: 14px;
+          font-size: inherit;
           margin-left: 0px !important;
           pointer-events: none;
+          color: inherit;
         }
       }
 
@@ -295,29 +320,32 @@ body {
 }
 
 .posts {
-  padding: 0px 30px 30px 0px;
+  padding: 0px 0px 30px 0px;
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  order: 1;
 }
 .post {
- 
   display: none;
   width: 100%;
   flex-direction: column;
+  img{
+    max-width: 100%;
+  }
   &-active {
     display: block;
   }
-  strong{
+  strong {
     font-weight: 600;
   }
-  
+
   p {
     @extend .text;
     margin-bottom: 24px;
   }
-  h3{
+  h3 {
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 24px;
@@ -326,10 +354,21 @@ body {
     font-size: 40px;
     line-height: 67px;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
   }
   h2 {
     @extend .section-title;
+  }
+  code {
+    background: $code-bg;
+    padding: 7px 11px;
+    line-height: 20px;
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+      Liberation Mono !important;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
   }
   .code {
     margin-bottom: 24px;
@@ -337,71 +376,200 @@ body {
     display: flex;
     overflow: auto;
     background: $code-bg;
-    padding: 24px 20px 24px 10px;
+    padding: 24px 24px 24px 24px;
     border-radius: 7px;
+    position: relative;
+
+    .copy {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      opacity: 0;
+      transition: 0.2s all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &-success {
+        padding: 2px 7px;
+        background: rgba(0,0,0, 0.9);
+        color: white;
+        position: absolute;
+        font-size: 12px;
+        right: calc(100% + 10px);
+        border-radius: 4px;
+        opacity: 0;
+        font-family: $main-font!important;
+      }
+      button {
+        background: $code-bg;
+
+        cursor: pointer;
+        width: 38px;
+        height: 38px;
+        padding: 10px;
+        border: unset;
+        border: unset;
+        position: relative;
+        border-radius: 60px;
+        &::after {
+          background-repeat: no-repeat;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          position: absolute;
+          background-image: url("../assets/copy.svg");
+          content: "";
+          background-size: contain;
+          width: 60%;
+          height: 60%;
+        }
+      }
+      &-done{
+        .copy-success{
+          opacity: 1;
+        }
+      }
+    }
     * {
-      line-height: 25px;
+      line-height: 20px;
+      font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+        Liberation Mono !important;
       font-size: 14px;
     }
-    code{
-    overflow: auto;
-    width: 100%;
+    .function_ {
+      color: #8250df;
+    }
+    .class_ {
+      color: #953800;
+    }
+    .hljs-keyword {
+      color: #cf222e;
+    }
+    code {
+      overflow: auto;
+      width: 100%;
+      padding: 0px;
+      margin: 0px;
+    }
+    &:hover {
+      .copy {
+        opacity: 1;
+      }
     }
   }
 }
 
 nav {
-  height: 60px;
+  height: 70px;
   position: fixed;
   background: white;
   top: 0px;
   left: 50%;
   transform: translate(-50%);
   @extend .grid;
-  z-index: 1;
+  z-index: 100;
   display: flex;
   align-items: center;
   font-weight: 500;
   font-size: 20px;
 }
 
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  img {
+    height: 34px;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 400;
+    position: relative;
+    top: 1px;
+  }
+}
+
 .page {
   max-width: $page-width;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 60px;
+  padding-top: 100px;
   @extend .grid;
+  padding-bottom: 50px;
 }
 .main {
   width: 100%;
   display: flex;
   align-items: flex-start;
-  gap: 50px;
-  
+  gap: 30px;
 }
 
 .menu {
   background: $menu-bg;
   padding: 50px 20px 50px 20px;
-  border-radius: 10px;
-  width: 300px;
+  border-radius: 16px;
+  width: 330px;
   position: sticky;
   top: 70px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 55px;
+  order: 2;
 }
 
-.more{
-  h3{
-    font-size: 18px;
+.more {
+  padding-left: 16px;
+  h3 {
+    font-size: 16px;
     font-weight: 500;
     margin-bottom: 20px;
-    text-decoration: underline;
   }
-  ul{
+  ul {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
+    a {
+      font-size: 14px;
+      text-decoration: unset;
+    }
+  }
+}
+
+
+@media only screen and (max-width: 900px) {
+  .grid {
+    width: calc(100% - 30px);
+  }
+  .page{
+    padding-top: 80px;
+  }
+  .main{
+    flex-direction: column;
+    grid-area: 50px;
+  }
+  .menu{
+    padding: 30px 20px 30px 20px;
+    order: 1;
+    position: unset;
+    width: 100%;
+    gap: 40px;
+  }
+  .posts{
+    order: 2;
+    width: 100%;
+  }
+  .post{
+    .section-title {
+      font-size: 20px;
+      line-height: normal;
+    }
+    h1{
+      font-size: 23px;
+      line-height: 32px;
+      margin-bottom: 30px;
+    }
+    p{
+      font-size: 16px;
+    }
   }
 }
