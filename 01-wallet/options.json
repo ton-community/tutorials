@@ -14,7 +14,7 @@
       "mainnet": {
         "name": "Mainnet",
         "order": 2,
-        "pros": "reliable, fast, works with all wallets",
+        "pros": "very reliable, fast, works with all wallets",
         "cons": "not free to use (but very cheap)"
       }
     }
