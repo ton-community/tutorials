@@ -237,7 +237,7 @@ body {
       display: flex;
       align-items: center;
       flex-direction: column;
-      gap: 19px;
+      gap: 12px;
       align-items: flex-start;
 
       &-name {
@@ -276,19 +276,20 @@ body {
       &-small {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 6px;
       }
       .pros {
+        opacity: 0.8;
         color: #2da44e;
         background-color: #2da44e24;
       }
       .cons {
+        opacity: 0.68;
         color: #cf222e;
         background-color: #cf222e24;
       }
       .pros,
       .cons {
-        opacity: 0.8;
         padding: 3px 6px;
         border-radius: 6px;
         @extend .text-p;

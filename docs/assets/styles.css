@@ -237,7 +237,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 19px;
+  gap: 12px;
   align-items: flex-start;
 }
 .selectbox .options .option-name {
@@ -278,19 +278,20 @@ body {
 .selectbox .options .option-small {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
 .selectbox .options .option .pros {
+  opacity: 0.8;
   color: #2da44e;
   background-color: rgba(45, 164, 78, 0.1411764706);
 }
 .selectbox .options .option .cons {
+  opacity: 0.68;
   color: #cf222e;
   background-color: rgba(207, 34, 46, 0.1411764706);
 }
 .selectbox .options .option .pros,
 .selectbox .options .option .cons {
-  opacity: 0.8;
   padding: 3px 6px;
   border-radius: 6px;
   font-weight: 400;

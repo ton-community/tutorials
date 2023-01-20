@@ -1,3 +1,4 @@
+
 # TON Hello World part 2: Step by step guide for writing your first smart contract
 
 A smart contract is simply a computer program running on TON blockchain - or more exactly its [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on the TON blockchain.
