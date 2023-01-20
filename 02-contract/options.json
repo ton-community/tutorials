@@ -13,6 +13,7 @@
       },
       "mainnet": {
         "name": "Mainnet",
+        "url": "https://tonmon.xyz/?orgId=1&refresh=5m",
         "order": 2,
         "pros": "very reliable, fast, works with all wallets",
         "cons": "not free to use (but very cheap)"
