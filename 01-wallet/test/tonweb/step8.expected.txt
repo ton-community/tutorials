@@ -1,0 +1,2 @@
+balance: more than 1
+seqno: more than 1

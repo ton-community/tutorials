@@ -1,3 +1,1 @@
 EQCJRglfvsQzAIF0UAhkYH6zkdGPFxVNYMH1nPTN_UpDqPrA
-balance: more than 1
-seqno: more than 1

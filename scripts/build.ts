@@ -7,9 +7,6 @@ fs.rmSync("docs", { recursive: true, force: true });
 fs.mkdirSync("docs");
 fs.cpSync("scripts/assets", "docs/assets", { recursive: true, force: true });
 
-
-
-
 const dirs = fs.readdirSync(".", { withFileTypes: true });
 for (const dir of dirs) {
   if (dir.isDirectory() && dir.name.match(/\d\d\-\w+/)) {
@@ -25,10 +22,10 @@ for (const dir of dirs) {
 
     // create all the md combinations
     let options;
-    const optionsArray = [];
-    const optionsValuesArray = [];
+    const optionsArray: string[] = [];
+    const optionsValuesArray: string[][] = [];
     try {
-      options = JSON.parse(fs.readFileSync(`${tutorial}/options.json`));
+      options = JSON.parse(fs.readFileSync(`${tutorial}/options.json`).toString());
       for (const option in options) optionsArray[options[option].order - 1] = option;
       findOptions([], 0, optionsArray, options, tutorial, optionsValuesArray);
     } catch (e) {}
@@ -41,13 +38,13 @@ for (const dir of dirs) {
   }
 }
 
-function findOptions(combination, i, optionsArray, options, tutorial, optionsValuesArray) {
+function findOptions(combination: string[], i: number, optionsArray: string[], options: any, tutorial: string, optionsValuesArray: string[][]) {
   if (i >= optionsArray.length) {
     handleCombination(combination, optionsArray, options, tutorial);
     return;
   }
   const option = optionsArray[i];
-  const valuesArray = [];
+  const valuesArray: string[] = [];
   for (const value in options[option].options) valuesArray[options[option].options[value].order - 1] = value;
   optionsValuesArray[i] = valuesArray;
   for (const value of valuesArray) {
@@ -55,7 +52,7 @@ function findOptions(combination, i, optionsArray, options, tutorial, optionsVal
   }
 }
 
-function handleCombination(combination, optionsArray, options, tutorial) {
+function handleCombination(combination: string[], optionsArray: string[], options: any, tutorial: string) {
   const filename = combination.join("-");
   console.log(` Creating docs/${tutorial}/${filename}.md`);
   let content = fs.readFileSync(`${tutorial}/index.md`).toString();
@@ -64,18 +61,18 @@ function handleCombination(combination, optionsArray, options, tutorial) {
     for (const value in options[option].options) {
       if (value != combination[i]) {
         // remove option:value
-        content = content.replaceAll(new RegExp("\-\-\-\n[^\n]*" + option + "\:" + value + "[^\n]*\n\-\-\-\n(.*?)\n\-\-\-\n", "sg"), "");
+        content = content.replace(new RegExp("\-\-\-\n[^\n]*" + option + "\:" + value + "[^\n]*\n\-\-\-\n(.*?)\n\-\-\-\n", "sg"), "");
       }
     }
   }
   // keep everything else
-  content = content.replaceAll(/\-\-\-\n[\w\:\s]+\w+\n\-\-\-\n(.*?)\n\-\-\-\n/sg, "$1");
-  content = content.replaceAll(/\n\n+/sg, "\n\n");
+  content = content.replace(/\-\-\-\n[\w\:\s]+\w+\n\-\-\-\n(.*?)\n\-\-\-\n/sg, "$1");
+  content = content.replace(/\n\n+/sg, "\n\n");
   fs.writeFileSync(`docs/${tutorial}/${filename}.md`, content);
 }
 
-function generateTutorialHtml(options, optionsArray, optionsValuesArray, tutorial) {
-  const markdowns = {};
+function generateTutorialHtml(options: any, optionsArray: string[], optionsValuesArray: string[][], tutorial: string) {
+  const markdowns: {[key: string]: string} = {};
   const files = fs.readdirSync(`docs/${tutorial}`);
   for (const file of files) {
     if (file.endsWith(".md")) {
@@ -84,7 +81,7 @@ function generateTutorialHtml(options, optionsArray, optionsValuesArray, tutoria
   }
   let title = "";
   for (const markdown in markdowns) {
-    title = markdowns[markdown].match(/^#\s*(.+)$/m)[1];
+    title = markdowns[markdown].match(/^#\s*(.+)$/m)?.[1] ?? "TON Tutorial";
   }
   const template = ejs.compile(fs.readFileSync("scripts/index-template.ejs").toString());
   const data = {

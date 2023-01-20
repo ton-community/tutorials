@@ -1,8 +1,11 @@
-npm init es6 --yes
+npm init --yes
 npm install dotenv
+npm install ts-node
 npm install ton ton-core ton-crypto
 npm install @orbs-network/ton-access
-node read.js > read.output.txt
-diff read.output.txt read.expected.txt
-node write.js > write.output.txt
-diff write.output.txt write.expected.txt
+npx ts-node step7.ts > step7.output.txt
+diff step7.output.txt step7.expected.txt
+npx ts-node step8.ts > step8.output.txt
+diff step8.output.txt step8.expected.txt
+npx ts-node step9.ts > step9.output.txt
+diff step9.output.txt step9.expected.txt
