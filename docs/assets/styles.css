@@ -282,13 +282,17 @@ body {
 }
 .selectbox .options .option .pros {
   color: #2da44e;
+  background-color: rgba(45, 164, 78, 0.1411764706);
 }
 .selectbox .options .option .cons {
   color: #cf222e;
+  background-color: rgba(207, 34, 46, 0.1411764706);
 }
 .selectbox .options .option .pros,
 .selectbox .options .option .cons {
-  opacity: 0.7;
+  opacity: 0.8;
+  padding: 3px 6px;
+  border-radius: 6px;
   font-weight: 400;
   font-size: 11px;
   white-space: nowrap;

@@ -280,13 +280,17 @@ body {
       }
       .pros {
         color: #2da44e;
+        background-color: #2da44e24;
       }
       .cons {
         color: #cf222e;
+        background-color: #cf222e24;
       }
       .pros,
       .cons {
-        opacity: 0.7;
+        opacity: 0.8;
+        padding: 3px 6px;
+        border-radius: 6px;
         @extend .text-p;
         font-weight: 400;
         font-size: 11px;
