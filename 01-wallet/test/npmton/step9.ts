@@ -17,8 +17,8 @@ async function step9() {
   const endpoint = await getHttpEndpoint({
     network: "testnet"
   });
-  //const client = new TonClient({ endpoint });
-  const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
+  const client = new TonClient({ endpoint });
+  //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const walletContract = client.open(wallet);

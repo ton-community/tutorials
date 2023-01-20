@@ -17,8 +17,8 @@ async function step8() {
   const endpoint = await getHttpEndpoint({
     network: "testnet"
   });
-  //const client = new TonClient({ endpoint });
-  const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
+  const client = new TonClient({ endpoint });
+  //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
 
   const balance = await client.getBalance(wallet.address);
   //console.log("balance:", fromNano(balance));
