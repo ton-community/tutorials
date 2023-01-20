@@ -5,18 +5,14 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, WalletContractV4, internal } from "ton";
 
-async function step9() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = process.env.MNEMONIC;
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
-  const endpoint = await getHttpEndpoint({
-    network: "testnet"
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
   //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
 
@@ -46,7 +42,7 @@ async function step9() {
   console.log("transaction confirmed!");
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

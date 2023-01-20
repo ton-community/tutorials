@@ -160,19 +160,20 @@ library:npmton
 import { mnemonicToWalletKey } from "ton-crypto";
 import { WalletContractV4 } from "ton";
 
-async function step7() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // print wallet address
   console.log(wallet.address.toString());
+
+  // print wallet workchain
+  console.log("workchain:", wallet.address.workChain);
 }
 
-step7();
+main();
 ```
 
 ---
@@ -184,21 +185,24 @@ library:tonweb
 import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
-async function step7() {
+async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(" "));
 
+  // open wallet v4 (notice the correct wallet version here)
   const tonweb = new TonWeb();
-  const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
-  const wallet = new WalletClass(undefined, {
-    publicKey: key.publicKey
-  });
+  const WalletClass = tonweb.wallet.all["v4R2"];
+  const wallet = new WalletClass(undefined!, { publicKey: key.publicKey });
 
+  // print wallet address
   const walletAddress = await wallet.getAddress();
   console.log(walletAddress.toString(true, true, true));
+
+  // print wallet workchain
+  console.log("workchain:", walletAddress.wc);
 }
 
-step7();
+main();
 ```
 
 ---
@@ -208,6 +212,8 @@ To see the wallet address, run it using terminal:
 ```
 npx ts-node step7.ts
 ```
+
+Notice that we're not just printing the address, we're also printing the workchain number. TON supports multiple parallel blockchain instances called *workchains*. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you're doing something special, you'll always use workchain 0.
 
 ## Step 8: Read wallet state from the chain
 
@@ -231,29 +237,27 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { WalletContractV4, TonClient, fromNano } from "ton";
 
-async function step8() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
-  const endpoint = await getHttpEndpoint({
-    network: "testnet"
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
 
+  // query balance from chain
   const balance = await client.getBalance(wallet.address);
   console.log("balance:", fromNano(balance));
 
+  // query seqno from chain
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
   console.log("seqno:", seqno);
 }
 
-step8();
+main();
 ```
 
 ---
@@ -266,27 +270,27 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { WalletContractV4, TonClient, fromNano } from "ton";
 
-async function step8() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
 
+  // query balance from chain
   const balance = await client.getBalance(wallet.address);
   console.log("balance:", fromNano(balance));
 
+  // query seqno from chain
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
   console.log("seqno:", seqno);
 }
 
-step8();
+main();
 ```
 
 ---
@@ -299,29 +303,29 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
-async function step8() {
+async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(" "));
 
-  const endpoint = await getHttpEndpoint({
-    network: "testnet"
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, { 
-    publicKey: key.publicKey 
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all["v4R2"];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
   const walletAddress = await wallet.getAddress();
 
+  // query balance from chain
   const balance = await tonweb.getBalance(walletAddress);
   console.log("balance:", TonWeb.utils.fromNano(balance));
 
+  // query seqno from chain
   const seqno = await wallet.methods.seqno().call();
   console.log("seqno:", seqno);
 }
 
-step8();
+main();
 ```
 
 ---
@@ -334,27 +338,29 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
-async function step8() {
+async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(" "));
 
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, { 
-    publicKey: key.publicKey 
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all["v4R2"];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
   const walletAddress = await wallet.getAddress();
 
+  // query balance from chain
   const balance = await tonweb.getBalance(walletAddress);
   console.log("balance:", TonWeb.utils.fromNano(balance));
 
+  // query seqno from chain
   const seqno = await wallet.methods.seqno().call();
   console.log("seqno:", seqno);
 }
 
-step8();
+main();
 ```
 
 ---
@@ -379,18 +385,14 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, WalletContractV4, internal } from "ton";
 
-async function step9() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
-  const endpoint = await getHttpEndpoint({
-    network: "testnet"
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
@@ -419,7 +421,7 @@ async function step9() {
   console.log("transaction confirmed!");
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -436,15 +438,13 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, WalletContractV4, internal } from "ton";
 
-async function step9() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
 
@@ -474,7 +474,7 @@ async function step9() {
   console.log("transaction confirmed!");
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -491,19 +491,17 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
-async function step9() {
+async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(" "));
 
-  const endpoint = await getHttpEndpoint({
-    network: "testnet"
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, {
-    publicKey: key.publicKey
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all["v4R2"];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const seqno = await wallet.methods.seqno().call() || 0;
@@ -526,7 +524,7 @@ async function step9() {
   console.log("transaction confirmed!");
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -543,17 +541,17 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
-async function step9() {
+async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(" "));
 
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all["v4R2"]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, {
-    publicKey: key.publicKey
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all["v4R2"];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const seqno = await wallet.methods.seqno().call() || 0;
@@ -576,7 +574,7 @@ async function step9() {
   console.log("transaction confirmed!");
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

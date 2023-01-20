@@ -219,19 +219,20 @@ Create the file `step7.ts` with the following content:
 import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
 import { WalletContractV4 } from &#34;ton&#34;;
 
-async function step7() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // print wallet address
   console.log(wallet.address.toString());
+
+  // print wallet workchain
+  console.log(&#34;workchain:&#34;, wallet.address.workChain);
 }
 
-step7();
+main();
 ```
 
 To see the wallet address, run it using terminal:
@@ -239,6 +240,8 @@ To see the wallet address, run it using terminal:
 ```
 npx ts-node step7.ts
 ```
+
+Notice that we&#39;re not just printing the address, we&#39;re also printing the workchain number. TON supports multiple parallel blockchain instances called *workchains*. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you&#39;re doing something special, you&#39;ll always use workchain 0.
 
 ## Step 8: Read wallet state from the chain
 
@@ -259,27 +262,27 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
 import { WalletContractV4, TonClient, fromNano } from &#34;ton&#34;;
 
-async function step8() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
 
+  // query balance from chain
   const balance = await client.getBalance(wallet.address);
   console.log(&#34;balance:&#34;, fromNano(balance));
 
+  // query seqno from chain
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
   console.log(&#34;seqno:&#34;, seqno);
 }
 
-step8();
+main();
 ```
 
 To see the balance and seqno, run using terminal:
@@ -299,15 +302,13 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
 import { TonClient, WalletContractV4, internal } from &#34;ton&#34;;
 
-async function step9() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
 
@@ -337,7 +338,7 @@ async function step9() {
   console.log(&#34;transaction confirmed!&#34;);
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve =&gt; setTimeout(resolve, ms));
@@ -480,21 +481,24 @@ Create the file `step7.ts` with the following content:
 import { mnemonicToKeyPair } from &#34;tonweb-mnemonic&#34;;
 import TonWeb from &#34;tonweb&#34;;
 
-async function step7() {
+async function main() {
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(&#34; &#34;));
 
+  // open wallet v4 (notice the correct wallet version here)
   const tonweb = new TonWeb();
-  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;]; // notice the correct wallet version here
-  const wallet = new WalletClass(undefined, {
-    publicKey: key.publicKey
-  });
+  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;];
+  const wallet = new WalletClass(undefined!, { publicKey: key.publicKey });
 
+  // print wallet address
   const walletAddress = await wallet.getAddress();
   console.log(walletAddress.toString(true, true, true));
+
+  // print wallet workchain
+  console.log(&#34;workchain:&#34;, walletAddress.wc);
 }
 
-step7();
+main();
 ```
 
 To see the wallet address, run it using terminal:
@@ -502,6 +506,8 @@ To see the wallet address, run it using terminal:
 ```
 npx ts-node step7.ts
 ```
+
+Notice that we&#39;re not just printing the address, we&#39;re also printing the workchain number. TON supports multiple parallel blockchain instances called *workchains*. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you&#39;re doing something special, you&#39;ll always use workchain 0.
 
 ## Step 8: Read wallet state from the chain
 
@@ -522,27 +528,29 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToKeyPair } from &#34;tonweb-mnemonic&#34;;
 import TonWeb from &#34;tonweb&#34;;
 
-async function step8() {
+async function main() {
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(&#34; &#34;));
 
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, { 
-    publicKey: key.publicKey 
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
   const walletAddress = await wallet.getAddress();
 
+  // query balance from chain
   const balance = await tonweb.getBalance(walletAddress);
   console.log(&#34;balance:&#34;, TonWeb.utils.fromNano(balance));
 
+  // query seqno from chain
   const seqno = await wallet.methods.seqno().call();
   console.log(&#34;seqno:&#34;, seqno);
 }
 
-step8();
+main();
 ```
 
 To see the balance and seqno, run using terminal:
@@ -562,17 +570,17 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToKeyPair } from &#34;tonweb-mnemonic&#34;;
 import TonWeb from &#34;tonweb&#34;;
 
-async function step9() {
+async function main() {
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(&#34; &#34;));
 
+  // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, {
-    publicKey: key.publicKey
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const seqno = await wallet.methods.seqno().call() || 0;
@@ -595,7 +603,7 @@ async function step9() {
   console.log(&#34;transaction confirmed!&#34;);
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve =&gt; setTimeout(resolve, ms));
@@ -742,19 +750,20 @@ Create the file `step7.ts` with the following content:
 import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
 import { WalletContractV4 } from &#34;ton&#34;;
 
-async function step7() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
+  // print wallet address
   console.log(wallet.address.toString());
+
+  // print wallet workchain
+  console.log(&#34;workchain:&#34;, wallet.address.workChain);
 }
 
-step7();
+main();
 ```
 
 To see the wallet address, run it using terminal:
@@ -762,6 +771,8 @@ To see the wallet address, run it using terminal:
 ```
 npx ts-node step7.ts
 ```
+
+Notice that we&#39;re not just printing the address, we&#39;re also printing the workchain number. TON supports multiple parallel blockchain instances called *workchains*. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you&#39;re doing something special, you&#39;ll always use workchain 0.
 
 ## Step 8: Read wallet state from the chain
 
@@ -782,29 +793,27 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
 import { WalletContractV4, TonClient, fromNano } from &#34;ton&#34;;
 
-async function step8() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
-  const endpoint = await getHttpEndpoint({
-    network: &#34;testnet&#34;
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
   const client = new TonClient({ endpoint });
 
+  // query balance from chain
   const balance = await client.getBalance(wallet.address);
   console.log(&#34;balance:&#34;, fromNano(balance));
 
+  // query seqno from chain
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
   console.log(&#34;seqno:&#34;, seqno);
 }
 
-step8();
+main();
 ```
 
 To see the balance and seqno, run using terminal:
@@ -824,18 +833,14 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
 import { TonClient, WalletContractV4, internal } from &#34;ton&#34;;
 
-async function step9() {
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  const wallet = WalletContractV4.create({ // notice the correct wallet version here
-    publicKey: key.publicKey,
-    workchain: 0
-  });
-
-  const endpoint = await getHttpEndpoint({
-    network: &#34;testnet&#34;
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
   const client = new TonClient({ endpoint });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
@@ -864,7 +869,7 @@ async function step9() {
   console.log(&#34;transaction confirmed!&#34;);
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve =&gt; setTimeout(resolve, ms));
@@ -1011,21 +1016,24 @@ Create the file `step7.ts` with the following content:
 import { mnemonicToKeyPair } from &#34;tonweb-mnemonic&#34;;
 import TonWeb from &#34;tonweb&#34;;
 
-async function step7() {
+async function main() {
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(&#34; &#34;));
 
+  // open wallet v4 (notice the correct wallet version here)
   const tonweb = new TonWeb();
-  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;]; // notice the correct wallet version here
-  const wallet = new WalletClass(undefined, {
-    publicKey: key.publicKey
-  });
+  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;];
+  const wallet = new WalletClass(undefined!, { publicKey: key.publicKey });
 
+  // print wallet address
   const walletAddress = await wallet.getAddress();
   console.log(walletAddress.toString(true, true, true));
+
+  // print wallet workchain
+  console.log(&#34;workchain:&#34;, walletAddress.wc);
 }
 
-step7();
+main();
 ```
 
 To see the wallet address, run it using terminal:
@@ -1033,6 +1041,8 @@ To see the wallet address, run it using terminal:
 ```
 npx ts-node step7.ts
 ```
+
+Notice that we&#39;re not just printing the address, we&#39;re also printing the workchain number. TON supports multiple parallel blockchain instances called *workchains*. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you&#39;re doing something special, you&#39;ll always use workchain 0.
 
 ## Step 8: Read wallet state from the chain
 
@@ -1053,29 +1063,29 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToKeyPair } from &#34;tonweb-mnemonic&#34;;
 import TonWeb from &#34;tonweb&#34;;
 
-async function step8() {
+async function main() {
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(&#34; &#34;));
 
-  const endpoint = await getHttpEndpoint({
-    network: &#34;testnet&#34;
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, { 
-    publicKey: key.publicKey 
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
   const walletAddress = await wallet.getAddress();
 
+  // query balance from chain
   const balance = await tonweb.getBalance(walletAddress);
   console.log(&#34;balance:&#34;, TonWeb.utils.fromNano(balance));
 
+  // query seqno from chain
   const seqno = await wallet.methods.seqno().call();
   console.log(&#34;seqno:&#34;, seqno);
 }
 
-step8();
+main();
 ```
 
 To see the balance and seqno, run using terminal:
@@ -1095,19 +1105,17 @@ import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
 import { mnemonicToKeyPair } from &#34;tonweb-mnemonic&#34;;
 import TonWeb from &#34;tonweb&#34;;
 
-async function step9() {
+async function main() {
   const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToKeyPair(mnemonic.split(&#34; &#34;));
 
-  const endpoint = await getHttpEndpoint({
-    network: &#34;testnet&#34;
-  });
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
   const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
 
-  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;]; // notice the correct wallet version here
-  const wallet = new WalletClass(tonweb.provider, {
-    publicKey: key.publicKey
-  });
+  // open wallet v4 (notice the correct wallet version here)
+  const WalletClass = tonweb.wallet.all[&#34;v4R2&#34;];
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const seqno = await wallet.methods.seqno().call() || 0;
@@ -1130,7 +1138,7 @@ async function step9() {
   console.log(&#34;transaction confirmed!&#34;);
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve =&gt; setTimeout(resolve, ms));

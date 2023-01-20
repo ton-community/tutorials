@@ -5,20 +5,18 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
-async function step9() {
+async function main() {
   const mnemonic = process.env.MNEMONIC;
   const key = await mnemonicToKeyPair(mnemonic!.split(" "));
 
-  const endpoint = await getHttpEndpoint({
-    network: "testnet"
-  });
-  //const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
-  const tonweb = new TonWeb(new TonWeb.HttpProvider("https://testnet.toncenter.com/api/v2/jsonRPC", { apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" }));
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
+  const tonweb = new TonWeb(new TonWeb.HttpProvider(endpoint));
+  //const tonweb = new TonWeb(new TonWeb.HttpProvider("https://testnet.toncenter.com/api/v2/jsonRPC", { apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" }));
 
+  // open wallet v4 (notice the correct wallet version here)
   const WalletClass = tonweb.wallet.all["v4R2"];
-  const wallet = new WalletClass(tonweb.provider, {
-    publicKey: key.publicKey
-  });
+  const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
 
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const seqno = await wallet.methods.seqno().call() || 0;
@@ -41,7 +39,7 @@ async function step9() {
   console.log("transaction confirmed!");
 }
 
-step9();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
