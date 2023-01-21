@@ -23,7 +23,7 @@ So what are we going to build? Our smart contract will be quite simple:
 
 Its main feature is to hold a *counter*. The counter will start at some number, and allow users to send *increment* transactions to the contract, which will in turn increase the counter value by 1. The contract will also have a getter function that will allow any user to query the current value of the counter.
 
-In later tutorials we will make this contract a little more advanced, allow TON coins to be deposited in it, introduce a special admin role that can withdraw the funds and more.
+In later tutorials we will make this contract a little more advanced and allow TON coins that are deposited in it to be withdrawn by a special admin role. This admin will also be able to transfer ownership to a different admin.
 
 ## Step 2: Set up your local machine
 
@@ -50,6 +50,14 @@ npm install @ton-community/func-js
 This will install the package [func-js](https://github.com/ton-community/func-js), a cross-platform compiler for FunC.
 
 > In previous iterations of this tutorial we used to deal with [binaries executables](https://github.com/ton-defi-org/ton-binaries) of the `func` and `fift` compilers, but those were platform specific (different binaries for Mac, Windows and Linux). Relying on func-js will make life easier since it's cross-platform. In general, using executable binaries in the TON ecosystem is obsolete.
+
+And finally, run in terminal:
+
+```
+npm install ton ton-crypto ton-core
+```
+
+This will install a library that you should be familiar with - [ton](https://www.npmjs.com/package/ton). We'll use it to deploy our contract and interact with it.
 
 ## Step 4: Structuring our smart contract
 
@@ -92,6 +100,9 @@ Let's continue to the next section, *messages*, and implement the main message h
 
 ```func
 () recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {  ;; well known function signature
+  if (in_msg_body.slice_empty?()) {                                       ;; check if incoming message is empty (with no body)
+    return ();                                                            ;; return successfully and accept an empty message
+  }
   int op = in_msg_body~load_uint(32);                                     ;; parse the operation type encoded in the beginning of msg body
   var (counter) = load_data();                                            ;; call our read utility function to load values from storage
   if (op == 1) {                                                          ;; handle op #1 = increment
@@ -100,7 +111,9 @@ Let's continue to the next section, *messages*, and implement the main message h
 }
 ```
 
-As you can see, the first thing to do when parsing a new incoming message is to read its operation type. By convention, [internal messages](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) are encoded with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number `1` to the *increment* action, which is handled by writing back to persistent state the current value counter plus 1.
+Messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.
+
+If an incoming message is not empty, the first thing to do is read its operation type. By convention, [internal messages](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) are encoded with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number `1` to the *increment* action, which is handled by writing back to persistent state the current value counter plus 1.
 
 ### Getters
 
@@ -140,3 +153,257 @@ npx func-js stdlib.fc counter.fc --boc counter.cell
 ```
 
 The build should now succeed, with the output of this command being a new file - `counter.cell`. This is a binary file that finally contains the TVM bytecode in cell format that is ready to be deployed on-chain. This will actually be the only file we need for deployment moving forward (we won't need the FunC source file).
+
+## Step 7: Prepare init data for deploying on-chain
+
+Now that our contract has been compiled to bytecode, we can finally see it in action running on-chain. The act of uploading the bytecode to the blockchain is called *deployment*. The deployment result would be an address where the contract resides. This address will allow us to communicate with this specific contract instance later on and send it transactions.
+
+There are two variations of the TON blockchain we can deploy to - *mainnet* and *testnet*. We covered both in the previous tutorial. Personally, I almost never deploy to testnet. There are far better ways to gain confidence that my code is working as expected. The primary of which is writing a dedicated *test suite*. We will cover this in detail in one of the next tutorials. For now, let's assume the code is working perfectly and no further debugging is required.
+
+### Init arguments
+
+The new address of our deployed contract in TON depends on only two things - the deployed bytecode (initial code) and the initial contract storage (initial data). You can say that the address is some derivation of the hash of both. If two different developers were to deploy the exact same code with the exact same initialization data, they would collide.
+
+The bytecode part is easy, we have that ready as a cell in the file `counter.cell` that we compiled in step 6. Now what about the initial contract storage? As you recall, the format of our persistent storage data was decided when we implemented the function `save_data()` of our contract FunC source. Our storage layout was very simple - just one unsigned int of 64 bit holding the counter value. Therefore, to initialize our contract, we would need to generate a data cell holding some arbitrary initial uint64 value - for example the number `1`.
+
+### Interface class
+
+The recommended way to interact with contracts is to create a small TypeScript class that will implement the interaction interface with the contract. We would normally give it the same name, so create the file `counter.ts` and place it next to the FunC source `counter.fc`.
+
+Use the following code in `counter.ts` to create the initial data cell for deployment:
+
+```ts
+import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "ton-core";
+
+export default class Counter implements Contract {
+
+  static createForDeploy(code: Cell, initialCounterValue: number): Counter {
+    const data = beginCell()
+      .storeUint(initialCounterValue, 64)
+      .endCell();
+    const workchain = 0; // deploy to workchain 0
+    const address = contractAddress(workchain, { code, data });
+    return new Counter(address, { code, data });
+  }
+  
+  constructor(readonly address: Address, readonly init?: { code: Cell, data: Cell }) {}
+}
+```
+
+Notice a few interesting things about this TypeScript code. First, it depends on the package [ton-core](https://www.npmjs.com/package/ton-core) instead of [ton](https://www.npmjs.com/package/ton), which contains a small subset of base types and is therefore slower to change - an important feature when building a stable interface for our contract. Second, the code that creates the data cell mimics the FunC API and is almost identical to our `save_data()` FunC function. Third, we can see the derivation of the contract address from the code cell and data cell using the function `contractAddress`.
+
+The actual deployment involves sending the first message that will cause our contract to be deployed. We can piggyback any message that is directed towards our contract. This can even be the increment message with op #1, but we will do something simpler. We will just send some TON coins to our contract (an empty message) and piggyback that. Let's make this part of our interface. Add the function `sendDeploy()` to `counter.ts` - this function will send the deployment message:
+
+```ts
+// export default class Counter implements Contract {
+
+  async sendDeploy(provider: ContractProvider, via: Sender) {
+    await provider.internal(via, {
+      value: "0.01", // send 0.01 TON to contract for rent
+      bounce: false
+    });
+  }
+
+// }
+```
+
+In every deployment we need to send some TON coins to our contract so that its balance is not zero. Contracts need to continually pay rent fees otherwise they risk being deleted. According to the [docs](https://ton.org/docs/develop/smart-contracts/fees#storage-fee), storage fees are about 4 TON per MB per year. Since our contract stores less than 1 KB, a balance of 0.01 TON should be enough for more than 2 years. In any case you can always check this in an explorer and send more TON to the contract if it runs low.
+
+The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step7.ts).
+
+## Step 8: Deploy the contract on-chain
+
+Communicating with the live network for the deployment will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+
+Install it by opening terminal in the project directory and running:
+
+```
+npm install @orbs-network/ton-access
+```
+
+The deployment is going to cost gas and should be done through a wallet that will fund it. I'm assuming that you have some familiarity with TON wallets and how they're derived from 24 word secret mnemonics. If not, be sure to follow the previous tutorial in this series.
+
+As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch [TonKeeper](https://tonkeeper.com) through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.
+
+Create a new script `deploy.ts` that will use the interface class we just wrote:
+
+---
+network:testnet
+---
+```ts
+import fs from "fs";
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, Cell, WalletContractV4 } from "ton";
+import Counter from "./counter"; // this is the interface class from step 7
+
+async function deploy() {
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: "testnet" });
+  const client = new TonClient({ endpoint });
+
+  // prepare Counter's initial code and data cells for deployment
+  const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
+  const initialCounterValue = Date.now(); // to avoid collisions use current number of milliseconds since epoch as initial value
+  const counter = Counter.createForDeploy(counterCode, initialCounterValue);
+  
+  // exit if contract is already deployed
+  console.log("contract address:", counter.address.toString());
+  if (await client.isContractDeployed(counter.address)) {
+    return console.log("already deployed");
+  }
+
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // open wallet and read the current seqno of the wallet
+  const walletContract = client.open(wallet);
+  const walletSender = walletContract.sender(key.secretKey);
+  const seqno = await walletContract.getSeqno();
+  
+  // send the deploy transaction
+  const counterContract = client.open(counter);
+  await counterContract.sendDeploy(walletSender);
+
+  // wait until confirmed
+  let currentSeqno = seqno;
+  while (currentSeqno == seqno) {
+    console.log("waiting for deploy transaction to confirm...");
+    await sleep(1500);
+    currentSeqno = await walletContract.getSeqno();
+  }
+  console.log("deploy transaction confirmed!");
+}
+
+deploy();
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+---
+
+---
+network:mainnet
+---
+```ts
+import fs from "fs";
+import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, Cell, WalletContractV4 } from "ton";
+import Counter from "./counter"; // this is the interface class from step 7
+
+async function deploy() {
+  // initialize ton rpc client on mainnet
+  const endpoint = await getHttpEndpoint();
+  const client = new TonClient({ endpoint });
+
+  // prepare Counter's initial code and data cells for deployment
+  const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
+  const initialCounterValue = Date.now(); // to avoid collisions use current number of milliseconds since epoch as initial value
+  const counter = Counter.createForDeploy(counterCode, initialCounterValue);
+  
+  // exit if contract is already deployed
+  console.log("contract address:", counter.address.toString());
+  if (await client.isContractDeployed(counter.address)) {
+    return console.log("already deployed");
+  }
+
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // open wallet and read the current seqno of the wallet
+  const walletContract = client.open(wallet);
+  const walletSender = walletContract.sender(key.secretKey);
+  const seqno = await walletContract.getSeqno();
+  
+  // send the deploy transaction
+  const counterContract = client.open(counter);
+  await counterContract.sendDeploy(walletSender);
+
+  // wait until confirmed
+  let currentSeqno = seqno;
+  while (currentSeqno == seqno) {
+    console.log("waiting for deploy transaction to confirm...");
+    await sleep(1500);
+    currentSeqno = await walletContract.getSeqno();
+  }
+  console.log("deploy transaction confirmed!");
+}
+
+deploy();
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+---
+
+Before running this code, make sure you have enough TON in your wallet for the gas payments and the TON sent to the contract during the deploy.
+
+Another thing to watch out for is collisions between different users of this tutorial. As you recall, if the code and initial data of two contracts are identical, they will have the same address. If all followers of this tutorial would choose initial counter value of `1` - then all of them would collide and only the first would actually deploy the contract. To make sure this doesn't happen, the code above initializes the counter value to the current number of milliseconds since the epoch (something like 1674253934361). This guarantees that your contract for deployment is unique.
+
+To run `deploy.ts` use terminal once again:
+
+```
+npx ts-node deploy.ts
+```
+
+---
+network:testnet
+---
+You can also open the new contract address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
+
+---
+
+---
+network:mainnet
+---
+You can also open the new contract address in an [explorer](https://tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
+
+---
+
+<img src="https://i.imgur.com/SLR7nmE.png" width=600 /><br>
+
+## Step 9: Interact with the deployed contract
+
+There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7. Anyone who wants to access the contract would simply use this class.
+
+Add the following to `counter.ts`:
+
+```ts
+// export default class Counter implements Contract {
+
+  async sendIncrement(provider: ContractProvider, via: Sender) {
+    const messageBody = beginCell()
+      .storeUint(1, 32) // op (op #1 = increment)
+      .storeUint(0, 64) // query id
+      .endCell();
+    await provider.internal(via, {
+      value: "0.001", // send 0.001 TON for gas
+      body: messageBody
+    });
+  }
+
+  async getCounter(provider: ContractProvider) {
+    const { stack } = await provider.get("counter", []);
+    return stack.readBigNumber();
+  }
+
+// }
+```
+
+Notice that methods in the interface class that send messages must start with the word `send` and methods that call getters must start with the word `get`. These conventions were defined by the [ton](https://www.npmjs.com/package/ton) TypeScript library.
+
+The increment message is [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id). Also notice that we send a lower amount of TON coin this time since we only have to pay for the transaction gas.
+
+The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+
+### Call a getter
+

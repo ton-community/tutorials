@@ -14,6 +14,9 @@
 ;; =============== messages =============================
 
 () recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+  if (in_msg_body.slice_empty?()) { 
+    return (); 
+  }
   int op = in_msg_body~load_uint(32);
   var (counter) = load_data();
   if (op == 1) {
