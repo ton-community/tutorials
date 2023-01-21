@@ -395,13 +395,79 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
-You can also open the new contract address in an [explorer](https://tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
+The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 &lt;img src=&#34;https://i.imgur.com/SLR7nmE.png&#34; width=600 /&gt;&lt;br&gt;
 
-## Step 9: Interact with the deployed contract
+Write down your deployed contract address. We&#39;re going to use it in the next step.
 
-There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7. Anyone who wants to access the contract would simply use this class.
+## Step 9: Call a getter on the deployed contract
+
+There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7.
+
+Anyone who wants to access the contract from TypeScript would simply use this interface class. This is excellent for separation of responsibilities within your team. The developer of the contract can provide this class to the developer of the client to abstract away implementation details such as how messages should be encoded in the binary level. Let&#39;s start with the getter.
+
+### Interface class
+
+Add the following to `counter.ts`:
+
+```ts
+// export default class Counter implements Contract {
+
+  async getCounter(provider: ContractProvider) {
+    const { stack } = await provider.get(&#34;counter&#34;, []);
+    return stack.readBigNumber();
+  }
+
+// }
+```
+
+Notice that methods in the interface class that call getters must start with the word `get`. This prefix is a requirement of the [ton](https://www.npmjs.com/package/ton) TypeScript library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+
+### Executing the call
+
+Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.
+
+Let&#39;s create a new script `step9.ts` and use our shiny interface class to make the call. We&#39;re going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:
+
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { TonClient, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on mainnet
+  const endpoint = await getHttpEndpoint();
+  const client = new TonClient({ endpoint });
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // call the getter on chain
+  const counterValue = await counterContract.getCounter();
+  console.log(&#34;value:&#34;, counterValue.toString());
+}
+
+main();
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step9.ts
+```
+
+Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.
+
+Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.
+
+## Step 10: Send a transaction to the deployed contract
+
+Unlike getters that are read-only, messages can write and change contract state in storage. In our contract implementation we handled messages in `recv_internal()` and assigned op #1 = *increment*. Sending messages costs gas and requires payment in TON coin. The reason is that this operation is not read-only, so it requires waiting for consensus by the validators and is stored as a transaction in a block on-chain for all eternity. We will send less TON coin this time since this action is much cheaper than the deployment.
+
+### Interface class
 
 Add the following to `counter.ts`:
 
@@ -414,27 +480,83 @@ Add the following to `counter.ts`:
       .storeUint(0, 64) // query id
       .endCell();
     await provider.internal(via, {
-      value: &#34;0.001&#34;, // send 0.001 TON for gas
+      value: &#34;0.002&#34;, // send 0.002 TON for gas
       body: messageBody
     });
-  }
-
-  async getCounter(provider: ContractProvider) {
-    const { stack } = await provider.get(&#34;counter&#34;, []);
-    return stack.readBigNumber();
   }
 
 // }
 ```
 
-Notice that methods in the interface class that send messages must start with the word `send` and methods that call getters must start with the word `get`. These conventions were defined by the [ton](https://www.npmjs.com/package/ton) TypeScript library.
+As you recall, the increment message is an [internal message](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).
 
-The increment message is [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id). Also notice that we send a lower amount of TON coin this time since we only have to pay for the transaction gas.
+Notice that methods in the interface class that send messages must start with the word `send`, another prefix requirement of the [ton](https://www.npmjs.com/package/ton) library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts).
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+### Executing the send
 
-### Call a getter
+The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script `step10.ts` and use your wallet to fund the send:
 
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
+import { TonClient, WalletContractV4, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on mainnet
+  const endpoint = await getHttpEndpoint();
+  const client = new TonClient({ endpoint });
+
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // open wallet and read the current seqno of the wallet
+  const walletContract = client.open(wallet);
+  const walletSender = walletContract.sender(key.secretKey);
+  const seqno = await walletContract.getSeqno();
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // send the increment transaction
+  await counterContract.sendIncrement(walletSender);
+
+  // wait until confirmed
+  let currentSeqno = seqno;
+  while (currentSeqno == seqno) {
+    console.log(&#34;waiting for transaction to confirm...&#34;);
+    await sleep(1500);
+    currentSeqno = await walletContract.getSeqno();
+  }
+  console.log(&#34;transaction confirmed!&#34;);
+}
+
+main();
+
+function sleep(ms: number) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step10.ts
+```
+
+Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = *increment*, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.
+
+Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
+
+## Conclusion
+
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
+
+Happy coding!
 
           </pre>
          </div>
@@ -734,13 +856,79 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
-You can also open the new contract address in an [explorer](https://tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
+The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 &lt;img src=&#34;https://i.imgur.com/SLR7nmE.png&#34; width=600 /&gt;&lt;br&gt;
 
-## Step 9: Interact with the deployed contract
+Write down your deployed contract address. We&#39;re going to use it in the next step.
 
-There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7. Anyone who wants to access the contract would simply use this class.
+## Step 9: Call a getter on the deployed contract
+
+There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7.
+
+Anyone who wants to access the contract from TypeScript would simply use this interface class. This is excellent for separation of responsibilities within your team. The developer of the contract can provide this class to the developer of the client to abstract away implementation details such as how messages should be encoded in the binary level. Let&#39;s start with the getter.
+
+### Interface class
+
+Add the following to `counter.ts`:
+
+```ts
+// export default class Counter implements Contract {
+
+  async getCounter(provider: ContractProvider) {
+    const { stack } = await provider.get(&#34;counter&#34;, []);
+    return stack.readBigNumber();
+  }
+
+// }
+```
+
+Notice that methods in the interface class that call getters must start with the word `get`. This prefix is a requirement of the [ton](https://www.npmjs.com/package/ton) TypeScript library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+
+### Executing the call
+
+Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.
+
+Let&#39;s create a new script `step9.ts` and use our shiny interface class to make the call. We&#39;re going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:
+
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { TonClient, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on mainnet
+  const endpoint = await getHttpEndpoint();
+  const client = new TonClient({ endpoint });
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // call the getter on chain
+  const counterValue = await counterContract.getCounter();
+  console.log(&#34;value:&#34;, counterValue.toString());
+}
+
+main();
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step9.ts
+```
+
+Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.
+
+Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.
+
+## Step 10: Send a transaction to the deployed contract
+
+Unlike getters that are read-only, messages can write and change contract state in storage. In our contract implementation we handled messages in `recv_internal()` and assigned op #1 = *increment*. Sending messages costs gas and requires payment in TON coin. The reason is that this operation is not read-only, so it requires waiting for consensus by the validators and is stored as a transaction in a block on-chain for all eternity. We will send less TON coin this time since this action is much cheaper than the deployment.
+
+### Interface class
 
 Add the following to `counter.ts`:
 
@@ -753,27 +941,83 @@ Add the following to `counter.ts`:
       .storeUint(0, 64) // query id
       .endCell();
     await provider.internal(via, {
-      value: &#34;0.001&#34;, // send 0.001 TON for gas
+      value: &#34;0.002&#34;, // send 0.002 TON for gas
       body: messageBody
     });
-  }
-
-  async getCounter(provider: ContractProvider) {
-    const { stack } = await provider.get(&#34;counter&#34;, []);
-    return stack.readBigNumber();
   }
 
 // }
 ```
 
-Notice that methods in the interface class that send messages must start with the word `send` and methods that call getters must start with the word `get`. These conventions were defined by the [ton](https://www.npmjs.com/package/ton) TypeScript library.
+As you recall, the increment message is an [internal message](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).
 
-The increment message is [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id). Also notice that we send a lower amount of TON coin this time since we only have to pay for the transaction gas.
+Notice that methods in the interface class that send messages must start with the word `send`, another prefix requirement of the [ton](https://www.npmjs.com/package/ton) library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts).
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+### Executing the send
 
-### Call a getter
+The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script `step10.ts` and use your wallet to fund the send:
 
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
+import { TonClient, WalletContractV4, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on mainnet
+  const endpoint = await getHttpEndpoint();
+  const client = new TonClient({ endpoint });
+
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // open wallet and read the current seqno of the wallet
+  const walletContract = client.open(wallet);
+  const walletSender = walletContract.sender(key.secretKey);
+  const seqno = await walletContract.getSeqno();
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // send the increment transaction
+  await counterContract.sendIncrement(walletSender);
+
+  // wait until confirmed
+  let currentSeqno = seqno;
+  while (currentSeqno == seqno) {
+    console.log(&#34;waiting for transaction to confirm...&#34;);
+    await sleep(1500);
+    currentSeqno = await walletContract.getSeqno();
+  }
+  console.log(&#34;transaction confirmed!&#34;);
+}
+
+main();
+
+function sleep(ms: number) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step10.ts
+```
+
+Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = *increment*, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.
+
+Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
+
+## Conclusion
+
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
+
+Happy coding!
 
           </pre>
          </div>
@@ -1073,13 +1317,79 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
-You can also open the new contract address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
+The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 &lt;img src=&#34;https://i.imgur.com/SLR7nmE.png&#34; width=600 /&gt;&lt;br&gt;
 
-## Step 9: Interact with the deployed contract
+Write down your deployed contract address. We&#39;re going to use it in the next step.
 
-There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7. Anyone who wants to access the contract would simply use this class.
+## Step 9: Call a getter on the deployed contract
+
+There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7.
+
+Anyone who wants to access the contract from TypeScript would simply use this interface class. This is excellent for separation of responsibilities within your team. The developer of the contract can provide this class to the developer of the client to abstract away implementation details such as how messages should be encoded in the binary level. Let&#39;s start with the getter.
+
+### Interface class
+
+Add the following to `counter.ts`:
+
+```ts
+// export default class Counter implements Contract {
+
+  async getCounter(provider: ContractProvider) {
+    const { stack } = await provider.get(&#34;counter&#34;, []);
+    return stack.readBigNumber();
+  }
+
+// }
+```
+
+Notice that methods in the interface class that call getters must start with the word `get`. This prefix is a requirement of the [ton](https://www.npmjs.com/package/ton) TypeScript library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+
+### Executing the call
+
+Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.
+
+Let&#39;s create a new script `step9.ts` and use our shiny interface class to make the call. We&#39;re going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:
+
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { TonClient, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
+  const client = new TonClient({ endpoint });
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // call the getter on chain
+  const counterValue = await counterContract.getCounter();
+  console.log(&#34;value:&#34;, counterValue.toString());
+}
+
+main();
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step9.ts
+```
+
+Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.
+
+Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.
+
+## Step 10: Send a transaction to the deployed contract
+
+Unlike getters that are read-only, messages can write and change contract state in storage. In our contract implementation we handled messages in `recv_internal()` and assigned op #1 = *increment*. Sending messages costs gas and requires payment in TON coin. The reason is that this operation is not read-only, so it requires waiting for consensus by the validators and is stored as a transaction in a block on-chain for all eternity. We will send less TON coin this time since this action is much cheaper than the deployment.
+
+### Interface class
 
 Add the following to `counter.ts`:
 
@@ -1092,27 +1402,83 @@ Add the following to `counter.ts`:
       .storeUint(0, 64) // query id
       .endCell();
     await provider.internal(via, {
-      value: &#34;0.001&#34;, // send 0.001 TON for gas
+      value: &#34;0.002&#34;, // send 0.002 TON for gas
       body: messageBody
     });
-  }
-
-  async getCounter(provider: ContractProvider) {
-    const { stack } = await provider.get(&#34;counter&#34;, []);
-    return stack.readBigNumber();
   }
 
 // }
 ```
 
-Notice that methods in the interface class that send messages must start with the word `send` and methods that call getters must start with the word `get`. These conventions were defined by the [ton](https://www.npmjs.com/package/ton) TypeScript library.
+As you recall, the increment message is an [internal message](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).
 
-The increment message is [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id). Also notice that we send a lower amount of TON coin this time since we only have to pay for the transaction gas.
+Notice that methods in the interface class that send messages must start with the word `send`, another prefix requirement of the [ton](https://www.npmjs.com/package/ton) library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts).
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+### Executing the send
 
-### Call a getter
+The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script `step10.ts` and use your wallet to fund the send:
 
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
+import { TonClient, WalletContractV4, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
+  const client = new TonClient({ endpoint });
+
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // open wallet and read the current seqno of the wallet
+  const walletContract = client.open(wallet);
+  const walletSender = walletContract.sender(key.secretKey);
+  const seqno = await walletContract.getSeqno();
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // send the increment transaction
+  await counterContract.sendIncrement(walletSender);
+
+  // wait until confirmed
+  let currentSeqno = seqno;
+  while (currentSeqno == seqno) {
+    console.log(&#34;waiting for transaction to confirm...&#34;);
+    await sleep(1500);
+    currentSeqno = await walletContract.getSeqno();
+  }
+  console.log(&#34;transaction confirmed!&#34;);
+}
+
+main();
+
+function sleep(ms: number) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step10.ts
+```
+
+Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = *increment*, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.
+
+Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
+
+## Conclusion
+
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
+
+Happy coding!
 
           </pre>
          </div>
@@ -1412,13 +1778,79 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
-You can also open the new contract address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
+The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 &lt;img src=&#34;https://i.imgur.com/SLR7nmE.png&#34; width=600 /&gt;&lt;br&gt;
 
-## Step 9: Interact with the deployed contract
+Write down your deployed contract address. We&#39;re going to use it in the next step.
 
-There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7. Anyone who wants to access the contract would simply use this class.
+## Step 9: Call a getter on the deployed contract
+
+There are two ways to interact with a smart contract - calling a getter to read data from it or sending a message that can potentially change its state (write). We should support these interactions in the contract interface class that we created in step 7.
+
+Anyone who wants to access the contract from TypeScript would simply use this interface class. This is excellent for separation of responsibilities within your team. The developer of the contract can provide this class to the developer of the client to abstract away implementation details such as how messages should be encoded in the binary level. Let&#39;s start with the getter.
+
+### Interface class
+
+Add the following to `counter.ts`:
+
+```ts
+// export default class Counter implements Contract {
+
+  async getCounter(provider: ContractProvider) {
+    const { stack } = await provider.get(&#34;counter&#34;, []);
+    return stack.readBigNumber();
+  }
+
+// }
+```
+
+Notice that methods in the interface class that call getters must start with the word `get`. This prefix is a requirement of the [ton](https://www.npmjs.com/package/ton) TypeScript library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+
+### Executing the call
+
+Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.
+
+Let&#39;s create a new script `step9.ts` and use our shiny interface class to make the call. We&#39;re going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:
+
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { TonClient, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
+  const client = new TonClient({ endpoint });
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // call the getter on chain
+  const counterValue = await counterContract.getCounter();
+  console.log(&#34;value:&#34;, counterValue.toString());
+}
+
+main();
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step9.ts
+```
+
+Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.
+
+Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.
+
+## Step 10: Send a transaction to the deployed contract
+
+Unlike getters that are read-only, messages can write and change contract state in storage. In our contract implementation we handled messages in `recv_internal()` and assigned op #1 = *increment*. Sending messages costs gas and requires payment in TON coin. The reason is that this operation is not read-only, so it requires waiting for consensus by the validators and is stored as a transaction in a block on-chain for all eternity. We will send less TON coin this time since this action is much cheaper than the deployment.
+
+### Interface class
 
 Add the following to `counter.ts`:
 
@@ -1431,27 +1863,83 @@ Add the following to `counter.ts`:
       .storeUint(0, 64) // query id
       .endCell();
     await provider.internal(via, {
-      value: &#34;0.001&#34;, // send 0.001 TON for gas
+      value: &#34;0.002&#34;, // send 0.002 TON for gas
       body: messageBody
     });
-  }
-
-  async getCounter(provider: ContractProvider) {
-    const { stack } = await provider.get(&#34;counter&#34;, []);
-    return stack.readBigNumber();
   }
 
 // }
 ```
 
-Notice that methods in the interface class that send messages must start with the word `send` and methods that call getters must start with the word `get`. These conventions were defined by the [ton](https://www.npmjs.com/package/ton) TypeScript library.
+As you recall, the increment message is an [internal message](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).
 
-The increment message is [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id). Also notice that we send a lower amount of TON coin this time since we only have to pay for the transaction gas.
+Notice that methods in the interface class that send messages must start with the word `send`, another prefix requirement of the [ton](https://www.npmjs.com/package/ton) library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts).
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
+### Executing the send
 
-### Call a getter
+The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script `step10.ts` and use your wallet to fund the send:
 
+```ts
+import { getHttpEndpoint } from &#34;@orbs-network/ton-access&#34;;
+import { mnemonicToWalletKey } from &#34;ton-crypto&#34;;
+import { TonClient, WalletContractV4, Address } from &#34;ton&#34;;
+import Counter from &#34;./counter&#34;; // this is the interface class we just implemented
+
+async function main() {
+  // initialize ton rpc client on testnet
+  const endpoint = await getHttpEndpoint({ network: &#34;testnet&#34; });
+  const client = new TonClient({ endpoint });
+
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = &#34;unfold sugar water ...&#34;; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(&#34; &#34;));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // open wallet and read the current seqno of the wallet
+  const walletContract = client.open(wallet);
+  const walletSender = walletContract.sender(key.secretKey);
+  const seqno = await walletContract.getSeqno();
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(&#34;EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb&#34;); // replace with your address from step 8
+  const counter = new Counter(counterAddress);
+  const counterContract = client.open(counter);
+
+  // send the increment transaction
+  await counterContract.sendIncrement(walletSender);
+
+  // wait until confirmed
+  let currentSeqno = seqno;
+  while (currentSeqno == seqno) {
+    console.log(&#34;waiting for transaction to confirm...&#34;);
+    await sleep(1500);
+    currentSeqno = await walletContract.getSeqno();
+  }
+  console.log(&#34;transaction confirmed!&#34;);
+}
+
+main();
+
+function sleep(ms: number) {
+  return new Promise(resolve =&gt; setTimeout(resolve, ms));
+}
+```
+
+As usual, run the script with terminal:
+
+```
+npx ts-node step10.ts
+```
+
+Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = *increment*, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.
+
+Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
+
+## Conclusion
+
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
+
+Happy coding!
 
           </pre>
          </div>

@@ -1,28 +1,16 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
-import fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, Cell, WalletContractV4 } from "ton";
-import Counter from "./counter.step7"; // this is the interface class from step 7
+import { TonClient, WalletContractV4, Address } from "ton";
+import Counter from "./counter.step10"; // this is the interface class we just implemented
 
-async function deploy() {
+async function main() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
   //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
-
-  // prepare Counter's initial code and data cells for deployment
-  const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
-  const initialCounterValue = Date.now(); // to avoid collisions use current number of milliseconds since epoch as initial value
-  const counter = Counter.createForDeploy(counterCode, initialCounterValue);
-  
-  // exit if contract is already deployed
-  console.log("contract address:", counter.address.toString());
-  if (await client.isContractDeployed(counter.address)) {
-    return console.log("already deployed");
-  }
 
   // open wallet v4 (notice the correct wallet version here)
   const mnemonic = process.env.MNEMONIC;
@@ -33,22 +21,26 @@ async function deploy() {
   const walletContract = client.open(wallet);
   const walletSender = walletContract.sender(key.secretKey);
   const seqno = await walletContract.getSeqno();
-  
-  // send the deploy transaction
+
+  // open Counter instance by address
+  const counterAddress = Address.parse(process.env.COUNTER_ADDRESS!);
+  const counter = new Counter(counterAddress);
   const counterContract = client.open(counter);
-  await counterContract.sendDeploy(walletSender);
+
+  // send the increment transaction
+  await counterContract.sendIncrement(walletSender);
 
   // wait until confirmed
   let currentSeqno = seqno;
   while (currentSeqno == seqno) {
-    //console.log("waiting for deploy transaction to confirm...");
+    //console.log("waiting for transaction to confirm...");
     await sleep(1500);
     currentSeqno = await walletContract.getSeqno();
   }
-  console.log("deploy transaction confirmed!");
+  console.log("transaction confirmed!");
 }
 
-deploy();
+main();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
