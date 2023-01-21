@@ -23,7 +23,7 @@ So what are we going to build? Our smart contract will be quite simple:
 
 Its main feature is to hold a *counter*. The counter will start at some number, and allow users to send *increment* transactions to the contract, which will in turn increase the counter value by 1. The contract will also have a getter function that will allow any user to query the current value of the counter.
 
-In later tutorials we will make this contract a little more advanced and allow TON coins that are deposited in it to be withdrawn by a special admin role. This admin will also be able to transfer ownership to a different admin.
+In later tutorials we will make this contract a little more advanced and allow TON coins that are deposited in it to be withdrawn by a special admin role. This admin will also be able to transfer ownership to a different admin and more.
 
 ## Step 2: Set up your local machine
 
@@ -616,5 +616,7 @@ Messeges can sent to our contract by other contracts. This means a different con
 ## Conclusion
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
+
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
 Happy coding!

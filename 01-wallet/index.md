@@ -607,4 +607,6 @@ For your convenience, all the code in this tutorial is available in executable f
 
 ---
 
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+
 Happy coding!

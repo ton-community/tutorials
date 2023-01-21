@@ -260,4 +260,6 @@ Once the wallet signs and sends a transaction, we must wait until the TON blockc
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/tonweb).
 
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+
 Happy coding!
