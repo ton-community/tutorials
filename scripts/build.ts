@@ -5,6 +5,7 @@ console.log("Searching for tutorials..");
 
 fs.rmSync("docs", { recursive: true, force: true });
 fs.mkdirSync("docs");
+fs.copyFileSync("scripts/assets/index.html", "docs/index.html");
 fs.cpSync("scripts/assets", "docs/assets", { recursive: true, force: true });
 
 const dirs = fs.readdirSync(".", { withFileTypes: true });
