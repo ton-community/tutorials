@@ -15,7 +15,7 @@ export default class Counter implements Contract {
 
   async sendDeploy(provider: ContractProvider, via: Sender) {
     await provider.internal(via, {
-      value: "0.01", // send some TON to contract for rent
+      value: "0.01", // send 0.01 TON to contract for rent
       bounce: false
     });
   } 
