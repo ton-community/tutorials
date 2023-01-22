@@ -11,9 +11,9 @@ Smart contracts are a key part of *decentralized apps* - a special type of appli
 
 Dapps on TON blockchain are usually made of 2 main projects:
 
-* Smart contracts in the [FunC](https://ton.org/docs/develop/func/overview) programming language that are deployed on-chain - these act as the "backend server" of the app, with a "database" for persistent storage
+* Smart contracts in the [FunC](https://ton.org/docs/develop/func/overview) programming language that are deployed on-chain - these act as the "backend server" of the app, with a "database" for persistent storage.
 
-* Web frontend for interacting with the dapp from a web browser - this acts as the "frontend" or "client", normally with special support for Telegram messenger in the form of a [Telegram Web App](https://core.telegram.org/bots/webapps)
+* Web frontend for interacting with the dapp from a web browser - this acts as the "frontend" or "client", normally with special support for Telegram messenger in the form of a [Telegram Web App](https://core.telegram.org/bots/webapps).
 
 Throughout this series of tutorials, we will build a full dapp together and see detailed implementations of both projects.
 

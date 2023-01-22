@@ -340,11 +340,11 @@ body {
   ul{
    
     li{
-      padding-left: 26px;
+      padding-left: 45px;
       position: relative;
       &::after{
         position: absolute;
-        left: 10px;
+        left: 20px;
         top: 12px;
         width: 6px;
         height: 6px;
@@ -354,7 +354,16 @@ body {
       }
     }
   }
-
+  a {
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  em {
+    font-style: italic;
+    font-weight: 300;
+  }
   img {
     max-width: 100%;
   }
