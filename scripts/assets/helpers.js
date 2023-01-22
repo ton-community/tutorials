@@ -52,12 +52,7 @@ const onOptionClick = (selectbox) => {
 };
 
 const prepareCodeComponents = () => {
-  const converter = new showdown.Converter({
-    literalMidWordUnderscores: true,
-  });
   getPosts().forEach((post) => {
-    const text = post.innerText;
-    post.innerHTML = converter.makeHtml(text);
     post.querySelectorAll("pre").forEach((pre) => {
       const code = pre.querySelector("code");
       if (!code) return;
@@ -65,10 +60,16 @@ const prepareCodeComponents = () => {
       div.classList.add("code");
       wrap(pre, div);
       pre.innerHTML = "";
+      let language = "ts";
+      code.className.split(" ").forEach((oneClass) => {
+        if (oneClass.startsWith("language-")) {
+          language = oneClass.substring(9);
+        }
+      });
       const value = hljs.highlight(code.innerHTML, {
-        language: "javascript",
+        language,
       }).value;
-      code.innerHTML = value;
+      code.innerHTML = htmlDecode(value);
       const copyContainer = document.createElement("div");
       const copySuccess = document.createElement("div");
       copySuccess.classList.add("copy-success");
@@ -120,3 +121,7 @@ const wrap = (elToWrap, wrapper) => {
   elToWrap.before(wrapper); // so element doesn't move
   wrapper.append(elToWrap); // automatically moves wrapped element.
 };
+
+function htmlDecode(input) {
+  return input.replace(/&amp;/g, '&');
+}

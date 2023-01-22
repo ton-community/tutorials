@@ -1,5 +1,6 @@
 import fs from "fs";
 import ejs from "ejs";
+import showdown from "showdown";
 
 console.log("Searching for tutorials..");
 
@@ -30,6 +31,9 @@ for (const dir of dirs) {
       for (const option in options) optionsArray[options[option].order - 1] = option;
       findOptions([], 0, optionsArray, options, tutorial, optionsValuesArray);
     } catch (e) {}
+
+    // convert md to html
+    convertMdsToHtmls(tutorial);
 
     // create index.html
     if (optionsArray.length > 0) {
@@ -72,12 +76,44 @@ function handleCombination(combination: string[], optionsArray: string[], option
   fs.writeFileSync(`docs/${tutorial}/${filename}.md`, content);
 }
 
-function generateTutorialHtml(options: any, optionsArray: string[], optionsValuesArray: string[][], tutorial: string) {
-  const markdowns: {[key: string]: string} = {};
+function convertMdsToHtmls(tutorial: string) {
   const files = fs.readdirSync(`docs/${tutorial}`);
   for (const file of files) {
     if (file.endsWith(".md")) {
-      markdowns[file.split(".")[0]] = fs.readFileSync(`docs/${tutorial}/${file}`).toString();
+      const filename = file.split(".")[0];
+      const text = fs.readFileSync(`docs/${tutorial}/${file}`).toString();
+      const converter = new showdown.Converter({
+        literalMidWordUnderscores: true,
+        // fix https://github.com/showdownjs/showdown/issues/819 
+        // solution: https://github.com/showdownjs/showdown/issues/819#issuecomment-788144412
+        extensions: [
+          {
+            type: 'output',
+            regex: new RegExp(`&lt;`, 'g'),
+            replace: `<`
+          },
+          {
+              type: 'output',
+              regex: new RegExp(`&gt;`, 'g'),
+              replace: `>`
+          }
+        ]
+      });
+      const html = converter.makeHtml(text);
+      fs.writeFileSync(`docs/${tutorial}/${filename}.html`, html);
+    }
+  }
+}
+
+function generateTutorialHtml(options: any, optionsArray: string[], optionsValuesArray: string[][], tutorial: string) {
+  const markdowns: {[key: string]: string} = {};
+  const htmls: {[key: string]: string} = {};
+  const files = fs.readdirSync(`docs/${tutorial}`);
+  for (const file of files) {
+    const filename = file.split(".")[0];
+    if (file.endsWith(".md")) {
+      markdowns[filename] = fs.readFileSync(`docs/${tutorial}/${file}`).toString();
+      htmls[filename] = fs.readFileSync(`docs/${tutorial}/${filename}.html`).toString();
     }
   }
   let title = "";
@@ -91,6 +127,7 @@ function generateTutorialHtml(options: any, optionsArray: string[], optionsValue
     optionsArray,
     optionsValuesArray,
     markdowns,
+    htmls,
   };
   return template(data);
 }
