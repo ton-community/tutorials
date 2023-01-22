@@ -336,7 +336,8 @@ body {
   display: none;
   width: 100%;
   flex-direction: column;
-  img{
+
+  img {
     max-width: 100%;
   }
   &-active {
@@ -378,15 +379,22 @@ body {
     margin-bottom: 24px;
     width: 100%;
     display: flex;
-    overflow: auto;
     background: $code-bg;
-    padding: 24px 24px 24px 24px;
     border-radius: 7px;
     position: relative;
+    .code-placeholder{
+      width: 40px;
+    }
+    &-overflow {
+      padding: 24px 50px 24px 24px;
+      width: 100%;
+      overflow: auto;
+      display: flex;
+    }
 
     .copy {
       position: absolute;
-      right: 10px;
+      left: calc(100% - 50px);
       top: 10px;
       opacity: 0;
       transition: 0.2s all;
@@ -395,14 +403,14 @@ body {
       justify-content: center;
       &-success {
         padding: 2px 7px;
-        background: rgba(0,0,0, 0.9);
+        background: rgba(0, 0, 0, 0.9);
         color: white;
         position: absolute;
         font-size: 12px;
         right: calc(100% + 10px);
         border-radius: 4px;
         opacity: 0;
-        font-family: $main-font!important;
+        font-family: $main-font !important;
       }
       button {
         background: $code-bg;
@@ -428,8 +436,8 @@ body {
           height: 60%;
         }
       }
-      &-done{
-        .copy-success{
+      &-done {
+        .copy-success {
           opacity: 1;
         }
       }
@@ -539,40 +547,39 @@ nav {
   }
 }
 
-
 @media only screen and (max-width: 900px) {
   .grid {
     width: calc(100% - 30px);
   }
-  .page{
+  .page {
     padding-top: 80px;
   }
-  .main{
+  .main {
     flex-direction: column;
     grid-area: 50px;
   }
-  .menu{
+  .menu {
     padding: 30px 20px 30px 20px;
     order: 1;
     position: unset;
     width: 100%;
     gap: 40px;
   }
-  .posts{
+  .posts {
     order: 2;
     width: 100%;
   }
-  .post{
+  .post {
     .section-title {
       font-size: 20px;
       line-height: normal;
     }
-    h1{
+    h1 {
       font-size: 23px;
       line-height: 32px;
       margin-bottom: 30px;
     }
-    p{
+    p {
       font-size: 16px;
     }
   }

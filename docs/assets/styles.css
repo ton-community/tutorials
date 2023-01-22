@@ -372,15 +372,22 @@ body {
   margin-bottom: 24px;
   width: 100%;
   display: flex;
-  overflow: auto;
   background: #f6f8fa;
-  padding: 24px 24px 24px 24px;
   border-radius: 7px;
   position: relative;
 }
+.post .code .code-placeholder {
+  width: 40px;
+}
+.post .code-overflow {
+  padding: 24px 50px 24px 24px;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+}
 .post .code .copy {
   position: absolute;
-  right: 10px;
+  left: calc(100% - 50px);
   top: 10px;
   opacity: 0;
   transition: 0.2s all;
