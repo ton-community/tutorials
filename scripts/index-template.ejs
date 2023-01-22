@@ -19,42 +19,47 @@
       </div>
     </nav>
     <div style="display: flex;" class="main">
-      <div class="menu">
-        <div class="selectboxes">
-          <% for (const [index,option] of optionsArray.entries()) { %>
-          <div class="selectbox" data-select="<%= option %>">
-            <h3 class="selectbox-title"><%= options[option].name %></h3>
-           <div class="selectbox-selected">
-             <h3></h3>
-             <img src = '../assets/arrow-down.svg' />
-           </div>
-          <ul class="options">
-            <% for (const value of optionsValuesArray[index]) { %>
-              <li data-value="<%= value %>" class="option">
-               <div class="option-name">
-                 <h4><%= options[option].options[value].name %></h4>
-                 <% if (options[option].options[value].url) { %><a href="<%= options[option].options[value].url %>">docs</a><% } %>
-               </div>
-               <div class="option-small">
-                 <p class="pros">Pros: <%= options[option].options[value].pros %></p>
-                <p class="cons">Cons: <%= options[option].options[value].cons %></p>
-               </div>
-              </li>
-            <% } %>
-          </ul>
+      <div class="rightcol">
+        <div class="menu">
+          <div class="selectboxes">
+            <% for (const [index,option] of optionsArray.entries()) { %>
+            <div class="selectbox" data-select="<%= option %>">
+              <h3 class="selectbox-title"><%= options[option].name %></h3>
+            <div class="selectbox-selected">
+              <h3></h3>
+              <img src = '../assets/arrow-down.svg' />
+            </div>
+            <ul class="options">
+              <% for (const value of optionsValuesArray[index]) { %>
+                <li data-value="<%= value %>" class="option">
+                <div class="option-name">
+                  <h4><%= options[option].options[value].name %></h4>
+                  <% if (options[option].options[value].url) { %><a href="<%= options[option].options[value].url %>">docs</a><% } %>
+                </div>
+                <div class="option-small">
+                  <p class="pros">Pros: <%= options[option].options[value].pros %></p>
+                  <p class="cons">Cons: <%= options[option].options[value].cons %></p>
+                </div>
+                </li>
+              <% } %>
+            </ul>
+            </div>
+          <% } %>
           </div>
-        <% } %>
+          <div class="more">
+            <h3>More Tutorials</h3>
+            <ul>
+              <li><a href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
+              <li><a href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
+              <li><a href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
+              <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="more">
-          <h3>More Tutorials</h3>
-        <ul>
-          <li><a href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
-          <li><a href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
-          <li><a href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
-          <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
-        </ul>
+        <div class="needhelp">
+          <a href="https://github.com/ton-community/tutorials/blob/main/HELP.md">Something not working? Need help?</a>
+        </div>
       </div>
-        </div>
       <div class="posts">
         <% for (const combination in markdowns) { %>
          <div class="post" data-combination="<%= combination %>">

@@ -515,20 +515,23 @@ nav {
   gap: 30px;
 }
 
-.menu {
-  background: #f6f8fa;
-  padding: 50px 20px 50px 20px;
-  border-radius: 16px;
+.rightcol {
   width: 330px;
   position: sticky;
   top: 70px;
   display: flex;
   flex-direction: column;
-  gap: 55px;
   order: 2;
 }
 
+.menu {
+  background: #f6f8fa;
+  border-radius: 16px;
+  padding: 50px 20px 50px 20px;
+}
+
 .more {
+  padding-top: 55px;
   padding-left: 16px;
 }
 .more h3 {
@@ -542,6 +545,15 @@ nav {
   gap: 14px;
 }
 .more ul a {
+  font-size: 14px;
+  text-decoration: unset;
+}
+
+.needhelp {
+  margin-top: 40px;
+  padding-left: 36px;
+}
+.needhelp a {
   font-size: 14px;
   text-decoration: unset;
 }

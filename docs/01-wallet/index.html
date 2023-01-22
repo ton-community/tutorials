@@ -19,86 +19,91 @@
       </div>
     </nav>
     <div style="display: flex;" class="main">
-      <div class="menu">
-        <div class="selectboxes">
+      <div class="rightcol">
+        <div class="menu">
+          <div class="selectboxes">
+            
+            <div class="selectbox" data-select="network">
+              <h3 class="selectbox-title">Network</h3>
+            <div class="selectbox-selected">
+              <h3></h3>
+              <img src = '../assets/arrow-down.svg' />
+            </div>
+            <ul class="options">
+              
+                <li data-value="testnet" class="option">
+                <div class="option-name">
+                  <h4>Testnet</h4>
+                  <a href="https://ton.org/docs/develop/smart-contracts/environment/testnet">docs</a>
+                </div>
+                <div class="option-small">
+                  <p class="pros">Pros: free to use</p>
+                  <p class="cons">Cons: less reliable, requires special wallets</p>
+                </div>
+                </li>
+              
+                <li data-value="mainnet" class="option">
+                <div class="option-name">
+                  <h4>Mainnet</h4>
+                  <a href="https://tonmon.xyz/?orgId=1&amp;refresh=5m">docs</a>
+                </div>
+                <div class="option-small">
+                  <p class="pros">Pros: very reliable, fast, works with all wallets</p>
+                  <p class="cons">Cons: not free to use (but very cheap)</p>
+                </div>
+                </li>
+              
+            </ul>
+            </div>
           
-          <div class="selectbox" data-select="network">
-            <h3 class="selectbox-title">Network</h3>
-           <div class="selectbox-selected">
-             <h3></h3>
-             <img src = '../assets/arrow-down.svg' />
-           </div>
-          <ul class="options">
-            
-              <li data-value="testnet" class="option">
-               <div class="option-name">
-                 <h4>Testnet</h4>
-                 <a href="https://ton.org/docs/develop/smart-contracts/environment/testnet">docs</a>
-               </div>
-               <div class="option-small">
-                 <p class="pros">Pros: free to use</p>
-                <p class="cons">Cons: less reliable, requires special wallets</p>
-               </div>
-              </li>
-            
-              <li data-value="mainnet" class="option">
-               <div class="option-name">
-                 <h4>Mainnet</h4>
-                 <a href="https://tonmon.xyz/?orgId=1&amp;refresh=5m">docs</a>
-               </div>
-               <div class="option-small">
-                 <p class="pros">Pros: very reliable, fast, works with all wallets</p>
-                <p class="cons">Cons: not free to use (but very cheap)</p>
-               </div>
-              </li>
-            
-          </ul>
+            <div class="selectbox" data-select="library">
+              <h3 class="selectbox-title">Library</h3>
+            <div class="selectbox-selected">
+              <h3></h3>
+              <img src = '../assets/arrow-down.svg' />
+            </div>
+            <ul class="options">
+              
+                <li data-value="npmton" class="option">
+                <div class="option-name">
+                  <h4>npm ton (JavaScript)</h4>
+                  <a href="https://github.com/ton-community/ton">docs</a>
+                </div>
+                <div class="option-small">
+                  <p class="pros">Pros: more popular, full TypeScript support, elegant api</p>
+                  <p class="cons">Cons: no support for all ton services</p>
+                </div>
+                </li>
+              
+                <li data-value="tonweb" class="option">
+                <div class="option-name">
+                  <h4>TonWeb (JavaScript)</h4>
+                  <a href="https://github.com/toncenter/tonweb">docs</a>
+                </div>
+                <div class="option-small">
+                  <p class="pros">Pros: maintained by core team, supports ton services</p>
+                  <p class="cons">Cons: mediocre TypeScript support</p>
+                </div>
+                </li>
+              
+            </ul>
+            </div>
+          
           </div>
-        
-          <div class="selectbox" data-select="library">
-            <h3 class="selectbox-title">Library</h3>
-           <div class="selectbox-selected">
-             <h3></h3>
-             <img src = '../assets/arrow-down.svg' />
-           </div>
-          <ul class="options">
-            
-              <li data-value="npmton" class="option">
-               <div class="option-name">
-                 <h4>npm ton (JavaScript)</h4>
-                 <a href="https://github.com/ton-community/ton">docs</a>
-               </div>
-               <div class="option-small">
-                 <p class="pros">Pros: more popular, full TypeScript support, elegant api</p>
-                <p class="cons">Cons: no support for all ton services</p>
-               </div>
-              </li>
-            
-              <li data-value="tonweb" class="option">
-               <div class="option-name">
-                 <h4>TonWeb (JavaScript)</h4>
-                 <a href="https://github.com/toncenter/tonweb">docs</a>
-               </div>
-               <div class="option-small">
-                 <p class="pros">Pros: maintained by core team, supports ton services</p>
-                <p class="cons">Cons: mediocre TypeScript support</p>
-               </div>
-              </li>
-            
-          </ul>
+          <div class="more">
+            <h3>More Tutorials</h3>
+            <ul>
+              <li><a href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
+              <li><a href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
+              <li><a href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
+              <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
+            </ul>
           </div>
-        
         </div>
-        <div class="more">
-          <h3>More Tutorials</h3>
-        <ul>
-          <li><a href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
-          <li><a href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
-          <li><a href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
-          <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
-        </ul>
+        <div class="needhelp">
+          <a href="https://github.com/ton-community/tutorials/blob/main/HELP.md">Something not working? Need help?</a>
+        </div>
       </div>
-        </div>
       <div class="posts">
         
          <div class="post" data-combination="mainnet-npmton">
