@@ -1,12 +1,14 @@
 const activeClassName = "selectbox-open";
 
-const combination = {
-  network: "",
-  library: "",
-};
+let combination = {};
 
-const getSelectedCombination = () =>
-  `${combination.network}-${combination.library}`;
+const getSelectedCombination = () => {
+  let result = ''
+  Object.keys(combination).forEach(function (key, index) {
+   result = result ? `${result}-${combination[key]}` : combination[key];
+  });
+  return result;
+}
 
 const getSelectBoxes = () => document.querySelectorAll(".selectbox");
 const getPosts = () => document.querySelectorAll(".post");
@@ -58,7 +60,10 @@ const prepareCodeComponents = () => {
       if (!code) return;
       const div = document.createElement("div");
       div.classList.add("code");
-      wrap(pre, div);
+      const div2 = document.createElement("div");
+
+      div2.classList.add("code-overflow");
+      wrap(pre, div2);
       pre.innerHTML = "";
       let language = "ts";
       code.className.split(" ").forEach((oneClass) => {
@@ -73,22 +78,27 @@ const prepareCodeComponents = () => {
       const copyContainer = document.createElement("div");
       const copySuccess = document.createElement("div");
       copySuccess.classList.add("copy-success");
-    
+
       const copyButton = document.createElement("button");
       copyContainer.classList.add("copy");
       copySuccess.innerText = "copied!";
-        copyContainer.appendChild(copySuccess);
-        copyContainer.appendChild(copyButton);
+      copyContainer.appendChild(copySuccess);
+      copyContainer.appendChild(copyButton);
       copyButton.addEventListener("click", async () => {
         copyContainer.classList.add("copy-done");
-      
+
         await navigator.clipboard.writeText(code.innerText);
         setTimeout(() => {
           copyContainer.classList.remove("copy-done");
         }, 3000);
       });
+
       div.appendChild(copyContainer);
       pre.appendChild(code);
+      const placeholder = document.createElement("div");
+      placeholder.classList.add("code-placeholder");
+      div2.appendChild(placeholder);
+      wrap(div2, div);
     });
   });
 };
@@ -100,9 +110,26 @@ const handleLinks = () => {
       e.stopPropagation();
     });
   });
+
+  document.querySelectorAll(".selectbox a").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      link.setAttribute("target", "_blank"); // was _blank
+      e.stopPropagation();
+    });
+  });
+
+};
+
+const updateCombination = () => {
+  const element = document.querySelector(".options");
+  const options = element.getAttribute("data-options");
+  options.split(",").forEach((option) => {
+    combination[option] = null;
+  });
 };
 
 window.onload = () => {
+  updateCombination();
   getSelectBoxes().forEach((selectbox) => {
     const selected = selectbox.querySelector(".selectbox-selected");
     selected.addEventListener("click", () =>
@@ -123,5 +150,5 @@ const wrap = (elToWrap, wrapper) => {
 };
 
 function htmlDecode(input) {
-  return input.replace(/&amp;/g, '&');
+  return input.replace(/&amp;/g, "&");
 }

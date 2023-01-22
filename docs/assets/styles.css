@@ -336,6 +336,20 @@ body {
   width: 100%;
   flex-direction: column;
 }
+.post ul li {
+  padding-left: 26px;
+  position: relative;
+}
+.post ul li::after {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  background: black;
+  border-radius: 50%;
+  content: "";
+}
 .post img {
   max-width: 100%;
 }

@@ -337,6 +337,23 @@ body {
   display: none;
   width: 100%;
   flex-direction: column;
+  ul{
+   
+    li{
+      padding-left: 26px;
+      position: relative;
+      &::after{
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        width: 6px;
+        height: 6px;
+        background: black;
+        border-radius: 50%;
+        content: "";
+      }
+    }
+  }
 
   img {
     max-width: 100%;
