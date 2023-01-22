@@ -377,7 +377,33 @@ body {
     font-size: 40px;
     line-height: 67px;
     font-weight: 600;
+    margin-bottom: 30px;
+  }
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: 30px;
     margin-bottom: 50px;
+    img.face {
+      border-radius: 100%;
+      width: 40px;
+      aspect-ratio: auto 40 / 40;
+      height: 40px;
+    }
+    span {
+      font-size: 18px;
+      opacity: 0.6;
+      font-weight: 300;
+    }
+    .social {
+      color: $link-color;
+      opacity: 0.7;
+      svg {
+        width: 18px;
+        margin-right: 5px;
+      }
+    }
   }
   h2 {
     @extend .section-title;

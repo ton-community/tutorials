@@ -36,8 +36,12 @@ for (const dir of dirs) {
     convertMdsToHtmls(tutorial);
 
     // create index.html
+    let author;
+    try {
+      author = JSON.parse(fs.readFileSync(`${tutorial}/author.json`).toString());
+    } catch (e) {}
     if (optionsArray.length > 0) {
-      const html = generateTutorialHtml(options, optionsArray, optionsValuesArray, tutorial);
+      const html = generateTutorialHtml(options, optionsArray, optionsValuesArray, tutorial, author);
       fs.writeFileSync(`docs/${tutorial}/index.html`, html);
     }
   }
@@ -105,7 +109,7 @@ function convertMdsToHtmls(tutorial: string) {
   }
 }
 
-function generateTutorialHtml(options: any, optionsArray: string[], optionsValuesArray: string[][], tutorial: string) {
+function generateTutorialHtml(options: any, optionsArray: string[], optionsValuesArray: string[][], tutorial: string, author: any) {
   const markdowns: {[key: string]: string} = {};
   const htmls: {[key: string]: string} = {};
   const files = fs.readdirSync(`docs/${tutorial}`);
@@ -113,7 +117,7 @@ function generateTutorialHtml(options: any, optionsArray: string[], optionsValue
     const filename = file.split(".")[0];
     if (file.endsWith(".md")) {
       markdowns[filename] = fs.readFileSync(`docs/${tutorial}/${file}`).toString();
-      htmls[filename] = fs.readFileSync(`docs/${tutorial}/${filename}.html`).toString();
+      htmls[filename] = modifyCombinationHtml(fs.readFileSync(`docs/${tutorial}/${filename}.html`).toString(), author);
     }
   }
   let title = "";
@@ -132,3 +136,10 @@ function generateTutorialHtml(options: any, optionsArray: string[], optionsValue
   return template(data);
 }
 
+function modifyCombinationHtml(html: string, author: any) {
+  if (author) {
+    const template = ejs.compile(fs.readFileSync("scripts/author-template.ejs").toString());
+    html = html.replace("</h1>\n", "</h1>\n" + template(author) + "\n");
+  }
+  return html;
+}

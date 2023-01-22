@@ -66,15 +66,26 @@
               <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
             </ul>
           </div>
-        </div>
-        <div class="needhelp">
-          <a href="https://github.com/ton-community/tutorials/blob/main/HELP.md">Something not working? Need help?</a>
+          <div class="more">
+            <h3>Help</h3>
+            <ul>
+              <li><a href="https://github.com/ton-community/tutorials/blob/main/HELP.md">Problems with this tutorial?</a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="posts">
         
          <div class="post" data-combination="mainnet">
             <h1 id="tonhelloworldpart2stepbystepguideforwritingyourfirstsmartcontract">TON Hello World part 2: Step by step guide for writing your first smart contract</h1>
+<div class="author">
+  <img class="face" src="../assets/authors/talkol.jpg" />
+  <span>by Tal Kol</span>
+  <div>
+    <a class="social" rel="noreferrer" href="https://t.me/talkol"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="FollowCard_icon__0yJs8" style="fill: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12ZM12.4298 8.85893C11.2626 9.3444 8.92989 10.3492 5.43165 11.8733C4.86359 12.0992 4.56601 12.3202 4.53892 12.5363C4.49314 12.9015 4.95047 13.0453 5.57323 13.2411C5.65794 13.2678 5.74571 13.2954 5.83569 13.3246C6.44839 13.5238 7.27258 13.7568 7.70104 13.766C8.0897 13.7744 8.52348 13.6142 9.0024 13.2853C12.2709 11.079 13.9581 9.96381 14.0641 9.93977C14.1388 9.92281 14.2424 9.90148 14.3125 9.96385C14.3827 10.0262 14.3758 10.1443 14.3684 10.176C14.3231 10.3691 12.5279 12.0381 11.5989 12.9018C11.3093 13.171 11.1038 13.362 11.0618 13.4056C10.9678 13.5034 10.8719 13.5958 10.7797 13.6846C10.2105 14.2333 9.78367 14.6448 10.8034 15.3168C11.2934 15.6397 11.6855 15.9067 12.0767 16.1731C12.5039 16.4641 12.93 16.7543 13.4814 17.1157C13.6218 17.2078 13.756 17.3034 13.8866 17.3965C14.3838 17.751 14.8305 18.0694 15.3823 18.0186C15.703 17.9891 16.0342 17.6876 16.2024 16.7884C16.6 14.6632 17.3814 10.0585 17.562 8.16098C17.5778 7.99473 17.5579 7.78197 17.5419 7.68857C17.5259 7.59518 17.4925 7.46211 17.3711 7.3636C17.2273 7.24694 17.0054 7.22234 16.9061 7.22408C16.4548 7.23203 15.7623 7.47282 12.4298 8.85893Z"></path></svg></a>
+  <a class="social" rel="noreferrer" href="https://twitter.com/koltal"><svg viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="FollowCard_icon__0yJs8" style="fill: currentcolor;"><path d="M19.7477 4.45029C19.7611 4.64423 19.7611 4.83818 19.7611 5.03391C19.7611 10.998 15.2208 17.8764 6.91863 17.8764V17.8728C4.46614 17.8764 2.06459 17.1739 0 15.8494C0.356612 15.8923 0.715011 15.9137 1.0743 15.9146C3.10672 15.9164 5.08105 15.2344 6.67999 13.9787C4.74857 13.9421 3.05489 12.6827 2.46321 10.8443C3.13979 10.9748 3.83693 10.9479 4.501 10.7665C2.39529 10.3411 0.880358 8.49099 0.880358 6.34238C0.880358 6.32272 0.880358 6.30395 0.880358 6.28518C1.50778 6.63464 2.21028 6.82859 2.92886 6.85004C0.945602 5.52459 0.334268 2.8862 1.53191 0.823391C3.82352 3.64322 7.20463 5.35746 10.8342 5.53889C10.4704 3.97123 10.9674 2.32849 12.14 1.22648C13.9579 -0.482398 16.8171 -0.394809 18.5259 1.42221C19.5368 1.2229 20.5056 0.851992 21.3922 0.326458C21.0553 1.37127 20.3501 2.25878 19.4081 2.82274C20.3027 2.71728 21.1768 2.47775 22 2.1122C21.394 3.02026 20.6308 3.81124 19.7477 4.45029Z"></path></svg></a>
+  </div>
+</div>
 <p>A smart contract is simply a computer program running on TON blockchain - or more exactly its <a href="https://ton-blockchain.github.io/docs/tvm.pdf">TVM</a> (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on the TON blockchain.</p>
 <p>In the world of blockchain, <em>code is law</em>, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before enagaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.</p>
 <h2 id="dappsdecentralizedapplications">Dapps - decentralized applications</h2>
@@ -398,6 +409,14 @@ function sleep(ms: number) {
         
          <div class="post" data-combination="testnet">
             <h1 id="tonhelloworldpart2stepbystepguideforwritingyourfirstsmartcontract">TON Hello World part 2: Step by step guide for writing your first smart contract</h1>
+<div class="author">
+  <img class="face" src="../assets/authors/talkol.jpg" />
+  <span>by Tal Kol</span>
+  <div>
+    <a class="social" rel="noreferrer" href="https://t.me/talkol"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="FollowCard_icon__0yJs8" style="fill: currentcolor;"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12ZM12.4298 8.85893C11.2626 9.3444 8.92989 10.3492 5.43165 11.8733C4.86359 12.0992 4.56601 12.3202 4.53892 12.5363C4.49314 12.9015 4.95047 13.0453 5.57323 13.2411C5.65794 13.2678 5.74571 13.2954 5.83569 13.3246C6.44839 13.5238 7.27258 13.7568 7.70104 13.766C8.0897 13.7744 8.52348 13.6142 9.0024 13.2853C12.2709 11.079 13.9581 9.96381 14.0641 9.93977C14.1388 9.92281 14.2424 9.90148 14.3125 9.96385C14.3827 10.0262 14.3758 10.1443 14.3684 10.176C14.3231 10.3691 12.5279 12.0381 11.5989 12.9018C11.3093 13.171 11.1038 13.362 11.0618 13.4056C10.9678 13.5034 10.8719 13.5958 10.7797 13.6846C10.2105 14.2333 9.78367 14.6448 10.8034 15.3168C11.2934 15.6397 11.6855 15.9067 12.0767 16.1731C12.5039 16.4641 12.93 16.7543 13.4814 17.1157C13.6218 17.2078 13.756 17.3034 13.8866 17.3965C14.3838 17.751 14.8305 18.0694 15.3823 18.0186C15.703 17.9891 16.0342 17.6876 16.2024 16.7884C16.6 14.6632 17.3814 10.0585 17.562 8.16098C17.5778 7.99473 17.5579 7.78197 17.5419 7.68857C17.5259 7.59518 17.4925 7.46211 17.3711 7.3636C17.2273 7.24694 17.0054 7.22234 16.9061 7.22408C16.4548 7.23203 15.7623 7.47282 12.4298 8.85893Z"></path></svg></a>
+  <a class="social" rel="noreferrer" href="https://twitter.com/koltal"><svg viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="FollowCard_icon__0yJs8" style="fill: currentcolor;"><path d="M19.7477 4.45029C19.7611 4.64423 19.7611 4.83818 19.7611 5.03391C19.7611 10.998 15.2208 17.8764 6.91863 17.8764V17.8728C4.46614 17.8764 2.06459 17.1739 0 15.8494C0.356612 15.8923 0.715011 15.9137 1.0743 15.9146C3.10672 15.9164 5.08105 15.2344 6.67999 13.9787C4.74857 13.9421 3.05489 12.6827 2.46321 10.8443C3.13979 10.9748 3.83693 10.9479 4.501 10.7665C2.39529 10.3411 0.880358 8.49099 0.880358 6.34238C0.880358 6.32272 0.880358 6.30395 0.880358 6.28518C1.50778 6.63464 2.21028 6.82859 2.92886 6.85004C0.945602 5.52459 0.334268 2.8862 1.53191 0.823391C3.82352 3.64322 7.20463 5.35746 10.8342 5.53889C10.4704 3.97123 10.9674 2.32849 12.14 1.22648C13.9579 -0.482398 16.8171 -0.394809 18.5259 1.42221C19.5368 1.2229 20.5056 0.851992 21.3922 0.326458C21.0553 1.37127 20.3501 2.25878 19.4081 2.82274C20.3027 2.71728 21.1768 2.47775 22 2.1122C21.394 3.02026 20.6308 3.81124 19.7477 4.45029Z"></path></svg></a>
+  </div>
+</div>
 <p>A smart contract is simply a computer program running on TON blockchain - or more exactly its <a href="https://ton-blockchain.github.io/docs/tvm.pdf">TVM</a> (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on the TON blockchain.</p>
 <p>In the world of blockchain, <em>code is law</em>, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before enagaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.</p>
 <h2 id="dappsdecentralizedapplications">Dapps - decentralized applications</h2>
