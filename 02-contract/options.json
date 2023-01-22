@@ -19,26 +19,5 @@
         "cons": "not free to use (but very cheap)"
       }
     }
-  },
-  "library": {
-    "name": "Library",
-    "order": 2,
-    "default": "npmton",
-    "options": {
-      "npmton": {
-        "name": "npm ton (JavaScript)",
-        "order": 1,
-        "url": "https://github.com/ton-community/ton",
-        "pros": "more popular, full TypeScript support, elegant api",
-        "cons": "no support for all ton services"
-      },
-      "tonweb": {
-        "name": "TonWeb (JavaScript)",
-        "order": 2,
-        "url": "https://github.com/toncenter/tonweb",
-        "pros": "maintained by core team, supports ton services",
-        "cons": "mediocre TypeScript support"
-      }
-    }
   }
 }
