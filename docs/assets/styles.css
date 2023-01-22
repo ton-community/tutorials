@@ -134,6 +134,7 @@ section {
 
 body {
   line-height: 1;
+  -webkit-text-size-adjust: 100%;
 }
 
 ol,
@@ -435,7 +436,7 @@ body {
 .post .code * {
   line-height: 20px;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono !important;
-  font-size: 14px;
+  font-size: 14px !important;
 }
 .post .code .function_ {
   color: #8250df;
