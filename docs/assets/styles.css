@@ -612,6 +612,11 @@ nav {
     width: 100%;
     gap: 40px;
   }
+  .rightcol{
+    position: unset;
+     width: 100%;
+     max-width: 400px;
+  }
   .posts {
     order: 2;
     width: 100%;
