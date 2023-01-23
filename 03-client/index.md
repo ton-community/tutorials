@@ -1,45 +1,72 @@
+# Building your first web client
 
-1. Create the project using vite (quick way of jumpstarting react)
+## Step 1 - Create a React project
+Create the project using vite (a quick way of jumpstarting react)
+
 ```
 npm create vite@latest my-twa -- --template react-ts
 cd my-twa
 npm install
-npm install ton ton-crypto ton-core vite-plugin-node-polyfills
+npm install ton ton-crypto ton-core
 npm install @orbs-network/ton-access
 ```
 
-1. In `vite.config.ts`, modify it so it looks like this:
-```
-import { nodePolyfills } from "vite-plugin-node-polyfills";
-
-```
-This enables the support for `buffer`, which is needed in order to run TonClient in the browser.
-// TODO (tonweb?)
-
-1. Add to your project the `Counter` class from the previous tutorial
-
-2. Install Tonkeeper
+## Step 2 - Install Tonkeeper 
+Install Tonkeeper on your mobile device. Go to https://tonkeeper.com/
 
 ---
 network:testnet
 ---
 Switch tonkeeper to testnet:
+```
 * go to ...
 * tap 5 times on the version
 * tap switch to testnet
+```
 
 ---
 
-1. Install ton connect UI. It's still in beta, but it will handle all wallet interaction for us:
+## Step 3 - Add node.js polyfills
+We need to polyfill node.js `Buffer` in order to work with TON in the browser. 
+
+First, install the node.js polyfills.
+
+```
+npm install vite-plugin-node-polyfills
+```
+  
+Modify `vite.config.ts` so it looks like this: 
+
+```
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react(), nodePolyfills()],
+});
+```
+
+// TODO (tonweb?)
+
+## Step 4 - Set up TON Connect
+TON Connect is the dapp library to enable wallet interaction
+
+Install ton connect UI. It's still in beta, but it will handle all wallet interaction for us:
+
 * Getting the list of Ton-Connect2 supported wallets
+
 * Getting the address from the wallet
+
 * Sending a transaction through the wallet
 
 ```
 npm i @tonconnect/ui-react
 ```
 
-1. Put a `tonconnect-manifest.json` in your `public` folder
+Now, add a `tonconnect-manifest.json` in your `public` folder with the following contents. 
+Don't worry about the broken icon for now, in your production app you will just change it to a publicly available URL of your logo.
 
 ```
 {
@@ -49,13 +76,13 @@ npm i @tonconnect/ui-react
 }
 ```
 
-2. Push to github and take note of the raw URL for `tonconnect-manifest.json`. We will use this temporarily to enable connecting the dapp to the wallet.
+Push to github and take note of the raw URL for `tonconnect-manifest.json`. We will use this temporarily to enable connecting the dapp to the wallet.
 
-3. Modify main.tsx:
+Modify main.tsx to instruct the TON Connect provider to consume the manifest we just uploaded:
 
-```
+```typescript
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
-...
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <TonConnectUIProvider manifestUrl="<GITHUB_TONCONNECT_MANIFEST_RAW_URL">
     <App />
@@ -63,7 +90,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 );
 ```
 
-5. Replace your `<App/>` code:
+## Step 5 - Connect to your wallet from the webapp
+
+Replace your ```<App/>``` code
 ```
 import { TonConnectButton } from '@tonconnect/ui-react';
 ...
@@ -76,10 +105,12 @@ function App() {
 }
 ```
 
-1. Run `npm run dev` and open your web app. You should be able to connect at this point with your wallet and view your address within the webapp.
+Run `npm run dev` and open your web app. You should be able to connect at this point with your wallet and view your address within the webapp.
 
-1. Now we'll interact with the counter contract from the previous tutorial. 
-In App.tsx, Add the OpenedContract type (TEMP - see https://github.com/ton-community/ton-core/pull/6)
+## Step 6 - Interact with the Counter contract
+
+Now we'll interact with the counter contract. Add to your project the `Counter` class from the previous tutorial.
+In App.tsx, Add the OpenedContract type (TEMP - see this [PR](https://github.com/ton-community/ton-core/pull/6))
 
 ```
 type OpenedContract<F> = {
@@ -91,7 +122,8 @@ type OpenedContract<F> = {
 };
 ```
 
-1. Add the following react hooks:
+Add the following react hooks:
+
 useAsyncInitialize - Will help us initialize dependencies
 ```
 function useAsyncInitialize<T>(func: () => Promise<T>, deps: any[] = []) {
@@ -122,6 +154,7 @@ function useTonClient() {
   );
 }
 ```
+---
 
 ---
 network:testnet
@@ -164,11 +197,7 @@ function useTonConnect(): { sender: Sender; connected: boolean } {
 }
 ```
 
-1. Add the useCounterContract hook, which will:
-  
-* Poll the counter value every 3 seconds
-* Expose a function to send an increment op, using TON-Connect 2 to your wallet.
-* Expose the contract's address
+Add the useCounterContract hook, which will poll the counter value every 3 seconds and expose a function to send an increment op, using TON-Connect 2, to your wallet.
 
 ```
 function useCounterContract() {
@@ -208,7 +237,7 @@ function useCounterContract() {
 }
 ```
 
-1. Update your App.tsx
+Update your App.tsx
 
 ```
 function App() {
@@ -243,9 +272,9 @@ function App() {
 }
 ```
 
-1. Add styles:
-- Delete content of your index.css file
-- Replace the contents of your App.css file with:
+## Step 7 - Style the app
+
+First, delete content of your index.css file. Then, replace the contents of your App.css file with:
 ```
 :root {
   --tg-theme-bg-color: #efeff3;
@@ -325,14 +354,16 @@ function App() {
 }
 ```
 
-1. Add the Telegram Web App SDK, so we can get theming properties from Telegram.
+## Step 8 - Add the Telegram Web App SDK
+
+Add the Telegram Web App SDK, so we can get theming properties from Telegram.
 In your index.html file, under the <head> tag, add:
 
 ```
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 ```
 
-1. Create a Telegram bot.
+Create a Telegram bot.
 * Go to botfather and create a bot
 * Using ngrok(?), set the menu button URL
 * Open within telegram
