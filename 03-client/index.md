@@ -4,13 +4,33 @@
 npm create vite@latest my-twa -- --template react-ts
 cd my-twa
 npm install
-npm install ton ton-crypto ton-core
+npm install ton ton-crypto ton-core vite-plugin-node-polyfills
 npm install @orbs-network/ton-access
 ```
 
-1. Install Tonkeeper and switch to testnet
+1. In `vite.config.ts`, modify it so it looks like this:
+```
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
-2. Install ton connect UI. It's still in beta, but it will handle all wallet interaction for us:
+```
+This enables the support for `buffer`, which is needed in order to run TonClient in the browser.
+// TODO (tonweb?)
+
+1. Add to your project the `Counter` class from the previous tutorial
+
+2. Install Tonkeeper
+
+---
+network:testnet
+---
+Switch tonkeeper to testnet:
+* go to ...
+* tap 5 times on the version
+* tap switch to testnet
+
+---
+
+1. Install ton connect UI. It's still in beta, but it will handle all wallet interaction for us:
 * Getting the list of Ton-Connect2 supported wallets
 * Getting the address from the wallet
 * Sending a transaction through the wallet
@@ -29,19 +49,24 @@ npm i @tonconnect/ui-react
 }
 ```
 
-2. Push to github so you can redirec
+2. Push to github and take note of the raw URL for `tonconnect-manifest.json`. We will use this temporarily to enable connecting the dapp to the wallet.
 
-4. Modify your main.tsx:
+3. Modify main.tsx:
 
 ```
-// TODO - how to get around the manifest thing?
-<TonConnectUIProvider manifestUrl="https://tonverifier.live/tonconnect-manifest.json">
+import { TonConnectUIProvider } from '@tonconnect/ui-react';
+...
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <TonConnectUIProvider manifestUrl="<GITHUB_TONCONNECT_MANIFEST_RAW_URL">
     <App />
   </TonConnectUIProvider>
+);
 ```
 
 5. Replace your `<App/>` code:
 ```
+import { TonConnectButton } from '@tonconnect/ui-react';
+...
 function App() {
   return (
       <div>
@@ -51,7 +76,10 @@ function App() {
 }
 ```
 
-6. Add the OpenedContract type (TEMP)
+1. Run `npm run dev` and open your web app. You should be able to connect at this point with your wallet and view your address within the webapp.
+
+1. Now we'll interact with the counter contract from the previous tutorial. 
+In App.tsx, Add the OpenedContract type (TEMP - see https://github.com/ton-community/ton-core/pull/6)
 
 ```
 type OpenedContract<F> = {
@@ -63,98 +91,111 @@ type OpenedContract<F> = {
 };
 ```
 
-7. Add the ton client hook:
+1. Add the following react hooks:
+useAsyncInitialize - Will help us initialize dependencies
+```
+function useAsyncInitialize<T>(func: () => Promise<T>, deps: any[] = []) {
+  const [state, setState] = useState<T | undefined>();
+
+  useEffect(() => {
+    (async () => {
+      setState(await func());
+    })();
+  }, deps);
+
+  return state;
+}
+```
+
+useTonClient - will help us interact with TON
 
 ---
 network:mainnet
 ---
 ```
 function useTonClient() {
-  const [tonClient, setTonClient] = useState<TonClient | undefined>();
-  useEffect(() => {
-    (async () => {
-      const tc = new TonClient({
+  return useAsyncInitialize(
+    async () =>
+      new TonClient({
         endpoint: await getHttpEndpoint(),
-      });
-      setTonClient(tc);
-    })();
-  }, []);
-
-  return tonClient;
+      })
+  );
 }
 ```
----
 
 ---
 network:testnet
 ---
 ```
 function useTonClient() {
-  const [tonClient, setTonClient] = useState<TonClient | undefined>();
-  useEffect(() => {
-    (async () => {
-      const tc = new TonClient({
+  return useAsyncInitialize(
+    async () =>
+      new TonClient({
         endpoint: await getHttpEndpoint({ network: "testnet" }),
-      });
-      setTonClient(tc);
-    })();
-  }, []);
-
-  return tonClient;
+      })
+  );
 }
 ```
 ---
 
-8. Add the `useSender` hook so we can provide it to the opened Counter class
-
+useTonConnect - will expose whether we are connected with the wallet, and the Sender interface which is needed to send operations via our Counter class.
 ```
-function useSender(): Sender {
+function useTonConnect(): { sender: Sender; connected: boolean } {
   const [tonConnectUI] = useTonConnectUI();
 
   return {
-    send: async (args: SenderArguments) => {
-      tonConnectUI.sendTransaction({
-        messages: [
-          {
-            address: args.to.toString(),
-            amount: args.value.toString(),
-            payload: args.body?.toBoc().toString("base64"),
-            // TODO stateInit: args.init,
-          },
-        ],
-        validUntil: Date.now() + 5 * 60 * 1000, // TODO
-      });
+    sender: {
+      send: async (args: SenderArguments) => {
+        tonConnectUI.sendTransaction({
+          messages: [
+            {
+              address: args.to.toString(),
+              amount: args.value.toString(),
+              payload: args.body?.toBoc().toString("base64"),
+              // TODO stateInit: args.init,
+            },
+          ],
+          validUntil: Date.now() + 5 * 60 * 1000, // TODO
+        });
+      },
     },
+    connected: tonConnectUI.connected,
   };
 }
 ```
 
-2. Add the useCounterContract hook
+1. Add the useCounterContract hook, which will:
+  
+* Poll the counter value every 3 seconds
+* Expose a function to send an increment op, using TON-Connect 2 to your wallet.
+* Expose the contract's address
+
 ```
 function useCounterContract() {
   const tc = useTonClient();
-  const [ctrct, setCtrct] = useState<OpenedContract<Counter> | undefined>();
   const [val, setVal] = useState<null | number>();
-  const sender = useSender();
+  const { sender } = useTonConnect();
 
-  useEffect(() => {
-    (async () => {
-      if (!tc) return;
-      const contract = new Counter(
-        Address.parse("EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb")
-      );
-      const counterContract = tc.open(contract);
-      setCtrct(counterContract);
-    })();
+  const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
+
+  const ctrct = useAsyncInitialize(async () => {
+    if (!tc) return;
+    const contract = new Counter(
+      Address.parse(<COUNTER_CONTRACT_ADDRESS>)
+    );
+    return tc.open(contract) as OpenedContract<Counter>;
   }, [tc]);
 
   useEffect(() => {
-    setInterval(async () => {
+    async function getValue() {
       if (!ctrct) return;
       setVal(null);
       const val = await ctrct.getCounter();
       setVal(Number(val));
-    }, 3000);
+      await sleep(3000);
+      getValue();
+    }
+    getValue();
   }, [ctrct]);
 
   return {
@@ -167,37 +208,131 @@ function useCounterContract() {
 }
 ```
 
-9. Update your App.tsx
+1. Update your App.tsx
 
 ```
 function App() {
   const { sendIncrement, value, address } = useCounterContract();
+  const { connected } = useTonConnect();
 
   return (
     <div className="App">
-      <h1 style={{ marginBottom: 8 }}>Counter TON Dapp</h1>
-      <TonConnectButton />
+      <div className="Container">
+        <TonConnectButton />
 
-      <div>{address?.slice(0, 25) + "..."}</div>
-      {<div>Value: {value ?? "Loading..."}</div>}
-      <div
-        style={{
-          display: "inline-block",
-          padding: "10px 20px",
-          background: "#248bda",
-          borderRadius: 16,
-          marginTop: 12,
-          cursor: "pointer",
-          color: "white",
-          fontWeight: "bold",
-        }}
-        onClick={() => {
-          sendIncrement();
-        }}
-      >
-        Increment
+        <div className="Card">
+          <b>Counter Address</b>
+          <div className="Hint">{address?.slice(0, 30) + "..."}</div>
+        </div>
+
+        <div className="Card">
+          <b>Value</b>
+          <div>{value ?? "Loading..."}</div>
+        </div>
+        <div
+          className={`Button ${connected ? "Active" : "Disabled"}`}
+          onClick={() => {
+            sendIncrement();
+          }}
+        >
+          Increment
+        </div>
       </div>
     </div>
   );
 }
 ```
+
+1. Add styles:
+- Delete content of your index.css file
+- Replace the contents of your App.css file with:
+```
+:root {
+  --tg-theme-bg-color: #efeff3;
+  --tg-theme-button-color: #63d0f9;
+}
+
+.App {
+  height: 100vh;
+  background-color: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+}
+
+.Container {
+  padding: 2rem;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.Button {
+  background-color: var(--tg-theme-button-color);
+  color: var(--tg-theme-button-text-color);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+}
+
+.Disabled {
+  background-color: #d8d8d8;
+  color: #818181;
+}
+
+.Button.Active:hover {
+  filter: brightness(105%);
+}
+
+.Hint {
+  color: var(--tg-theme-hint-color);
+}
+
+.Card {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-theme-bg-color: #131415;
+    --tg-theme-text-color: #fff;
+    --tg-theme-button-color: #32a6fb;
+  }
+
+  .Card {
+    background-color: #202e3e;
+  }
+
+  .CounterValue {
+    background-color: #282828;
+    border-radius: 16px;
+    color: white;
+    padding: 10px;
+  }
+
+  .Disabled {
+    background-color: #444;
+    color: #818181;
+  }
+}
+```
+
+1. Add the Telegram Web App SDK, so we can get theming properties from Telegram.
+In your index.html file, under the <head> tag, add:
+
+```
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+```
+
+1. Create a Telegram bot.
+* Go to botfather and create a bot
+* Using ngrok(?), set the menu button URL
+* Open within telegram
