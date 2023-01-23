@@ -8,6 +8,8 @@ npm install ton ton-crypto ton-core
 npm install @orbs-network/ton-access
 ```
 
+1. Install Tonkeeper and switch to testnet
+
 2. Install ton connect UI. It's still in beta, but it will handle all wallet interaction for us:
 * Getting the list of Ton-Connect2 supported wallets
 * Getting the address from the wallet
@@ -21,11 +23,13 @@ npm i @tonconnect/ui-react
 
 ```
 {
-  "url": "https://google.com",
-  "name": "HI",
-  "iconUrl": "https://tonverifier.live/tonverifier.png"
+  "url": "https://telegram.org",
+  "name": "My TWA",
+  "iconUrl": "https://broken.png"
 }
 ```
+
+2. Push to github so you can redirec
 
 4. Modify your main.tsx:
 
