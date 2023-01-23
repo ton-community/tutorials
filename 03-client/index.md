@@ -1,5 +1,5 @@
 
-1. Create the project using vite
+1. Create the project using vite (quick way of jumpstarting react)
 ```
 npm create vite@latest my-twa -- --template react-ts
 cd my-twa
@@ -8,13 +8,16 @@ npm install ton ton-crypto ton-core
 npm install @orbs-network/ton-access
 ```
 
-2. Install ton connect
+2. Install ton connect UI. It's still in beta, but it will handle all wallet interaction for us:
+* Getting the list of Ton-Connect2 supported wallets
+* Getting the address from the wallet
+* Sending a transaction through the wallet
 
 ```
 npm i @tonconnect/ui-react
 ```
 
-3. Put a `tonconnect-manifest.json` in your `public` folder
+1. Put a `tonconnect-manifest.json` in your `public` folder
 
 ```
 {

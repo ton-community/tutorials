@@ -1,0 +1,23 @@
+{
+  "network": {
+    "name": "Network",
+    "order": 1,
+    "default": "testnet",
+    "options": {
+      "testnet": {
+        "name": "Testnet",
+        "order": 1,
+        "url": "https://ton.org/docs/develop/smart-contracts/environment/testnet",
+        "pros": "free to use",
+        "cons": "less reliable, requires special wallets"
+      },
+      "mainnet": {
+        "name": "Mainnet",
+        "url": "https://tonmon.xyz/?orgId=1&refresh=5m",
+        "order": 2,
+        "pros": "very reliable, fast, works with all wallets",
+        "cons": "not free to use (but very cheap)"
+      }
+    }
+  }
+}

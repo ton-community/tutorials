@@ -1,0 +1,219 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/base16/github.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/highlightjs-func@0.1.1/dist/func.min.js"></script>
+    <script src="../assets/helpers.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+    <meta property="og:title" content="TON Tutorial">
+    <title>TON Tutorial</title>
+  </head>
+  <body class="page">
+    <nav>
+      <div class="logo">
+        <img src = '../assets/logo.svg' />
+      <p>Tutorials</p>
+      </div>
+    </nav>
+    <div style="display: flex;" class="main">
+      <div class="menu">
+        <div class="selectboxes">
+          
+          <div class="selectbox" data-select="network">
+            <h3 class="selectbox-title">Network</h3>
+           <div class="selectbox-selected">
+             <h3></h3>
+             <img src = '../assets/arrow-down.svg' />
+           </div>
+          <ul class="options">
+            
+              <li data-value="testnet" class="option">
+               <div class="option-name">
+                 <h4>Testnet</h4>
+                 <a href="https://ton.org/docs/develop/smart-contracts/environment/testnet">docs</a>
+               </div>
+               <div class="option-small">
+                 <p class="pros">Pros: free to use</p>
+                <p class="cons">Cons: less reliable, requires special wallets</p>
+               </div>
+              </li>
+            
+              <li data-value="mainnet" class="option">
+               <div class="option-name">
+                 <h4>Mainnet</h4>
+                 <a href="https://tonmon.xyz/?orgId=1&amp;refresh=5m">docs</a>
+               </div>
+               <div class="option-small">
+                 <p class="pros">Pros: very reliable, fast, works with all wallets</p>
+                <p class="cons">Cons: not free to use (but very cheap)</p>
+               </div>
+              </li>
+            
+          </ul>
+          </div>
+        
+        </div>
+        <div class="more">
+          <h3>More Tutorials</h3>
+        <ul>
+          <li><a href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
+          <li><a href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
+          <li><a href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
+          <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
+        </ul>
+      </div>
+        </div>
+      <div class="posts">
+        
+         <div class="post" data-combination="mainnet">
+            <ol>
+<li>Create the project using vite</li>
+</ol>
+<pre><code>npm create vite@latest my-twa -- --template react-ts
+cd my-twa
+npm install
+npm install ton ton-crypto ton-core
+npm install @orbs-network/ton-access
+</code></pre>
+<ol start="2">
+<li>Install ton connect</li>
+</ol>
+<pre><code>npm i @tonconnect/ui-react
+</code></pre>
+<ol start="3">
+<li>Put a <code>tonconnect-manifest.json</code> in your <code>public</code> folder</li>
+</ol>
+<pre><code>{
+  "url": "https://google.com",
+  "name": "HI",
+  "iconUrl": "https://tonverifier.live/tonverifier.png"
+}
+</code></pre>
+<ol start="4">
+<li>Modify your main.tsx:</li>
+</ol>
+<pre><code>// TODO - how to get around the manifest thing?
+<TonConnectUIProvider manifestUrl="https://tonverifier.live/tonconnect-manifest.json">
+    <App />
+  </TonConnectUIProvider>
+</code></pre>
+<ol start="5">
+<li>Replace your <code><App/></code> code:</li>
+</ol>
+<pre><code>function App() {
+  return (
+      <div>
+        <TonConnectButton />
+      </div>
+  );
+}
+</code></pre>
+<ol start="6">
+<li>Add the OpenedContract type (TEMP)</li>
+</ol>
+<pre><code>type OpenedContract<F> = {
+  [P in keyof F]: P extends `${"get" | "send"}${string}`
+    ? F[P] extends (x: ContractProvider, ...args: infer P) => infer R
+      ? (...args: P) => R
+      : never
+    : F[P];
+};
+</code></pre>
+<ol start="7">
+<li>Add the ton client hook:</li>
+</ol>
+<pre><code>function useTonClient() {
+  const [tonClient, setTonClient] = useState<TonClient | undefined>();
+  useEffect(() => {
+    (async () => {
+      const tc = new TonClient({
+        endpoint: await getHttpEndpoint(),
+      });
+      setTonClient(tc);
+    })();
+  }, []);
+
+  return tonClient;
+}
+</code></pre>
+         </div>
+        
+         <div class="post" data-combination="testnet">
+            <ol>
+<li>Create the project using vite</li>
+</ol>
+<pre><code>npm create vite@latest my-twa -- --template react-ts
+cd my-twa
+npm install
+npm install ton ton-crypto ton-core
+npm install @orbs-network/ton-access
+</code></pre>
+<ol start="2">
+<li>Install ton connect</li>
+</ol>
+<pre><code>npm i @tonconnect/ui-react
+</code></pre>
+<ol start="3">
+<li>Put a <code>tonconnect-manifest.json</code> in your <code>public</code> folder</li>
+</ol>
+<pre><code>{
+  "url": "https://google.com",
+  "name": "HI",
+  "iconUrl": "https://tonverifier.live/tonverifier.png"
+}
+</code></pre>
+<ol start="4">
+<li>Modify your main.tsx:</li>
+</ol>
+<pre><code>// TODO - how to get around the manifest thing?
+<TonConnectUIProvider manifestUrl="https://tonverifier.live/tonconnect-manifest.json">
+    <App />
+  </TonConnectUIProvider>
+</code></pre>
+<ol start="5">
+<li>Replace your <code><App/></code> code:</li>
+</ol>
+<pre><code>function App() {
+  return (
+      <div>
+        <TonConnectButton />
+      </div>
+  );
+}
+</code></pre>
+<ol start="6">
+<li>Add the OpenedContract type (TEMP)</li>
+</ol>
+<pre><code>type OpenedContract<F> = {
+  [P in keyof F]: P extends `${"get" | "send"}${string}`
+    ? F[P] extends (x: ContractProvider, ...args: infer P) => infer R
+      ? (...args: P) => R
+      : never
+    : F[P];
+};
+</code></pre>
+<ol start="7">
+<li>Add the ton client hook:</li>
+</ol>
+<pre><code>function useTonClient() {
+  const [tonClient, setTonClient] = useState<TonClient | undefined>();
+  useEffect(() => {
+    (async () => {
+      const tc = new TonClient({
+        endpoint: await getHttpEndpoint({ network: "testnet" }),
+      });
+      setTonClient(tc);
+    })();
+  }, []);
+
+  return tonClient;
+}
+</code></pre>
+         </div>
+        
+      </div>
+    </div>
+  </body>
+</html>
