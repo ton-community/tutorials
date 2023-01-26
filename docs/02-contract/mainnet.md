@@ -100,20 +100,22 @@ Let's continue to the next section, *messages*, and implement the main message h
 
 ```func
 () recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {  ;; well known function signature
-  if (in_msg_body.slice_empty?()) {                                       ;; check if incoming message is empty (with no body)
-    return ();                                                            ;; return successfully and accept an empty message
+  if (in_msg_body.slice_empty?()) {         ;; check if incoming message is empty (with no body)
+    return ();                              ;; return successfully and accept an empty message
   }
-  int op = in_msg_body~load_uint(32);                                     ;; parse the operation type encoded in the beginning of msg body
-  var (counter) = load_data();                                            ;; call our read utility function to load values from storage
-  if (op == 1) {                                                          ;; handle op #1 = increment
-    save_data(counter + 1);                                               ;; call our write utility function to persist values to storage
+  int op = in_msg_body~load_uint(32);       ;; parse the operation type encoded in the beginning of msg body
+  var (counter) = load_data();              ;; call our read utility function to load values from storage
+  if (op == 1) {                            ;; handle op #1 = increment
+    save_data(counter + 1);                 ;; call our write utility function to persist values to storage
   }
 }
 ```
 
-Messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.
+Messages sent between contracts are called [internal messages](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages). TON also supports [external messages](https://ton.org/docs/develop/smart-contracts/messages) through the handler `recv_external()`, but as a dapp developer you're never expected to use them. External messages are used for very specific cases, mainly when implementing wallet contracts, that you would normally never have to write by yourself. You can safely ignore them.
 
-If an incoming message is not empty, the first thing to do is read its operation type. By convention, [internal messages](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) are encoded with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number `1` to the *increment* action, which is handled by writing back to persistent state the current value counter plus 1.
+Internal messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.
+
+If an incoming message is not empty, the first thing to do is read its operation type. By convention, internal messages are [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number `1` to the *increment* action, which is handled by writing back to persistent state the current value counter plus 1.
 
 ### Getters
 
@@ -228,7 +230,7 @@ As you recall from the previous tutorial, TON wallets can come in multiple versi
 Create a new script `deploy.ts` that will use the interface class we just wrote:
 
 ```ts
-import fs from "fs";
+import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";

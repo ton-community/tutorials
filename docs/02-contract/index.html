@@ -144,18 +144,19 @@
 <h3 id="messages">Messages</h3>
 <p>Let's continue to the next section, <em>messages</em>, and implement the main message handler of our contract - <code>recv_internal()</code>. This is the primary entry point of our contract. It runs whenever a message is sent as a transaction to the contract by another contract or by a user's wallet contract:</p>
 <pre><code class="func language-func">() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {  ;; well known function signature
-  if (in_msg_body.slice_empty?()) {                                       ;; check if incoming message is empty (with no body)
-    return ();                                                            ;; return successfully and accept an empty message
+  if (in_msg_body.slice_empty?()) {         ;; check if incoming message is empty (with no body)
+    return ();                              ;; return successfully and accept an empty message
   }
-  int op = in_msg_body~load_uint(32);                                     ;; parse the operation type encoded in the beginning of msg body
-  var (counter) = load_data();                                            ;; call our read utility function to load values from storage
-  if (op == 1) {                                                          ;; handle op #1 = increment
-    save_data(counter + 1);                                               ;; call our write utility function to persist values to storage
+  int op = in_msg_body~load_uint(32);       ;; parse the operation type encoded in the beginning of msg body
+  var (counter) = load_data();              ;; call our read utility function to load values from storage
+  if (op == 1) {                            ;; handle op #1 = increment
+    save_data(counter + 1);                 ;; call our write utility function to persist values to storage
   }
 }
 </code></pre>
-<p>Messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.</p>
-<p>If an incoming message is not empty, the first thing to do is read its operation type. By convention, <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal messages</a> are encoded with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number <code>1</code> to the <em>increment</em> action, which is handled by writing back to persistent state the current value counter plus 1.</p>
+<p>Messages sent between contracts are called <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal messages</a>. TON also supports <a href="https://ton.org/docs/develop/smart-contracts/messages">external messages</a> through the handler <code>recv_external()</code>, but as a dapp developer you're never expected to use them. External messages are used for very specific cases, mainly when implementing wallet contracts, that you would normally never have to write by yourself. You can safely ignore them.</p>
+<p>Internal messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.</p>
+<p>If an incoming message is not empty, the first thing to do is read its operation type. By convention, internal messages are <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">encoded</a> with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number <code>1</code> to the <em>increment</em> action, which is handled by writing back to persistent state the current value counter plus 1.</p>
 <h3 id="getters">Getters</h3>
 <p>Our last section, as you recall, is <em>getters</em>. Let's implement a simple getter that will allow users to query the counter value:</p>
 <pre><code class="func language-func">int counter() method_id {        ;; getter declaration - returns int as result
@@ -225,7 +226,7 @@ export default class Counter implements Contract {
 <p>The deployment is going to cost gas and should be done through a wallet that will fund it. I'm assuming that you have some familiarity with TON wallets and how they're derived from 24 word secret mnemonics. If not, be sure to follow the previous tutorial in this series.</p>
 <p>As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch <a href="https://tonkeeper.com">TonKeeper</a> through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.</p>
 <p>Create a new script <code>deploy.ts</code> that will use the interface class we just wrote:</p>
-<pre><code class="ts language-ts">import fs from "fs";
+<pre><code class="ts language-ts">import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";
@@ -475,18 +476,19 @@ function sleep(ms: number) {
 <h3 id="messages">Messages</h3>
 <p>Let's continue to the next section, <em>messages</em>, and implement the main message handler of our contract - <code>recv_internal()</code>. This is the primary entry point of our contract. It runs whenever a message is sent as a transaction to the contract by another contract or by a user's wallet contract:</p>
 <pre><code class="func language-func">() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {  ;; well known function signature
-  if (in_msg_body.slice_empty?()) {                                       ;; check if incoming message is empty (with no body)
-    return ();                                                            ;; return successfully and accept an empty message
+  if (in_msg_body.slice_empty?()) {         ;; check if incoming message is empty (with no body)
+    return ();                              ;; return successfully and accept an empty message
   }
-  int op = in_msg_body~load_uint(32);                                     ;; parse the operation type encoded in the beginning of msg body
-  var (counter) = load_data();                                            ;; call our read utility function to load values from storage
-  if (op == 1) {                                                          ;; handle op #1 = increment
-    save_data(counter + 1);                                               ;; call our write utility function to persist values to storage
+  int op = in_msg_body~load_uint(32);       ;; parse the operation type encoded in the beginning of msg body
+  var (counter) = load_data();              ;; call our read utility function to load values from storage
+  if (op == 1) {                            ;; handle op #1 = increment
+    save_data(counter + 1);                 ;; call our write utility function to persist values to storage
   }
 }
 </code></pre>
-<p>Messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.</p>
-<p>If an incoming message is not empty, the first thing to do is read its operation type. By convention, <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal messages</a> are encoded with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number <code>1</code> to the <em>increment</em> action, which is handled by writing back to persistent state the current value counter plus 1.</p>
+<p>Messages sent between contracts are called <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal messages</a>. TON also supports <a href="https://ton.org/docs/develop/smart-contracts/messages">external messages</a> through the handler <code>recv_external()</code>, but as a dapp developer you're never expected to use them. External messages are used for very specific cases, mainly when implementing wallet contracts, that you would normally never have to write by yourself. You can safely ignore them.</p>
+<p>Internal messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.</p>
+<p>If an incoming message is not empty, the first thing to do is read its operation type. By convention, internal messages are <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">encoded</a> with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number <code>1</code> to the <em>increment</em> action, which is handled by writing back to persistent state the current value counter plus 1.</p>
 <h3 id="getters">Getters</h3>
 <p>Our last section, as you recall, is <em>getters</em>. Let's implement a simple getter that will allow users to query the counter value:</p>
 <pre><code class="func language-func">int counter() method_id {        ;; getter declaration - returns int as result
@@ -556,7 +558,7 @@ export default class Counter implements Contract {
 <p>The deployment is going to cost gas and should be done through a wallet that will fund it. I'm assuming that you have some familiarity with TON wallets and how they're derived from 24 word secret mnemonics. If not, be sure to follow the previous tutorial in this series.</p>
 <p>As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch <a href="https://tonkeeper.com">TonKeeper</a> through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.</p>
 <p>Create a new script <code>deploy.ts</code> that will use the interface class we just wrote:</p>
-<pre><code class="ts language-ts">import fs from "fs";
+<pre><code class="ts language-ts">import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";

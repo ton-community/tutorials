@@ -1,0 +1,201 @@
+<h1 id="tonhelloworldpart4stepbystepguideforwritingyourfirstsmartcontract">TON Hello World part 4: Step by step guide for writing your first smart contract</h1>
+<p>Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract devleopers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.</p>
+<p>A thorough test suite is also a good signal to your users that you've taken your role as a contract developer seriously. I would personally be very hesitant to deposit a substantial amount of money in any contract that has no tests. Since <em>code is law</em>, any bug in the contract code is also part of the agreement, so a user wouldn't really have anyone to blame for money lost, but themselves.</p>
+<p>Personally, I don't view testing as an afterthought taking place only when your code is complete. If done correctly, tests can be a powerful aid to the development process itself from the beginning, that will allow you to write better code faster.</p>
+<h2 id="ohsomanywaystotest">Oh so many ways to test</h2>
+<p><em>Warning - this specific section is a bit more advanced than beginner, feel free to skip it directly to step 1 if you trust my judgement of how to test. If you're interested in an overly detailed overview of what other testing methodologies exist in our ecosystem please read on.</em></p>
+<p>Because testing is such as big deal in smart contract development, there's a surprising amount of tools and infrastructure in the TON ecosystem devoted to this topic. Before jumping in to the methodology that I believe in, I want to give a quick overview of the plethora of testing tools that are available out there:</p>
+<ol>
+<li><p><strong>Deploying your contract to testnet</strong> - Testnet is a live alternative instance of the entire TON blockchain where TON coin isn't the real deal and is free to get. This instance is obviously not as secure as mainnet, but offers an interesting staging environment where you can play.</p></li>
+<li><p><strong>Local blockchain with MyLocalTon</strong> - <a href="https://github.com/neodiX42/MyLocalTon">MyLocalTon</a> is a Java-based desktop executable that runs a personal local instance of TON blockchain on your machine that you can deploy contracts to and interact with. Another way to run a local private TON network is using Kubernetes with <a href="https://github.com/disintar/ton-k8s">ton-k8s</a>.</p></li>
+<li><p><strong>Writing tests in FunC</strong> - <a href="https://github.com/disintar/toncli">toncli</a> is a command-line tool written in Python that runs on your machine and supports <a href="https://github.com/disintar/toncli/blob/master/docs/advanced/transaction_debug.md">debug</a> and <a href="https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md">unit tests</a> for FunC contracts where the tests are also written in FunC (<a href="https://github.com/BorysMinaiev/func-contest-1-tests-playground/blob/main/task-1/tests/test.fc">example</a>).</p></li>
+<li><p><strong>Bare-bones TVM with Sandbox</strong> - <a href="https://github.com/ton-community/sandbox">Sandbox</a> is a bare-bones version of just the <a href="https://ton-blockchain.github.io/docs/tvm.pdf">TVM</a> running on <a href="https://webassembly.org/">WebAssembly</a> with a thin JavaScript wrapper that allows test interactions from TypeScript.</p></li>
+<li><p><strong>Deploying beta contracts to mainnet</strong> - This form of "testing in production" simply deploys alternative beta versions of your contracts to mainnet and uses real (not free) TON coin to play with them in a real environment. If you found a bug, you simply deploy new fixed beta versions and waste a little more money.</p></li>
+</ol>
+<p>So which method should you choose? You definitely don't need all of them.</p>
+<p>My team started building smart contracts on Ethereum in 2017, we've witnessed the evolution of the art of smart contract development almost from its infancy. While I'm well aware of <a href="https://blog.ton.org/six-unique-aspects-of-ton-blockchain-that-will-surprise-solidity-developers">fundamental differences</a> between TON and the EVM, testing between the two platforms is not fundamentally different. All of the above approaches appeared on Ethereum at one point or another. And all of them practically disappeared - except two - the last two.</p>
+<ol>
+<li><p>Testnets were once popular on Ethereum (funny names like Ropsten, Rinkeby and Goerli) but turned out to be a bad tradeoff between convenience and realism - they're slow and often more difficult to work with than mainnet (some wallets aren't compatible) and useless for integration tests with other contracts (eg. your contract interacts with somebody else's token) because nobody bothers to maintain up-to-date versions of their projects on testnet.</p></li>
+<li><p>Local desktop versions of the entire blockchain, like <a href="https://trufflesuite.com/ganache/">Ganache UI</a>, proved to be too slow for unit tests and ineffective for integration tests (for the same reason as testnets). They also don't play nicely with <a href="https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration">CI</a>. People often confuse <a href="https://github.com/trufflesuite/ganache">ganache-cli</a> with a local blockchain, but it is actually a bare-bones EVM implemented in JavaScript.</p></li>
+<li><p>Testing Solidity with Solidity proved to be too cumbersome as smart contract languages are inherently limited and restrictive by design and efficient testing seems to flourish on freeform languages like JavaScript. Trying to code a complex expectation in Solidity or simulate a difficult scenario is just too painful.</p></li>
+<li><p>Bare-bones EVM turned out to be the holy grail. Most of the testing on Ethereum today takes place on <a href="https://hardhat.org/">Hardhat</a> and Hardhat is a thin wrapper around <a href="https://github.com/ethereumjs/ethereumjs-monorepo">EthereumJs</a> which is an EVM implementation in JavaScript. This approach turned out to be the most convenient (ultra-fast CI-friendly unit tests) as well as realistic where it matters (live lazy-loaded <a href="https://hardhat.org/hardhat-network/docs/guides/forking-other-networks">forks</a> of mainnets for integration tests).</p></li>
+<li><p>Testing in production is useful for the last mile. Ethereum has less than <a href="https://www.fool.com/the-ascent/cryptocurrency/articles/more-people-own-ethereum-than-ever-before-heres-why/">5 million</a> active users yet over <a href="https://cryptopotato.com/over-44-million-contracts-deployed-to-ethereum-since-genesis-research/">40 million</a> deployed contracts. The vast majority of all deployed contracts on Ethereum mainnet are beta versions that developers deployed for a few tests and then abandoned. Don't feel bad about polluting mainnet with garbage, nobody cares.</p></li>
+</ol>
+<p>After carefully considering all available approaches, I hope I convinced you why we're going to spend 90% of our time testing with approach (4) and 10% of our time testing with approach (5). We're going to conveniently forget about the other approaches and avoid using them at all.</p>
+<h2 id="step1setuptheproject">Step 1: Set up the project</h2>
+<p>Since we're using TypeScript for tests, make sure <a href="https://nodejs.org/">Nodejs</a> is installed by running <code>node -v</code> in terminal and the version is at least v18. If you have an old version, you can upgrade with <a href="https://github.com/nvm-sh/nvm">nvm</a>.</p>
+<p>Let's create a new directory for our project. Open terminal in the project directory and run the following:</p>
+<pre><code>npm install typescript jest @types/jest ts-jest
+</code></pre>
+<p>This will install TypeScript and the popular <a href="https://jestjs.io/">jest</a> test runner. To configure TypeScript to run correctly, we need to create the file <code>tsconfig.json</code> and put it in the project root:</p>
+<pre><code class="json language-json">{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
+</code></pre>
+<p>And to configure jest to run correctly, we need to create the file <code>jest.config.js</code> and put it in the project root:</p>
+<pre><code class="js language-js">module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
+};
+</code></pre>
+<p>And finally, run in terminal:</p>
+<pre><code>npm install ton-core @ton-community/sandbox @ton-community/test-utils
+</code></pre>
+<p>This will install <a href="https://github.com/ton-community/sandbox">Sandbox</a> and its dependencies. Sandbox is our magical library that will emulate TON blockchain locally by running a bare-bones version of the TVM in process. This will guarantee that our tests will be blazingly fast and completely isolated.</p>
+<h2 id="step2loadourcontractinatest">Step 2: Load our contract in a test</h2>
+<p>Quick reminder, in tutorial 2, we compiled our Counter smart contract in step 6 and generated the file <code>counter.cell</code> which contains the TVM bytecode for our contract (code cell). In step 7, before deploying the contract, we initialized its persistent storage (data cell). Then, we created the TypeScript interface class <code>counter.ts</code> that combines the two to deploy our contract.</p>
+<p>Dig into your completed tutorial 2 and copy both <code>counter.cell</code> (also available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/04-testing/test/counter.cell">here</a>) and <code>counter.ts</code> (also available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/04-testing/test/counter.ts">here</a>) to the project root.</p>
+<p>We're going to deploy the Counter contract in our test using the interface class in an almost identical way to how we deployed it to the actual chain in tutorial 2:</p>
+<pre><code class="ts language-ts">// prepare Counter's initial code and data cells for deployment
+const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from tutorial 2
+const initialCounterValue = 17; // no collisions possible since sandbox is a private local instance
+const counter = Counter.createForDeploy(counterCode, initialCounterValue);
+</code></pre>
+<p>Notice that this time we can initialize the counter value to a simple number like 17 because we're no longer afraid of collisions. All users of this tutorial can end up with the same contract address and that's ok since Sandbox creates an isolated private blockchain.</p>
+<p>Before we start writing tests, let's create our test skeleton. In the skeleton, before each test starts, we'll initialize a fresh instance of the entire blockchain. This instance will require a wallet with enough TON for all our gas needs (we call this a "treasury") and a deployed version of the Counter.</p>
+<p>Create the file <code>step2.spec.ts</code> with the following content:</p>
+<pre><code class="ts language-ts">import * as fs from "fs";
+import { Cell } from "ton-core";
+import { Blockchain, OpenedContract, TreasuryContract } from "@ton-community/sandbox";
+import Counter from "./counter"; // this is the interface class from tutorial 2
+
+describe("Counter tests", () => {
+  let blockchain: Blockchain;
+  let wallet1: OpenedContract<TreasuryContract>;
+  let counterContract: OpenedContract<Counter>;
+
+  beforeEach(async () =>  {
+    // prepare Counter's initial code and data cells for deployment
+    const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from tutorial 2
+    const initialCounterValue = 17; // no collisions possible since sandbox is a private local instance
+    const counter = Counter.createForDeploy(counterCode, initialCounterValue);
+
+    // initialize the blockchain sandbox
+    blockchain = await Blockchain.create();
+    wallet1 = await blockchain.treasury("user1");
+
+    // deploy counter
+    counterContract = blockchain.openContract(counter);
+    await counterContract.sendDeploy(wallet1.getSender());
+  }),
+
+  it("should run the first test", async () => {
+    // currently empty, will place a test body here soon
+  });
+});
+</code></pre>
+<p>This code is remarkably similar to the deploy code we had in tutorial 2. This is the benefit of using the TypeScript interface class. No matter where we use our contract, we always access it in the same familiar way.</p>
+<p>The only strange part in this snippet is the treasury. What is it exactly? A treasury is simply a wallet contract, very similar to the v4 wallet you used with <a href="https://tonkeeper.com">TonKeeper</a> in previous tutorials. What's useful with a treasury is that it's already pre initialized with a big TON coin balance. There's no need to fund it from a faucet.</p>
+<p>To execute the test, run in terminal:</p>
+<pre><code>npx jest step2
+</code></pre>
+<p>Our test is empty, so it should naturally pass. Notice that if we had 3 different tests (3 different <code>it()</code> clauses), the blockchain would be initialized from scratch 3 times and the Counter would be deployed 3 times. This is excellent because different tests are completely isolated from each other. If one test fails, it will not influence the others.</p>
+<h2 id="step3testagetter">Step 3: Test a getter</h2>
+<p>Now that the boilerplate is behind us, we can finally focus on writing the actual test logic. Ideally, we want to test through every execution path of our contract to make sure it's working. Let's start with something simple, our getter. Quick reminder, in tutorial 2 we implemented a getter in FunC that looked like this:</p>
+<pre><code class="func language-func">int counter() method_id {        ;; getter declaration - returns int as result
+  var (counter) = load_data();   ;; call our read utility function to load value
+  return counter;
+}
+</code></pre>
+<p>As you recall, our test skeleton initializes our contract with a data cell via <code>Counter.createForDeploy()</code>. If the initial counter value is 17, we expect the getter to return 17 after initialization.</p>
+<p>Copy the skeleton to a new file named <code>step3.spec.ts</code> and add the following test to it:</p>
+<pre><code class="ts language-ts">  it("should get counter value", async () => {
+    const value = await counterContract.getCounter();
+    expect(value).toEqual(17n);
+  });
+</code></pre>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step3.spec.ts">this</a>.</p>
+<p>There's something interesting to notice in the assertion at the end of the test - the <code>expect()</code>. When we compare the counter value we don't compare it to the number <code>17</code>, but to <code>17n</code>. What is this notation? The <code>n</code> signifies that the number is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a>. The FunC type returned from our getter is <code>int</code>. This TVM number type is <a href="https://ton.org/docs/develop/func/types?id=atomic-types">257 bit long</a> (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript <code>number</code> type is limited to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">64 bit</a> so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.</p>
+<p>To execute the test, run in terminal:</p>
+<pre><code>npx jest step3
+</code></pre>
+<p>The test should pass. Try to change the expectation to verify that the returning value is <code>18n</code> and see how the test fails.</p>
+<h2 id="step4testamessage">Step 4: Test a message</h2>
+<p>While getters are read-only operations that don't change contract state, messages are used to modify state through user transactions. Reminder, we've implemented the following message handler in tutorial 2:</p>
+<pre><code class="func language-func">() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {  ;; well known function signature
+  if (in_msg_body.slice_empty?()) {         ;; check if incoming message is empty (with no body)
+    return ();                              ;; return successfully and accept an empty message
+  }
+  int op = in_msg_body~load_uint(32);       ;; parse the operation type encoded in the beginning of msg body
+  var (counter) = load_data();              ;; call our read utility function to load values from storage
+  if (op == 1) {                            ;; handle op #1 = increment
+    save_data(counter + 1);                 ;; call our write utility function to persist values to storage
+  }
+}
+</code></pre>
+<p>Let's write a test that sends a message with op #1 = <em>increment</em>. Our interface class already knows how to encode the message.</p>
+<p>Copy the last test file to a new file named <code>step4.spec.ts</code> and add the following test to it:</p>
+<pre><code class="ts language-ts">  it("should increment the counter value", async () =>  {
+    await counterContract.sendIncrement(wallet1.getSender());
+    const counterValue = await counterContract.getCounter();
+    expect(counterValue).toEqual(18n);
+  })
+</code></pre>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step4.spec.ts">this</a>.</p>
+<p>Notice that we already know from the previous test that the counter is indeed initialized to 17, so if our message was successful, we can use the getter to get the counter value and make sure it has been incremented to 18.</p>
+<p>To execute the test, run in terminal:</p>
+<pre><code>npx jest step4
+</code></pre>
+<p>Like before, the test should pass.</p>
+<h2 id="step5debugbydumpingvariables">Step 5: Debug by dumping variables</h2>
+<p>Testing is fun as long as everything works as expected. But what happens when something doesn't work and you're not sure where the problem is? The most convenient method I found to debug your FunC code is to add debug prints in strategic places. This is very similar to debugging JavaScript by using <code>console.log(variable)</code> to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Console/log">print</a> the value of variables.</p>
+<p>The TVM has a special instruction for <a href="https://ton.org/docs/develop/func/builtins?id=dump-variable">dumping variables</a> in debug. Run <code>~dump(variable_name);</code> in your FunC code to use it.</p>
+<p>Another useful TVM instruction can dump strings in debug. Run <code>~strdump(string_value);</code> in your FunC code to use it.</p>
+<p>Let's try both. Let's say we're trying to send some TON coin to our contract on a message. We can do this by issuing a simple transfer from our wallet to our contract address. In FunC, this value should arrive under the <code>msg_value</code> argument of <code>recv_internal()</code>. Let's print this incoming value in FunC to make sure that it indeed works as expected. I added the debug print as the first line of our <code>recv_internal()</code> message handler from before:</p>
+<pre><code class="func language-func">() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+  ~dump(msg_value);
+  if (in_msg_body.slice_empty?()) { 
+    return (); 
+  }
+  int op = in_msg_body~load_uint(32);
+  var (counter) = load_data();
+  if (op == 1) {
+    ~strdump("increment received");
+    save_data(counter + 1);
+  }
+}
+</code></pre>
+<p>The second debug print I added is whenever an op #1 = <em>increment</em> message received. This time I print a constant string instead of a variable.</p>
+<p>Since we changed our FunC code, we'll have to rebuild the contract to see the effect and generate a new <code>counter.cell</code>. I've done this for your convenience and renamed the file to <code>counter.debug.cell</code>, it is available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/04-testing/test/counter.debug.cell">here</a>.</p>
+<p>Copy the original test skeleton to a new file named <code>step5.spec.ts</code> and add the following tests:</p>
+<pre><code class="ts language-ts">  it("should send ton coin to the contract", async () => {
+    console.log("sending 7.123 TON");
+    await wallet1.send({
+      to: counterContract.address,
+      value: toNano("7.123")
+    });
+  });
+
+  it("should increment the counter value", async () =>  {
+    console.log("sending increment message");
+    await counterContract.sendIncrement(wallet1.getSender());
+  })
+</code></pre>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step5.spec.ts">this</a>.</p>
+<p>Run the test and take a close look at the console output in terminal:</p>
+<pre><code>npx jest step5
+</code></pre>
+<p>The console output should include something like this:</p>
+<pre><code>  console.log
+    sending 7.123 TON
+
+  console.warn
+    #DEBUG#: s0 = 7123000000
+
+  console.log
+    sending increment message
+
+  console.warn
+    #DEBUG#: s0 = 2000000
+
+  console.warn
+    #DEBUG#: increment received
+</code></pre>
+<p>We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of <code>msg_value</code>. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.</p>
