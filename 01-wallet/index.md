@@ -97,11 +97,11 @@ Refresh the explorer after approving the transaction. We can see that TonKeeper 
 
 We can also see that we've also paid some gas for the deployment and transfer fees. After sending 0.01 TON we have 1.9764 TON remaining, meaning we paid a total of 0.0136 TON in fees, not too bad.
 
-## Step 5: Inspect the version of the wallet contract
+## Step 5: Wallets contracts have versions
 
 The explorer shows that "Contract Type" is "wallet v4 r2" (or possibly a different version if your TonKeeper was since updated). This refers to the version of our smart contract code. If our wallet smart contract was deployed with "v4" as its code, this means somewhere must exist "v1", "v2" and "v3".
 
-This is indeed correct. Over time, the TON core team has [published](https://github.com/toncenter/tonweb/blob/master/src/contract/wallet/WalletSources.md) multiple versions of the wallet contract code. We can see that TonKeeper has chosen to rely on v4. If you're interested, the source code for this wallet is [available here](https://github.com/ton-blockchain/wallet-contract/tree/v4r2-stable).
+This is indeed correct. Over time, the TON core team has [published](https://github.com/toncenter/tonweb/blob/master/src/contract/wallet/WalletSources.md) multiple versions of the wallet contract - this is [v4 source code](https://github.com/ton-blockchain/wallet-contract/tree/v4r2-stable).
 
 Let's look at this well known wallet address of [TON Foundation](https://tonscan.org/address/EQCD39VS5jcptHL8vMjEXrzGaRcCVYto7HUn4bpAOg8xqB2N). As you can see, it uses "wallet v3 r2" for its code. It was probably deployed before v4 was released.
 
