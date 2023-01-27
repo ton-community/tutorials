@@ -1,4 +1,4 @@
-# TON Hello World part 4: Step by step guide for writing your first smart contract
+# TON Hello World part 4: Step by step guide for testing your first smart contract
 
 Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract devleopers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.
 
@@ -224,7 +224,7 @@ Like before, the test should pass.
 
 Testing is fun as long as everything works as expected. But what happens when something doesn't work and you're not sure where the problem is? The most convenient method I found to debug your FunC code is to add debug prints in strategic places. This is very similar to debugging JavaScript by using `console.log(variable)` to [print](https://developer.mozilla.org/en-US/docs/Web/API/Console/log) the value of variables.
 
-The TVM has a special instruction for [dumping variables](https://ton.org/docs/develop/func/builtins?id=dump-variable) in debug. Run `~dump(variable_name);` in your FunC code to use it.
+The TVM has a special instruction for [dumping variables](https://ton.org/docs/develop/func/builtins?id=dump-variable) in debug. Run `~dump(variable_name);` in your FunC code to use it. You can also print constants by using `~dump(12345);` which can be helpful to show that the VM indeed reached a certain line.
 
 Another useful TVM instruction can dump strings in debug. Run `~strdump(string_value);` in your FunC code to use it.
 
@@ -232,14 +232,14 @@ Let's try both. Let's say we're trying to send some TON coin to our contract on 
 
 ```func
 () recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
-  ~dump(msg_value);
+  ~dump(msg_value);                         ;; first debug print
   if (in_msg_body.slice_empty?()) { 
     return (); 
   }
   int op = in_msg_body~load_uint(32);
   var (counter) = load_data();
   if (op == 1) {
-    ~strdump("increment received");
+    ~strdump("increment received");         ;; second debug print
     save_data(counter + 1);
   }
 }
@@ -294,3 +294,29 @@ The console output should include something like this:
 ```
 
 We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of `msg_value`. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.
+
+## Step 6: Test in production (without testnet)
+
+Steps 2-5 above are all part of approach (4) - where I promised to spend 90% of our testing time. These tests are very fast to run (there's nothing faster than an in-process instance of a bare-bones TVM) and are very CI-friendly. They are also free and don't require you to spend any TON coin. These tests should give you the majority of confidence that your code is actually working.
+
+What about the remaining 10%? All of our tests so far worked inside a lab. Before we're launching our contract, we should run some tests in the wild! This is what approach (5) is all about.
+
+From a technical perspective, this is actually the simplest approach of all. You don't need to do anything special. Get some TON coin and deploy your contract to mainnet! The process was covered in detail in tutorial 2. Then, interact with your contract manually just like your users will. This will normally depend on the dapp client we wrote in tutorial 3.
+
+If this step is so easy, why am I devoting so much time to discuss it? Because, from my experience, most dapp developers are reluctant to do so. Instead of testing on mainnet, they prefer to work on testnet. In my eyes, this is a waste of time. Let me attempt to refute any reasons to use testnet one last time:
+
+* *"testnet is as easy to work with as mainnet"* - False. Testnet is less reliable and isn't held to the same production standard as mainnet. It also requires special wallets and special explorers. This mess is going to cost you time to sort out. I've seen too many developers deploying their contract to testnet and then trying to inspect it with a mainnet explorer without understanding why they don't see anything deployed.
+
+* *"mainnet is more expensive since it costs real TON coin to use"* - False. Deploying your contract to mainnet costs around 10 cents. Your time costs more. Let's say an hour of your time is only worth the minimum wage in the US (a little over $7), if working on mainnet saves you an hour, you can deploy your contract 70 times without feeling guilty that you're wasting money.
+
+* *"testnet is a good simulation of mainnet"* - False. Nobody cares deeply about testnet since it's not a production network. Are you certain that validators on testnet are running the latest node versions? Are all config parameters like gas costs identical to mainnet? Are all contracts by other teams that you may be relying on deployed to testnet?
+
+* *"I don't want to pollute mainnet with abandoned test contracts"* - Don't worry about it. Users won't care since the chance of them reaching your unadvertised contract address by accident is zero. Validators won't care since you paid them for this service, they enjoy the traction. Also, TON has an auto-cleanup mechanism baked in, your contract will eventually run out of gas for rent and will be destroyed automatically.
+
+## Conclusion
+
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
+
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+
+Happy coding!

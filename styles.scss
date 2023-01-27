@@ -337,12 +337,11 @@ body {
   display: none;
   width: 100%;
   flex-direction: column;
-  ul{
-   
-    li{
+  ul {
+    li {
       padding-left: 45px;
       position: relative;
-      &::after{
+      &::after {
         position: absolute;
         left: 20px;
         top: 12px;
@@ -352,6 +351,13 @@ body {
         border-radius: 50%;
         content: "";
       }
+    }
+  }
+  ol {
+    list-style: decimal outside none;
+    padding-left: 40px;
+    li {
+      padding-left: 8px;
     }
   }
   a {
@@ -391,7 +397,7 @@ body {
   .author {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
     margin-left: 30px;
     margin-bottom: 50px;
     img.face {
@@ -401,9 +407,8 @@ body {
       height: 40px;
     }
     span {
-      font-size: 18px;
+      font-size: 15px;
       opacity: 0.6;
-      font-weight: 300;
     }
     .social {
       color: $link-color;

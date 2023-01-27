@@ -350,6 +350,13 @@ body {
   border-radius: 50%;
   content: "";
 }
+.post ol {
+  list-style: decimal outside none;
+  padding-left: 40px;
+}
+.post ol li {
+  padding-left: 8px;
+}
 .post a {
   text-decoration: none;
 }
@@ -386,7 +393,7 @@ body {
 .post .author {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
   margin-left: 30px;
   margin-bottom: 50px;
 }
@@ -397,9 +404,8 @@ body {
   height: 40px;
 }
 .post .author span {
-  font-size: 18px;
+  font-size: 15px;
   opacity: 0.6;
-  font-weight: 300;
 }
 .post .author .social {
   color: #0099e5;
