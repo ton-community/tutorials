@@ -3,7 +3,7 @@
 
 The TON blockchain is [based](https://ton-blockchain.github.io/docs/ton.pdf) on the [TON coin](https://coinmarketcap.com/currencies/toncoin/) (previously labeled TonCoin). This cryptocurrency is used to pay for executing transactions (gas), much like ETH on the Ethereum blockchain. If you're participating in the TON ecosystem, most likely that you're already holding some TON and probably already have a wallet.
 
-In this step by step tutorial, we will create a new TON wallet using one of the wallet apps and then try to access it programatically. This can be useful for example if you're planning on deploying a smart contract through code or writing a bot that receives and sends TON. We'll also understand how wallets work on TON and become comfortable with using them.
+In this step by step tutorial, we will create a new TON wallet using one of the wallet apps and then try to access it programmatically. This can be useful for example if you're planning on deploying a smart contract through code or writing a bot that receives and sends TON. We'll also understand how wallets work on TON and become comfortable with using them.
 
 ## Mainnet or testnet
 
@@ -111,7 +111,7 @@ Is it possible for the same secret mnemonic to have multiple wallets deployed wi
 
 ## Step 6: Set up your local machine for coding
 
-We're about to use code to access our wallet programatically. Before we can start writing code, we need to install certain developer tools on our computer.
+We're about to use code to access our wallet programmatically. Before we can start writing code, we need to install certain developer tools on our computer.
 
 The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running `node -v` in terminal.
 
@@ -145,7 +145,7 @@ npm install tonweb tonweb-mnemonic
 
 ---
 
-## Step 7: Get the wallet address programatically
+## Step 7: Get the wallet address programmatically
 
 The first thing we'll do is calculate the address of our wallet in code and see that it matches what we saw in the explorer. This action is completely offline since the wallet address is derived from the version of the wallet and the private key used to create it.
 
