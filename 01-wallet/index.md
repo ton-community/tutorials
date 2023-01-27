@@ -154,7 +154,32 @@ Let's assume that your secret 24 word mnemonic is `unfold sugar water ...` - thi
 Create the file `step7.ts` with the following content:
 
 ---
-library:npmton
+network:testnet library:npmton
+---
+```ts
+import { mnemonicToWalletKey } from "ton-crypto";
+import { WalletContractV4 } from "ton";
+
+async function main() {
+  // open wallet v4 (notice the correct wallet version here)
+  const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+
+  // print wallet address
+  console.log(wallet.address.toString({ testOnly: true }));
+
+  // print wallet workchain
+  console.log("workchain:", wallet.address.workChain);
+}
+
+main();
+```
+
+---
+
+---
+network:mainnet library:npmton
 ---
 ```ts
 import { mnemonicToWalletKey } from "ton-crypto";
@@ -179,7 +204,36 @@ main();
 ---
 
 ---
-library:tonweb
+network:testnet library:tonweb
+---
+```ts
+import { mnemonicToKeyPair } from "tonweb-mnemonic";
+import TonWeb from "tonweb";
+
+async function main() {
+  const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
+  const key = await mnemonicToKeyPair(mnemonic.split(" "));
+
+  // open wallet v4 (notice the correct wallet version here)
+  const tonweb = new TonWeb();
+  const WalletClass = tonweb.wallet.all["v4R2"];
+  const wallet = new WalletClass(undefined!, { publicKey: key.publicKey });
+
+  // print wallet address
+  const walletAddress = await wallet.getAddress();
+  console.log(walletAddress.toString(true, true, true, true)); // last true required for testnet
+
+  // print wallet workchain
+  console.log("workchain:", walletAddress.wc);
+}
+
+main();
+```
+
+---
+
+---
+network:mainnet library:tonweb
 ---
 ```ts
 import { mnemonicToKeyPair } from "tonweb-mnemonic";

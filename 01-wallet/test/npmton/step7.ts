@@ -11,7 +11,7 @@ async function main() {
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
   // print wallet address
-  console.log(wallet.address.toString());
+  console.log(wallet.address.toString({ testOnly: true }));
 
   // print wallet workchain
   console.log("workchain:", wallet.address.workChain);

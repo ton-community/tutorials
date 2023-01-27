@@ -553,7 +553,7 @@ async function main() {
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
   // print wallet address
-  console.log(wallet.address.toString());
+  console.log(wallet.address.toString({ testOnly: true }));
 
   // print wallet workchain
   console.log("workchain:", wallet.address.workChain);
@@ -741,7 +741,7 @@ async function main() {
 
   // print wallet address
   const walletAddress = await wallet.getAddress();
-  console.log(walletAddress.toString(true, true, true));
+  console.log(walletAddress.toString(true, true, true, true)); // last true required for testnet
 
   // print wallet workchain
   console.log("workchain:", walletAddress.wc);

@@ -70,7 +70,7 @@ async function main() {
 
   // print wallet address
   const walletAddress = await wallet.getAddress();
-  console.log(walletAddress.toString(true, true, true));
+  console.log(walletAddress.toString(true, true, true, true)); // last true required for testnet
 
   // print wallet workchain
   console.log("workchain:", walletAddress.wc);
