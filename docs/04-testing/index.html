@@ -101,7 +101,7 @@
 <h2 id="step1setuptheproject">Step 1: Set up the project</h2>
 <p>Since we're using TypeScript for tests, make sure <a href="https://nodejs.org/">Nodejs</a> is installed by running <code>node -v</code> in terminal and the version is at least v18. If you have an old version, you can upgrade with <a href="https://github.com/nvm-sh/nvm">nvm</a>.</p>
 <p>Let's create a new directory for our project. Open terminal in the project directory and run the following:</p>
-<pre><code>npm install typescript jest @types/jest ts-jest
+<pre><code class="console language-console">npm install typescript jest @types/jest ts-jest
 </code></pre>
 <p>This will install TypeScript and the popular <a href="https://jestjs.io/">jest</a> test runner. To configure TypeScript to run correctly, we need to create the file <code>tsconfig.json</code> and put it in the project root:</p>
 <pre><code class="json language-json">{
@@ -122,7 +122,7 @@
 };
 </code></pre>
 <p>And finally, run in terminal:</p>
-<pre><code>npm install ton-core @ton-community/sandbox @ton-community/test-utils
+<pre><code class="console language-console">npm install ton-core @ton-community/sandbox @ton-community/test-utils
 </code></pre>
 <p>This will install <a href="https://github.com/ton-community/sandbox">Sandbox</a> and its dependencies. Sandbox is our magical library that will emulate TON blockchain locally by running a bare-bones version of the TVM in process. This will guarantee that our tests will be blazingly fast and completely isolated.</p>
 <h2 id="step2loadourcontractinatest">Step 2: Load our contract in a test</h2>
@@ -170,7 +170,7 @@ describe("Counter tests", () => {
 <p>This code is remarkably similar to the deploy code we had in tutorial 2. This is the benefit of using the TypeScript interface class. No matter where we use our contract, we always access it in the same familiar way.</p>
 <p>The only strange part in this snippet is the treasury. What is it exactly? A treasury is simply a wallet contract, very similar to the v4 wallet you used with <a href="https://tonkeeper.com">TonKeeper</a> in previous tutorials. What's useful with a treasury is that it's already pre initialized with a big TON coin balance. There's no need to fund it from a faucet.</p>
 <p>To execute the test, run in terminal:</p>
-<pre><code>npx jest step2
+<pre><code class="console language-console">npx jest step2
 </code></pre>
 <p>Our test is empty, so it should naturally pass. Notice that if we had 3 different tests (3 different <code>it()</code> clauses), the blockchain would be initialized from scratch 3 times and the Counter would be deployed 3 times. This is excellent because different tests are completely isolated from each other. If one test fails, it will not influence the others.</p>
 <h2 id="step3testagetter">Step 3: Test a getter</h2>
@@ -190,7 +190,7 @@ describe("Counter tests", () => {
 <p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step3.spec.ts">this</a>.</p>
 <p>There's something interesting to notice in the assertion at the end of the test - the <code>expect()</code>. When we compare the counter value we don't compare it to the number <code>17</code>, but to <code>17n</code>. What is this notation? The <code>n</code> signifies that the number is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a>. The FunC type returned from our getter is <code>int</code>. This TVM number type is <a href="https://ton.org/docs/develop/func/types?id=atomic-types">257 bit long</a> (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript <code>number</code> type is limited to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">64 bit</a> so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.</p>
 <p>To execute the test, run in terminal:</p>
-<pre><code>npx jest step3
+<pre><code class="console language-console">npx jest step3
 </code></pre>
 <p>The test should pass. Try to change the expectation to verify that the returning value is <code>18n</code> and see how the test fails.</p>
 <h2 id="step4testamessage">Step 4: Test a message</h2>
@@ -217,7 +217,7 @@ describe("Counter tests", () => {
 <p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step4.spec.ts">this</a>.</p>
 <p>Notice that we already know from the previous test that the counter is indeed initialized to 17, so if our message was successful, we can use the getter to get the counter value and make sure it has been incremented to 18.</p>
 <p>To execute the test, run in terminal:</p>
-<pre><code>npx jest step4
+<pre><code class="console language-console">npx jest step4
 </code></pre>
 <p>Like before, the test should pass.</p>
 <h2 id="step5debugbydumpingvariables">Step 5: Debug by dumping variables</h2>
@@ -256,10 +256,10 @@ describe("Counter tests", () => {
 </code></pre>
 <p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step5.spec.ts">this</a>.</p>
 <p>Run the test and take a close look at the console output in terminal:</p>
-<pre><code>npx jest step5
+<pre><code class="console language-console">npx jest step5
 </code></pre>
 <p>The console output should include something like this:</p>
-<pre><code>  console.log
+<pre><code class="console language-console">  console.log
     sending 7.123 TON
 
   console.warn

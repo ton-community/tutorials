@@ -37,7 +37,7 @@ If you click on the top left in the TonKeeper app you will copy your wallet addr
 
 It should look something like this:
 
-```
+```console
 kQCJRglfvsQzAIF0UAhkYH6zkdGPFxVNYMH1nPTN_UpDqEFK
 ```
 
@@ -97,13 +97,13 @@ For a choice of IDE, you will need anything that has decent TypeScript support. 
 
 Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:
 
-```
+```console
 npm install ts-node
 ```
 
 Next, we're going to install a JavaScript package named [ton](https://www.npmjs.com/package/ton) that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:
 
-```
+```console
 npm install ton ton-crypto ton-core
 ```
 
@@ -137,7 +137,7 @@ main();
 
 To see the wallet address, run it using terminal:
 
-```
+```console
 npx ts-node step7.ts
 ```
 
@@ -151,7 +151,7 @@ To query info from the live network will require an RPC service provider - simil
 
 Install it by opening terminal in the project directory and running:
 
-```
+```console
 npm install @orbs-network/ton-access
 ```
 
@@ -187,7 +187,7 @@ main();
 
 To see the balance and seqno, run using terminal:
 
-```
+```console
 npx ts-node step8.ts
 ```
 
@@ -247,7 +247,7 @@ function sleep(ms: number) {
 
 Execute the script by running in terminal:
 
-```
+```console
 npx ts-node step9.ts
 ```
 

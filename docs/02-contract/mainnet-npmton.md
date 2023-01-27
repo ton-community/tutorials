@@ -37,13 +37,13 @@ You will also need a decent IDE with FunC and TypeScript support. I recommend [V
 
 Let's create a new directory for our project. Open terminal in the project directory and run the following:
 
-```
+```console
 npm install ts-node
 ```
 
 This will allow us to easily run TypeScript files. Now run in terminal:
 
-```
+```console
 npm install @ton-community/func-js
 ```
 
@@ -53,7 +53,7 @@ This will install the package [func-js](https://github.com/ton-community/func-js
 
 And finally, run in terminal:
 
-```
+```console
 npm install ton ton-crypto ton-core
 ```
 
@@ -140,7 +140,7 @@ In TON, we don't compile FunC directly to bytecode, but instead go through anoth
 
 The func-js package contains everything we need to compile our contract to bytecode. To use it, open terminal in the project directory and run the following:
 
-```
+```console
 npx func-js counter.fc --boc counter.cell
 ```
 
@@ -150,7 +150,7 @@ Download [stdlib.fc](https://raw.githubusercontent.com/ton-blockchain/ton/master
 
 The func-js compiler supports taking multiple input files as arguments. Note that order matters in this case, so `stdlib.fc` needs to be appear before `counter.fc` which relies on it:
 
-```
+```console
 npx func-js stdlib.fc counter.fc --boc counter.cell
 ```
 
@@ -219,7 +219,7 @@ Communicating with the live network for the deployment will require an RPC servi
 
 Install it by opening terminal in the project directory and running:
 
-```
+```console
 npm install @orbs-network/ton-access
 ```
 
@@ -289,7 +289,7 @@ Another thing to watch out for is collisions between different users of this tut
 
 To run `deploy.ts` use terminal once again:
 
-```
+```console
 npx ts-node deploy.ts
 ```
 
@@ -353,7 +353,7 @@ main();
 
 As usual, run the script with terminal:
 
-```
+```console
 npx ts-node step9.ts
 ```
 
@@ -442,7 +442,7 @@ function sleep(ms: number) {
 
 As usual, run the script with terminal:
 
-```
+```console
 npx ts-node step10.ts
 ```
 

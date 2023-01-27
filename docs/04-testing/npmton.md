@@ -44,7 +44,7 @@ Since we're using TypeScript for tests, make sure [Nodejs](https://nodejs.org/) 
 
 Let's create a new directory for our project. Open terminal in the project directory and run the following:
 
-```
+```console
 npm install typescript jest @types/jest ts-jest
 ```
 
@@ -74,7 +74,7 @@ module.exports = {
 
 And finally, run in terminal:
 
-```
+```console
 npm install ton-core @ton-community/sandbox @ton-community/test-utils
 ```
 
@@ -139,7 +139,7 @@ The only strange part in this snippet is the treasury. What is it exactly? A tre
 
 To execute the test, run in terminal:
 
-```
+```console
 npx jest step2
 ```
 
@@ -173,7 +173,7 @@ There's something interesting to notice in the assertion at the end of the test 
 
 To execute the test, run in terminal:
 
-```
+```console
 npx jest step3
 ```
 
@@ -214,7 +214,7 @@ Notice that we already know from the previous test that the counter is indeed in
 
 To execute the test, run in terminal:
 
-```
+```console
 npx jest step4
 ```
 
@@ -270,13 +270,13 @@ The resulting source file should look like [this](https://github.com/ton-communi
 
 Run the test and take a close look at the console output in terminal:
 
-```
+```console
 npx jest step5
 ```
 
 The console output should include something like this:
 
-```
+```console
   console.log
     sending 7.123 TON
 

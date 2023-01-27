@@ -19,17 +19,17 @@
 <p>You will also need a decent IDE with FunC and TypeScript support. I recommend <a href="https://code.visualstudio.com/">Visual Studio Code</a> - it's free and open source. Also install the <a href="https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode">FunC Plugin</a> to add syntax highlighting for the FunC language.</p>
 <h2 id="step3setuptheproject">Step 3: Set up the project</h2>
 <p>Let's create a new directory for our project. Open terminal in the project directory and run the following:</p>
-<pre><code>npm install ts-node
+<pre><code class="console language-console">npm install ts-node
 </code></pre>
 <p>This will allow us to easily run TypeScript files. Now run in terminal:</p>
-<pre><code>npm install @ton-community/func-js
+<pre><code class="console language-console">npm install @ton-community/func-js
 </code></pre>
 <p>This will install the package <a href="https://github.com/ton-community/func-js">func-js</a>, a cross-platform compiler for FunC.</p>
 <blockquote>
   <p>In previous iterations of this tutorial we used to deal with <a href="https://github.com/ton-defi-org/ton-binaries">binaries executables</a> of the <code>func</code> and <code>fift</code> compilers, but those were platform specific (different binaries for Mac, Windows and Linux). Relying on func-js will make life easier since it's cross-platform. In general, using executable binaries in the TON ecosystem is obsolete.</p>
 </blockquote>
 <p>And finally, run in terminal:</p>
-<pre><code>npm install ton ton-crypto ton-core
+<pre><code class="console language-console">npm install ton ton-crypto ton-core
 </code></pre>
 <p>This will install a library that you should be familiar with - <a href="https://www.npmjs.com/package/ton">ton</a>. We'll use it to deploy our contract and interact with it.</p>
 <h2 id="step4structuringoursmartcontract">Step 4: Structuring our smart contract</h2>
@@ -83,12 +83,12 @@
 <p>Right now, the contract is just FunC source code. To get it to run on-chain, we need to convert it to TVM <a href="https://ton.org/docs/learn/tvm-instructions/instructions">bytecode</a>. </p>
 <p>In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called <a href="https://ton-blockchain.github.io/docs/fiftbase.pdf">Fift</a>. Just like FunC, Fift is another language that was designed specifically for TON blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.</p>
 <p>The func-js package contains everything we need to compile our contract to bytecode. To use it, open terminal in the project directory and run the following:</p>
-<pre><code>npx func-js counter.fc --boc counter.cell
+<pre><code class="console language-console">npx func-js counter.fc --boc counter.cell
 </code></pre>
 <p>You'll notice that we immediately get a bunch of compilation errors on some function definitions missing like <code>set_data</code> and <code>begin_cell</code>. It's good practice to see what compilation errors look like. Indeed, our code relies on these standard library functions, but where are they defined? The TON foundation publishes these in the main TON repo in the file <a href="https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc">stdlib.fc</a>. Since I've seen multiple versions of this file running around, it's good practice to download it and include it as part of your project.</p>
 <p>Download <a href="https://raw.githubusercontent.com/ton-blockchain/ton/master/crypto/smartcont/stdlib.fc">stdlib.fc</a> and save it in the project directory. </p>
 <p>The func-js compiler supports taking multiple input files as arguments. Note that order matters in this case, so <code>stdlib.fc</code> needs to be appear before <code>counter.fc</code> which relies on it:</p>
-<pre><code>npx func-js stdlib.fc counter.fc --boc counter.cell
+<pre><code class="console language-console">npx func-js stdlib.fc counter.fc --boc counter.cell
 </code></pre>
 <p>The build should now succeed, with the output of this command being a new file - <code>counter.cell</code>. This is a binary file that finally contains the TVM bytecode in cell format that is ready to be deployed on-chain. This will actually be the only file we need for deployment moving forward (we won't need the FunC source file).</p>
 <h2 id="step7prepareinitdatafordeployingonchain">Step 7: Prepare init data for deploying on-chain</h2>
@@ -134,7 +134,7 @@ export default class Counter implements Contract {
 <h2 id="step8deploythecontractonchain">Step 8: Deploy the contract on-chain</h2>
 <p>Communicating with the live network for the deployment will require an RPC service provider - similar to <a href="https://infura.io">Infura</a> on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Install it by opening terminal in the project directory and running:</p>
-<pre><code>npm install @orbs-network/ton-access
+<pre><code class="console language-console">npm install @orbs-network/ton-access
 </code></pre>
 <p>The deployment is going to cost gas and should be done through a wallet that will fund it. I'm assuming that you have some familiarity with TON wallets and how they're derived from 24 word secret mnemonics. If not, be sure to follow the previous tutorial in this series.</p>
 <p>As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch <a href="https://tonkeeper.com">TonKeeper</a> through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.</p>
@@ -194,7 +194,7 @@ function sleep(ms: number) {
 <p>Before running this code, make sure you have enough TON in your wallet for the gas payments and the TON sent to the contract during the deploy.</p>
 <p>Another thing to watch out for is collisions between different users of this tutorial. As you recall, if the code and initial data of two contracts are identical, they will have the same address. If all followers of this tutorial would choose initial counter value of <code>1</code> - then all of them would collide and only the first would actually deploy the contract. To make sure this doesn't happen, the code above initializes the counter value to the current number of milliseconds since the epoch (something like 1674253934361). This guarantees that your contract for deployment is unique.</p>
 <p>To run <code>deploy.ts</code> use terminal once again:</p>
-<pre><code>npx ts-node deploy.ts
+<pre><code class="console language-console">npx ts-node deploy.ts
 </code></pre>
 <p>The script will print the newly deployed contract address - mine is <code>EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb</code>. You can open your address in an <a href="https://testnet.tonscan.org">explorer</a> to verify that the deploy went smoothly. This is what it should look like:</p>
 <p><img src="https://i.imgur.com/SLR7nmE.png" width=600 /><br></p>
@@ -239,7 +239,7 @@ async function main() {
 main();
 </code></pre>
 <p>As usual, run the script with terminal:</p>
-<pre><code>npx ts-node step9.ts
+<pre><code class="console language-console">npx ts-node step9.ts
 </code></pre>
 <p>Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.</p>
 <p>Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.</p>
@@ -311,7 +311,7 @@ function sleep(ms: number) {
 }
 </code></pre>
 <p>As usual, run the script with terminal:</p>
-<pre><code>npx ts-node step10.ts
+<pre><code class="console language-console">npx ts-node step10.ts
 </code></pre>
 <p>Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = <em>increment</em>, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.</p>
 <p>Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.</p>

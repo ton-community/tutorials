@@ -16,7 +16,7 @@
 <h2 id="step3viewthewalletbyaddressinanexplorer">Step 3: View the wallet by address in an explorer</h2>
 <p>If you click on the top left in the TonKeeper app you will copy your wallet address. Alternatively, you can tap on the "Receive" button and see your wallet address displayed on screen.</p>
 <p>It should look something like this:</p>
-<pre><code>kQCJRglfvsQzAIF0UAhkYH6zkdGPFxVNYMH1nPTN_UpDqEFK
+<pre><code class="console language-console">kQCJRglfvsQzAIF0UAhkYH6zkdGPFxVNYMH1nPTN_UpDqEFK
 </code></pre>
 <p>This wallet address isn't secret. You can share it with anyone you want and they won't be able to touch your funds. If you want anyone to send you some TON, you will need to give them this address. You should be aware though of some privacy matters. Wallet addresses in TON and most blockchains are <a href="https://en.wikipedia.org/wiki/Pseudonymization">pseudo-anonymous</a>, this means that they don't reveal your identity in the real world. If you tell somebody your address and they know you in the real world, they can now make the connection.</p>
 <p>An explorer is a tool that allows you to query data from the chain and investigate TON addresses. There are many <a href="https://ton.app/explorers">explorers</a> to choose from. We're going to use Tonscan. Notice that mainnet and testnet have different explorers because those are different blockchains.</p>
@@ -45,10 +45,10 @@
 <p>The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
 <p>For a choice of IDE, you will need anything that has decent TypeScript support. I recommend <a href="https://code.visualstudio.com">Visual Studio Code</a> - it's free and open source.</p>
 <p>Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:</p>
-<pre><code>npm install ts-node
+<pre><code class="console language-console">npm install ts-node
 </code></pre>
 <p>Next, we're going to install a JavaScript package named <a href="https://github.com/toncenter/tonweb">TonWeb</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
-<pre><code>npm install tonweb tonweb-mnemonic
+<pre><code class="console language-console">npm install tonweb tonweb-mnemonic
 </code></pre>
 <h2 id="step7getthewalletaddressprogramatically">Step 7: Get the wallet address programatically</h2>
 <p>The first thing we'll do is calculate the address of our wallet in code and see that it matches what we saw in the explorer. This action is completely offline since the wallet address is derived from the version of the wallet and the private key used to create it.</p>
@@ -77,14 +77,14 @@ async function main() {
 main();
 </code></pre>
 <p>To see the wallet address, run it using terminal:</p>
-<pre><code>npx ts-node step7.ts
+<pre><code class="console language-console">npx ts-node step7.ts
 </code></pre>
 <p>Notice that we're not just printing the address, we're also printing the workchain number. TON supports multiple parallel blockchain instances called <em>workchains</em>. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you're doing something special, you'll always use workchain 0.</p>
 <h2 id="step8readwalletstatefromthechain">Step 8: Read wallet state from the chain</h2>
 <p>Let's take things up a notch and read some live state data from our wallet contract that will force us to connect to the live blockchain network. We're going to read the live wallet TON coin balance (we saw that on the explorer earlier). We're also going to read the wallet <code>seqno</code> - the sequence number of the last transaction that the wallet sent. Every time the wallet sends a transaction the seqno increments.</p>
 <p>To query info from the live network will require an RPC service provider - similar to <a href="https://infura.io">Infura</a> on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Install it by opening terminal in the project directory and running:</p>
-<pre><code>npm install @orbs-network/ton-access
+<pre><code class="console language-console">npm install @orbs-network/ton-access
 </code></pre>
 <p>Create the file <code>step8.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
@@ -116,7 +116,7 @@ async function main() {
 main();
 </code></pre>
 <p>To see the balance and seqno, run using terminal:</p>
-<pre><code>npx ts-node step8.ts
+<pre><code class="console language-console">npx ts-node step8.ts
 </code></pre>
 <h2 id="step9sendtransfertransactiontothechain">Step 9: Send transfer transaction to the chain</h2>
 <p>The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.</p>
@@ -165,7 +165,7 @@ function sleep(ms: number) {
 }
 </code></pre>
 <p>Execute the script by running in terminal:</p>
-<pre><code>npx ts-node step9.ts
+<pre><code class="console language-console">npx ts-node step9.ts
 </code></pre>
 <p>Once the wallet signs and sends a transaction, we must wait until the TON blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.</p>
 <h2 id="conclusion">Conclusion</h2>
