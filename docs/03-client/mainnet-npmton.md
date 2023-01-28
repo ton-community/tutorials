@@ -13,7 +13,7 @@ The first usage patten of our dapp would be through a regular web browser. Our f
 
 The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
-<video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video><br>
+<video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay width=400></video><br>
 
 During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.
 
