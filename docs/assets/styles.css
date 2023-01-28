@@ -527,8 +527,10 @@ nav {
   font-weight: 500;
   font-size: 20px;
 }
-nav a {
-  border-bottom: none;
+
+a.alogo:hover, a.alogo:visited, a.alogo:link, a.alogo:active {
+  color: #1c1e21;
+  text-decoration: none;
 }
 
 .logo {

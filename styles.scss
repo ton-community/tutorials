@@ -543,9 +543,11 @@ nav {
   align-items: center;
   font-weight: 500;
   font-size: 20px;
-  a {
-    border-bottom: none;
-  };
+}
+
+a.alogo:hover, a.alogo:visited, a.alogo:link, a.alogo:active {
+  color: $text-color;
+  text-decoration: none;
 }
 
 .logo {
