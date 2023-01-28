@@ -10,7 +10,7 @@ The test runs weekly on CI, but you can run it manually in terminal:
 ./index.sh
 ```
 
-Before running the test, create the file `.env` in the project root with this content:
+Before running the test, create the file `.env` in the repo root with this content:
 ```
 MNEMONIC="unfold sugar water ..."
 ```
