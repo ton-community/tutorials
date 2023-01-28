@@ -418,7 +418,7 @@ body {
 .post code {
   background: #f6f8fa;
   padding: 7px 11px;
-  line-height: 20px;
+  line-height: 26px;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono !important;
   font-size: 14px;
   border-radius: 5px;
@@ -638,6 +638,7 @@ nav {
   }
   .post p {
     font-size: 16px;
+    line-height: 32px;
   }
 }
 

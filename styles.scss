@@ -425,7 +425,7 @@ body {
   code {
     background: $code-bg;
     padding: 7px 11px;
-    line-height: 20px;
+    line-height: 26px;
     font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
       Liberation Mono !important;
     font-size: 14px;
@@ -656,6 +656,7 @@ nav {
     }
     p {
       font-size: 16px;
+      line-height: 32px;
     }
   }
 }
