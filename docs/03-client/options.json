@@ -1,0 +1,37 @@
+{
+  "network": {
+    "name": "Network",
+    "order": 1,
+    "default": "testnet",
+    "options": {
+      "testnet": {
+        "name": "Testnet",
+        "order": 1,
+        "url": "https://ton.org/docs/develop/smart-contracts/environment/testnet",
+        "pros": "free to use",
+        "cons": "less reliable, requires special wallets"
+      },
+      "mainnet": {
+        "name": "Mainnet",
+        "url": "https://tonmon.xyz/?orgId=1&refresh=5m",
+        "order": 2,
+        "pros": "very reliable, fast, works with all wallets",
+        "cons": "not free to use (but very cheap)"
+      }
+    }
+  },
+  "library": {
+    "name": "Library",
+    "order": 2,
+    "default": "npmton",
+    "options": {
+      "npmton": {
+        "name": "npm ton (JavaScript)",
+        "order": 1,
+        "url": "https://github.com/ton-community/ton",
+        "pros": "more popular, full TypeScript support, elegant api",
+        "cons": "no support for all ton services"
+      }
+    }
+  }
+}
