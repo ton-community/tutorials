@@ -13,7 +13,7 @@ The first usage patten of our dapp would be through a regular web browser. Our f
 
 The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
-<video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video>
+<video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video><br>
 
 During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.
 
@@ -248,7 +248,7 @@ function App() {
 export default App
 ```
 
-To rebuilt the web app, run in terminal:
+To rebuild the web app, run in terminal:
 
 ```console
 npm run dev
@@ -383,7 +383,7 @@ function App() {
 export default App
 ```
 
-Time to rebuilt the web app, run in terminal:
+Time to rebuild the web app, run in terminal:
 
 ```console
 npm run dev
@@ -477,7 +477,7 @@ Replace `src/index.css` with the following content:
 }
 ```
 
-As usual, to rebuilt the web app, run in terminal:
+As usual, to rebuild the web app, run in terminal:
 
 ```console
 npm run dev
@@ -529,7 +529,9 @@ Edit `src/main.tsx` and replace the constant `manifestUrl` with the future URL o
 const manifestUrl = 'https://my-gituser.github.io/my-twa/tonconnect-manifest.json';
 ```
 
-Another step to remember is changing the `base` property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set `base` to the root directory of the website under the domain. In the example above, since the repo name is `my-twa` and the URL is `https://my-gituser.github.io/my-twa`, the website is published under the directory `/my-twa/` in the domain. Let's set this in `vite.config.js`:
+Another step to remember is changing the `base` property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set `base` to the root directory of the website under the domain. In the example above, since the repo name is `my-twa` and the URL is `https://my-gituser.github.io/my-twa`, the website is published under the directory `/my-twa/` in the domain.
+
+Let's set this in `vite.config.js`:
 
 ```ts
 export default defineConfig({
@@ -586,7 +588,7 @@ Back in botfather, tap the menu button and edit your bots by selecting "/mybots"
 https://my-gituser.github.io/my-twa
 ```
 
-That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations.
+That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations!
 
 <img src="https://i.imgur.com/lVL1Bl0.png" width=300 /><br>
 

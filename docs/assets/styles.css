@@ -21,7 +21,7 @@
 
 a {
   color: #0099e5;
-  border-bottom: ".75px solid #08c9";
+  border-bottom: 0.75px solid rgba(0, 136, 204, 0.6);
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -393,7 +393,7 @@ body {
 .post .author {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   margin-left: 30px;
   margin-bottom: 50px;
 }
@@ -406,6 +406,7 @@ body {
 .post .author span {
   font-size: 15px;
   opacity: 0.6;
+  margin-right: 10px;
 }
 .post .author .social {
   color: #0099e5;
@@ -526,11 +527,15 @@ nav {
   font-weight: 500;
   font-size: 20px;
 }
+nav a {
+  border-bottom: none;
+}
 
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
 }
 .logo img {
   height: 34px;

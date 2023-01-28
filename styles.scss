@@ -26,7 +26,7 @@ $link-color: #0099e5;
 
 a {
   color: $link-color;
-  border-bottom: ".75px solid #08c9";
+  border-bottom: .75px solid #08c9;
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -397,7 +397,7 @@ body {
   .author {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     margin-left: 30px;
     margin-bottom: 50px;
     img.face {
@@ -409,6 +409,7 @@ body {
     span {
       font-size: 15px;
       opacity: 0.6;
+      margin-right: 10px;
     }
     .social {
       color: $link-color;
@@ -542,12 +543,16 @@ nav {
   align-items: center;
   font-weight: 500;
   font-size: 20px;
+  a {
+    border-bottom: none;
+  };
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
   img {
     height: 34px;
   }

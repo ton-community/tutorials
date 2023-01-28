@@ -6,6 +6,7 @@
 <p>The first usage patten of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like <a href="https://pages.github.com/">GitHub Pages</a>. End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.</p>
 <p>The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building <a href="https://core.telegram.org/bots/webapps">Telegam Web Apps</a> (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.</p>
 <video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video>
+<p><br></p>
 <p>During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.</p>
 <h2 id="step2setupyourlocalmachine">Step 2: Set up your local machine</h2>
 <p>Before we can start writing code, we need to install certain developer tools on our computer.</p>
@@ -180,7 +181,7 @@ function App() {
 
 export default App
 </code></pre>
-<p>To rebuilt the web app, run in terminal:</p>
+<p>To rebuild the web app, run in terminal:</p>
 <pre><code class="console language-console">npm run dev
 </code></pre>
 <p>Then refresh the web browser viewing the URL shown on-screen. You should see both the counter address and the counter value taken from the chain on the main screen. As you recall, we initialized the counter value to a very large value (number of milliseconds since the epoch, something like 1674271323207). Don't worry about styling, we will handle this later.</p>
@@ -298,7 +299,7 @@ function App() {
 
 export default App
 </code></pre>
-<p>Time to rebuilt the web app, run in terminal:</p>
+<p>Time to rebuild the web app, run in terminal:</p>
 <pre><code class="console language-console">npm run dev
 </code></pre>
 <p>Then refresh the web browser viewing the URL shown on-screen. You should see a new "Increment" link on the bottom of the screen. I'm assuming that you're still on desktop, make a note of the counter value and click the link. </p>
@@ -381,7 +382,7 @@ export default App
   }
 }
 </code></pre>
-<p>As usual, to rebuilt the web app, run in terminal:</p>
+<p>As usual, to rebuild the web app, run in terminal:</p>
 <pre><code class="console language-console">npm run dev
 </code></pre>
 <p>And refresh the web browser viewing the URL shown on-screen. Our app should look pretty now.</p>
@@ -409,7 +410,8 @@ export default App
 <p>Edit <code>src/main.tsx</code> and replace the constant <code>manifestUrl</code> with the future URL of your manifest:</p>
 <pre><code class="ts language-ts">const manifestUrl = 'https://my-gituser.github.io/my-twa/tonconnect-manifest.json';
 </code></pre>
-<p>Another step to remember is changing the <code>base</code> property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set <code>base</code> to the root directory of the website under the domain. In the example above, since the repo name is <code>my-twa</code> and the URL is <code>https://my-gituser.github.io/my-twa</code>, the website is published under the directory <code>/my-twa/</code> in the domain. Let's set this in <code>vite.config.js</code>:</p>
+<p>Another step to remember is changing the <code>base</code> property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set <code>base</code> to the root directory of the website under the domain. In the example above, since the repo name is <code>my-twa</code> and the URL is <code>https://my-gituser.github.io/my-twa</code>, the website is published under the directory <code>/my-twa/</code> in the domain.</p>
+<p>Let's set this in <code>vite.config.js</code>:</p>
 <pre><code class="ts language-ts">export default defineConfig({
   plugins: [react(), nodePolyfills()],
   base: '/my-twa/',
@@ -439,7 +441,7 @@ export default App
 <p>Back in botfather, tap the menu button and edit your bots by selecting "/mybots". Select the bot you've just created. Select "Bot Settings" and then select "Menu Button". Now select "Configure menu button" to edit the URL and type your published website URL:</p>
 <pre><code class="console language-console">https://my-gituser.github.io/my-twa
 </code></pre>
-<p>That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations.</p>
+<p>That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations!</p>
 <p><img src="https://i.imgur.com/lVL1Bl0.png" width=300 /><br></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/03-client/test">here</a>.</p>
