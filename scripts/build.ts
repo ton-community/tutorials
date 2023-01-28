@@ -88,20 +88,6 @@ function convertMdsToHtmls(tutorial: string) {
       const text = fs.readFileSync(`docs/${tutorial}/${file}`).toString();
       const converter = new showdown.Converter({
         literalMidWordUnderscores: true,
-        // fix https://github.com/showdownjs/showdown/issues/819 
-        // solution: https://github.com/showdownjs/showdown/issues/819#issuecomment-788144412
-        extensions: [
-          {
-            type: 'output',
-            regex: new RegExp(`&lt;`, 'g'),
-            replace: `<`
-          },
-          {
-              type: 'output',
-              regex: new RegExp(`&gt;`, 'g'),
-              replace: `>`
-          }
-        ]
       });
       const html = converter.makeHtml(text);
       fs.writeFileSync(`docs/${tutorial}/${filename}.html`, html);

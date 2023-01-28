@@ -66,12 +66,12 @@ import { Cell } from "ton-core";
 import { Blockchain, OpenedContract, TreasuryContract } from "@ton-community/sandbox";
 import Counter from "./counter"; // this is the interface class from tutorial 2
 
-describe("Counter tests", () => {
+describe("Counter tests", () =&gt; {
   let blockchain: Blockchain;
-  let wallet1: OpenedContract<TreasuryContract>;
-  let counterContract: OpenedContract<Counter>;
+  let wallet1: OpenedContract&lt;TreasuryContract&gt;;
+  let counterContract: OpenedContract&lt;Counter&gt;;
 
-  beforeEach(async () =>  {
+  beforeEach(async () =&gt;  {
     // prepare Counter's initial code and data cells for deployment
     const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from tutorial 2
     const initialCounterValue = 17; // no collisions possible since sandbox is a private local instance
@@ -86,7 +86,7 @@ describe("Counter tests", () => {
     await counterContract.sendDeploy(wallet1.getSender());
   }),
 
-  it("should run the first test", async () => {
+  it("should run the first test", async () =&gt; {
     // currently empty, will place a test body here soon
   });
 });
@@ -106,7 +106,7 @@ describe("Counter tests", () => {
 </code></pre>
 <p>As you recall, our test skeleton initializes our contract with a data cell via <code>Counter.createForDeploy()</code>. If the initial counter value is 17, we expect the getter to return 17 after initialization.</p>
 <p>Copy the skeleton to a new file named <code>step3.spec.ts</code> and add the following test to it:</p>
-<pre><code class="ts language-ts">  it("should get counter value", async () => {
+<pre><code class="ts language-ts">  it("should get counter value", async () =&gt; {
     const value = await counterContract.getCounter();
     expect(value).toEqual(17n);
   });
@@ -132,7 +132,7 @@ describe("Counter tests", () => {
 </code></pre>
 <p>Let's write a test that sends a message with op #1 = <em>increment</em>. Our interface class already knows how to encode the message.</p>
 <p>Copy the last test file to a new file named <code>step4.spec.ts</code> and add the following test to it:</p>
-<pre><code class="ts language-ts">  it("should increment the counter value", async () =>  {
+<pre><code class="ts language-ts">  it("should increment the counter value", async () =&gt;  {
     await counterContract.sendIncrement(wallet1.getSender());
     const counterValue = await counterContract.getCounter();
     expect(counterValue).toEqual(18n);
@@ -165,7 +165,7 @@ describe("Counter tests", () => {
 <p>The second debug print I added is whenever an op #1 = <em>increment</em> message received. This time I print a constant string instead of a variable.</p>
 <p>Since we changed our FunC code, we'll have to rebuild the contract to see the effect and generate a new <code>counter.cell</code>. I've done this for your convenience and renamed the file to <code>counter.debug.cell</code>, it is available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/04-testing/test/counter.debug.cell">here</a>.</p>
 <p>Copy the original test skeleton to a new file named <code>step5.spec.ts</code> and add the following tests:</p>
-<pre><code class="ts language-ts">  it("should send ton coin to the contract", async () => {
+<pre><code class="ts language-ts">  it("should send ton coin to the contract", async () =&gt; {
     console.log("sending 7.123 TON");
     await wallet1.send({
       to: counterContract.address,
@@ -173,7 +173,7 @@ describe("Counter tests", () => {
     });
   });
 
-  it("should increment the counter value", async () =>  {
+  it("should increment the counter value", async () =&gt;  {
     console.log("sending increment message");
     await counterContract.sendIncrement(wallet1.getSender());
   })

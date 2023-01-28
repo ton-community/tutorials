@@ -111,7 +111,7 @@
 <p>In the previous tutorial we deployed a Counter smart contract to TON blockchain (either testnet or mainnet). This contract acts as the <em>backend server</em> of our application. In this tutorial, we will implement the <em>frontend</em> or <em>client</em> and allow end-users to access it from a web browser.</p>
 <p>We will also recall that the appilcation that we're building is <em>decentralized</em>. Decentralized apps (dapps) have special <a href="https://defi.org/ton/#app-safety-guidelines">properties</a>. For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.</p>
 <h2 id="usagepatterns">Usage patterns</h2>
-<p>TON blockchain is inspired and complementary to <a href="https://telegram.org/">Telegram</a> messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.</p>
+<p>TON blockchain is inspired by and complementary to <a href="https://telegram.org/">Telegram</a> messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.</p>
 <p>The first usage patten of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like <a href="https://pages.github.com/">GitHub Pages</a>. End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.</p>
 <p>The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building <a href="https://core.telegram.org/bots/webapps">Telegam Web Apps</a> (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.</p>
 <video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video>
@@ -134,13 +134,14 @@ npm install @orbs-network/ton-access
 <pre><code class="console language-console">npm install vite-plugin-node-polyfills
 </code></pre>
 <p>Now modify the file <code>vite.config.ts</code> so it looks like this:</p>
-<pre><code class="ts language-ts">import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
+<pre><code class="ts language-ts">import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), nodePolyfills()],
+  base: '/',
 });
 </code></pre>
 <p>To see your empty app template, run in terminal:</p>
@@ -154,32 +155,32 @@ export default defineConfig({
 </code></pre>
 <p>When our app connects to the user's wallet, it will identify itself using a <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a> file. The wallet will ask for the user's permission to connect to the app and display the information from the manifest. Since the manifest needs to be publicly available on the Internet, we're going to use an example one that I've deployed in advance during development. Later, when we deploy our website, we will replace the example manifest with your real one.</p>
 <p>Modify the file <code>src/main.tsx</code> to use the TON Connect provider:</p>
-<pre><code class="tsx language-tsx">import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+<pre><code class="tsx language-tsx">import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
 // this manifest is used temporarily for development purposes
 const manifestUrl = 'https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <TonConnectUIProvider manifestUrl={manifestUrl}>
-    <App />
-  </TonConnectUIProvider>,
+  &lt;TonConnectUIProvider manifestUrl={manifestUrl}&gt;
+    &lt;App /&gt;
+  &lt;/TonConnectUIProvider&gt;,
 )
 </code></pre>
 <h2 id="step5addaconnectbuttontotheapp">Step 5: Add a Connect button to the app</h2>
 <p>The first action we're going to offer the user is to <em>Connect</em> their wallet to the app. By connecting, the user agrees to share their public wallet address with the app. This isn't very dangerous since the entire transaction history of the wallet and its balance are publicly available on-chain anyways.</p>
 <p>Edit the file <code>src/App.tsx</code> and replace its contents with the following:</p>
-<pre><code class="tsx language-tsx">import './App.css'
+<pre><code class="tsx language-tsx">import './App.css';
 import { TonConnectButton } from '@tonconnect/ui-react';
 
 function App() {
   return (
-    <div>
-      <TonConnectButton />
-    </div>
+    &lt;div&gt;
+      &lt;TonConnectButton /&gt;
+    &lt;/div&gt;
   );
 }
 
@@ -193,14 +194,14 @@ export default App
 <p>If everything is wired properly, you should see a confirmation dialong in the wallet mobile app. If you approve the connection, you will see your address in the web app UI!</p>
 <h2 id="step6readthecountervaluefromthechain">Step 6: Read the counter value from the chain</h2>
 <p>It's time to interact with our Counter contract and show the current counter value. To do that, we will need the TypeScript interface class that we created in tutorial 2. This class is useful because it defines all possible interactions with the contract in a manner that abstracts implementation and encoding details. This is particularly useful when you have one developer in your team that writes the contract and a different developer that builds the frontend.</p>
-<p>Copy <code>counter.ts</code> from tutorial 2 to <code>src/contracts/counter.ts</code> (also available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/contracts/counter.ts">here</a>).</p>
+<p>Copy <code>counter.ts</code> from tutorial 2 to <code>src/contracts/counter.ts</code> (also available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/src/contracts/counter.ts">here</a>).</p>
 <p>The next thing we'll do is implement a general purpose React <a href="https://reactjs.org/docs/hooks-intro.html">hook</a> that will assist us in initializing async objects. Create the file <code>src/hooks/useAsyncInitialize.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { useEffect, useState } from 'react';
 
-export function useAsyncInitialize<T>(func: () => Promise<T>, deps: any[] = []) {
-  const [state, setState] = useState<T | undefined>();
-  useEffect(() => {
-    (async () => {
+export function useAsyncInitialize&lt;T&gt;(func: () =&gt; Promise&lt;T&gt;, deps: any[] = []) {
+  const [state, setState] = useState&lt;T | undefined&gt;();
+  useEffect(() =&gt; {
+    (async () =&gt; {
       setState(await func());
     })();
   }, deps);
@@ -210,22 +211,349 @@ export function useAsyncInitialize<T>(func: () => Promise<T>, deps: any[] = []) 
 </code></pre>
 <p>Next, we're going to create another React hook that will rely on <code>useAsyncInitialize</code> and will initialize an RPC client in our app. An RPC service provider similar to <a href="https://infura.io">Infura</a> on Ethereum will allow us to query data from the chain. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Create the file <code>src/hooks/useTonClient.ts</code> with the following content:</p>
-<hr />
-<h2 id="networkmainnet">network:mainnet</h2>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from '@orbs-network/ton-access';
 import { TonClient } from 'ton';
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
   return useAsyncInitialize(
-    async () =>
+    async () =&gt;
       new TonClient({
         endpoint: await getHttpEndpoint(),
       })
   );
 }
 </code></pre>
-<hr />
+<p>Our final hook will open the Counter contract instance on-chain by address and allow the app to access it. When our frontend developer starts working on the client, the contract should already be deployed. This means all they need to access it is the deployment address. We've done the deployment in tutorial 2 step 8. The address we got was <code>EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb</code> but yours should be different.</p>
+<p>Create the file <code>src/hooks/useCounterContract.ts</code> with the following content. Be sure to replace our deployed contract address with yours in the code below:</p>
+<pre><code class="ts language-ts">import { useEffect, useState } from 'react';
+import Counter from '../contracts/counter';
+import { useTonClient } from './useTonClient';
+import { useAsyncInitialize } from './useAsyncInitialize';
+import { Address, OpenedContract } from 'ton-core';
+
+export function useCounterContract() {
+  const client = useTonClient();
+  const [val, setVal] = useState&lt;null | number&gt;();
+
+  const counterContract = useAsyncInitialize(async () =&gt; {
+    if (!client) return;
+    const contract = new Counter(
+      Address.parse('EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb') // replace with your address from tutorial 2 step 8
+    );
+    return client.open(contract) as OpenedContract&lt;Counter&gt;;
+  }, [client]);
+
+  useEffect(() =&gt; {
+    async function getValue() {
+      if (!counterContract) return;
+      setVal(null);
+      const val = await counterContract.getCounter();
+      setVal(Number(val));
+    }
+    getValue();
+  }, [counterContract]);
+
+  return {
+    value: val,
+    address: counterContract?.address.toString(),
+  };
+}
+</code></pre>
+<p>We're almost done. Let's add some simple UI to show this information on the main app screen. Replace <code>src/App.tsx</code> with the following content:</p>
+<pre><code class="ts language-ts">import './App.css';
+import { TonConnectButton } from '@tonconnect/ui-react';
+import { useCounterContract } from './hooks/useCounterContract';
+
+function App() {
+  const { value, address } = useCounterContract();
+
+  return (
+    &lt;div className='App'&gt;
+      &lt;div className='Container'&gt;
+        &lt;TonConnectButton /&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Address&lt;/b&gt;
+          &lt;div className='Hint'&gt;{address?.slice(0, 30) + '...'}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Value&lt;/b&gt;
+          &lt;div&gt;{value ?? 'Loading...'}&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App
+</code></pre>
+<p>To rebuilt the web app, run in terminal:</p>
+<pre><code class="console language-console">npm run dev
+</code></pre>
+<p>Then refresh the web browser viewing the URL shown on-screen. You should see both the counter address and the counter value taken from the chain on the main screen. As you recall, we initialized the counter value to a very large value (number of milliseconds since the epoch, something like 1674271323207). Don't worry about styling, we will handle this later.</p>
+<h2 id="step7incrementthecounteronchain">Step 7: Increment the counter on-chain</h2>
+<p>The last interaction was read-only, let's change the contract state by sending a transaction. The main action our counter contract supports is <em>increment</em>. Let's add a button to the main screen that sends this transaction. As you recall, sending a transaction on-chain costs gas, so we would expect the wallet to approve this action with the user and show how much TON coin will be spent.</p>
+<p>Before starting, we're going a add another hook that will generate a <code>sender</code> object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.</p>
+<p>Create the file <code>src/hooks/useTonConnect.ts</code> with the following content:</p>
+<pre><code class="ts language-ts">import { useTonConnectUI } from '@tonconnect/ui-react';
+import { Sender, SenderArguments } from 'ton-core';
+
+export function useTonConnect(): { sender: Sender; connected: boolean } {
+  const [tonConnectUI] = useTonConnectUI();
+
+  return {
+    sender: {
+      send: async (args: SenderArguments) =&gt; {
+        tonConnectUI.sendTransaction({
+          messages: [
+            {
+              address: args.to.toString(),
+              amount: args.value.toString(),
+              payload: args.body?.toBoc().toString('base64'),
+            },
+          ],
+          validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
+        });
+      },
+    },
+    connected: tonConnectUI.connected,
+  };
+}
+</code></pre>
+<p>The next thing we're going to do is improve our existing <code>useCounterContract</code> hook and add two small features. The first is automatic polling of the counter value every 5 seconds. This will come in handy to show the user that the value indeed changed. The second is exposing the <code>sendIncrement</code> of our interface class and wiring it to the <code>sender</code>.</p>
+<p>Open the file <code>src/hooks/useCounterContract.ts</code> and replace its contents with:</p>
+<pre><code class="ts language-ts">import { useEffect, useState } from 'react';
+import Counter from '../contracts/counter';
+import { useTonClient } from './useTonClient';
+import { useAsyncInitialize } from './useAsyncInitialize';
+import { useTonConnect } from './useTonConnect';
+import { Address, OpenedContract } from 'ton-core';
+
+export function useCounterContract() {
+  const client = useTonClient();
+  const [val, setVal] = useState&lt;null | string&gt;();
+  const { sender } = useTonConnect();
+
+  const sleep = (time: number) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, time));
+
+  const counterContract = useAsyncInitialize(async () =&gt; {
+    if (!client) return;
+    const contract = new Counter(
+      Address.parse('EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb') // replace with your address from tutorial 2 step 8
+    );
+    return client.open(contract) as OpenedContract&lt;Counter&gt;;
+  }, [client]);
+
+  useEffect(() =&gt; {
+    async function getValue() {
+      if (!counterContract) return;
+      setVal(null);
+      const val = await counterContract.getCounter();
+      setVal(val.toString());
+      await sleep(5000); // sleep 5 seconds and poll value again
+      getValue();
+    }
+    getValue();
+  }, [counterContract]);
+
+  return {
+    value: val,
+    address: counterContract?.address.toString(),
+    sendIncrement: () =&gt; {
+      return counterContract?.sendIncrement(sender);
+    },
+  };
+}
+</code></pre>
+<p>We're almost done. Let's add simple UI to allow the user to trigger the increment. Replace <code>src/App.tsx</code> with the following content:</p>
+<pre><code class="ts language-ts">import './App.css';
+import { TonConnectButton } from '@tonconnect/ui-react';
+import { useTonConnect } from './hooks/useTonConnect';
+import { useCounterContract } from './hooks/useCounterContract';
+
+function App() {
+  const { connected } = useTonConnect();
+  const { value, address, sendIncrement } = useCounterContract();
+
+  return (
+    &lt;div className='App'&gt;
+      &lt;div className='Container'&gt;
+        &lt;TonConnectButton /&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Address&lt;/b&gt;
+          &lt;div className='Hint'&gt;{address?.slice(0, 30) + '...'}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Value&lt;/b&gt;
+          &lt;div&gt;{value ?? 'Loading...'}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;a
+          className={`Button ${connected ? 'Active' : 'Disabled'}`}
+          onClick={() =&gt; {
+            sendIncrement();
+          }}
+        &gt;
+          Increment
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App
+</code></pre>
+<p>Time to rebuilt the web app, run in terminal:</p>
+<pre><code class="console language-console">npm run dev
+</code></pre>
+<p>Then refresh the web browser viewing the URL shown on-screen. You should see a new "Increment" link on the bottom of the screen. I'm assuming that you're still on desktop, make a note of the counter value and click the link. </p>
+<p>Since your mobile TonKeeper wallet is connected, this action should reach the TonKeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.</p>
+<p>If everything is working, the counter value on screen should refresh automatically and you should a value that his higher by one.</p>
+<h2 id="step8styletheapp">Step 8: Style the app</h2>
+<p>Functionally our app is working, but we can definitely improve what it looks like. Giving a polished user experience is particularly important on TON blockchain. We are aiming to reach mass adoption and the next billion users. We won't succeed unless our apps look as polished as the ones these users are already using.</p>
+<p>Replace <code>src/index.css</code> with the following content:</p>
+<pre><code class="css language-css">:root {
+  --tg-theme-bg-color: #efeff3;
+  --tg-theme-button-color: #63d0f9;
+  --tg-theme-button-text-color: black;
+}
+
+.App {
+  height: 100vh;
+  background-color: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+}
+
+.Container {
+  padding: 2rem;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.Button {
+  background-color: var(--tg-theme-button-color);
+  color: var(--tg-theme-button-text-color);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+}
+
+.Disabled {
+  filter: brightness(50%);
+  cursor: initial;
+}
+
+.Button.Active:hover {
+  filter: brightness(105%);
+}
+
+.Hint {
+  color: var(--tg-theme-hint-color);
+}
+
+.Card {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-theme-bg-color: #131415;
+    --tg-theme-text-color: #fff;
+    --tg-theme-button-color: #32a6fb;
+    --tg-theme-button-text-color: #fff;
+  }
+
+  .Card {
+    background-color: var(--tg-theme-bg-color);
+    filter: brightness(165%);
+  }
+
+  .CounterValue {
+    border-radius: 16px;
+    color: white;
+    padding: 10px;
+  }
+}
+</code></pre>
+<p>As usual, to rebuilt the web app, run in terminal:</p>
+<pre><code class="console language-console">npm run dev
+</code></pre>
+<p>And refresh the web browser viewing the URL shown on-screen. Our app should look pretty now.</p>
+<p>Up until now we used our app in a desktop-mobile flow due to the development cycle. It would be nice to try our app in a mobile-mobile flow. This means we need to open the app's web page from a mobile device. This will be much easier to do after our web app is published to the Internet.</p>
+<h2 id="step9publishwebapptogithubpages">Step 9: Publish web app to GitHub Pages</h2>
+<p>I believe that the best place to publish dapps is <a href="https://pages.github.com/">GitHub Pages</a> - not just for development but also for production. GitHub Pages is a free service for open source projects that allows them to publish static websites (HTML/CSS/JS) directly from a GitHub repo. Since all dapps should always be <a href="https://defi.org/ton/#app-safety-guidelines">open source</a>, all dapps qualify. GitHub Pages also supports <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">custom domains</a>, so the end result will be identical to any other production publishing service.</p>
+<p>Another benefit of GitHub Pages is that it supports static websites only that only run client-side. There's no backend that can run code or server-side rendering. This limitation is actually a feature for dapps, because decentralized apps should never depend on backend servers as those are centralized.</p>
+<p>The last important feature of GitHub Pages that makes it particularly appropriate for dapps is that the reliance on a git repo gives us many community governance features for free. For example, a group of maintainers can share the website deployment privilege easily because all of them have write access to the repo. Outside collaborators from the community can submit PRs and if those are merged, these community members can influence the live dapp. And lastly, if anyone from the community is unhappy with how the dapp is governed, they can always fork the GitHub repo and create their own independent client that can also be published to GitHub Pages in one click.</p>
+<p>Let's assume that your GitHub username is <code>my-gituser</code> and that you pushed the client project to a GitHub repo named <code>my-twa</code> under this user. The GitHub URL of the repo is therefore <code>https://github.com/my-gituser/my-twa</code>. You will naturally have to replace the names in this example with the actual names that you're using.</p>
+<p>Unless you connect a custom domain to GitHub Pages, the website will be published under the URL:</p>
+<pre><code class="console language-console">https://my-gituser.github.io/my-twa
+</code></pre>
+<p>Since we're about to go live, it's time to use a proper TON Connect <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a>. This will allow us to style the initial connection dialog that appears in wallets like TonKeeper.</p>
+<p>Create the file <code>public/tonconnect-manifest.json</code> with this content:</p>
+<pre><code class="json language-json">{
+  "url": "https://my-gituser.github.io/my-twa",
+  "name": "My TWA",
+  "iconUrl": "https://my-gituser.github.io/my-twa/icon.png"
+}
+</code></pre>
+<p>Replace the URL field with your webite URL and choose a short name of your dapp. For icon, create a PNG file 180x180 pixels in size and put it under <code>public/icon.png</code>.</p>
+<p>After we publish the website, this manifest file will be available at:</p>
+<pre><code class="console language-console">https://my-gituser.github.io/my-twa/tonconnect-manifest.json
+</code></pre>
+<p>Edit <code>src/main.tsx</code> and replace the constant <code>manifestUrl</code> with the future URL of your manifest:</p>
+<pre><code class="ts language-ts">const manifestUrl = 'https://my-gituser.github.io/my-twa/tonconnect-manifest.json';
+</code></pre>
+<p>Another step to remember is changing the <code>base</code> property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set <code>base</code> to the root directory of the website under the domain. In the example above, since the repo name is <code>my-twa</code> and the URL is <code>https://my-gituser.github.io/my-twa</code>, the website is published under the directory <code>/my-twa/</code> in the domain. Let's set this in <code>vite.config.js</code>:</p>
+<pre><code class="ts language-ts">export default defineConfig({
+  plugins: [react(), nodePolyfills()],
+  base: '/my-twa/',
+});
+</code></pre>
+<p>Build the website for publishing by running in terminal:</p>
+<pre><code class="console language-console">npm run build
+</code></pre>
+<p>Publishing to GitHub Pages is pretty straightforward. You would normally create a git branch named <code>gh-pages</code> in your repo that contains the static website files that were generated in the <code>dist</code> directory during the build. Then you would normally open the repo on GitHub's web UI and enable "Pages" under "Settings" (pointing the "Branch" to "gh-pages" after it is pushed).</p>
+<p>For the exact steps, you can follow Vite's tutorial for <a href="https://vitejs.dev/guide/static-deploy.html#github-pages">Deploying to GitHub Pages</a>.</p>
+<p>Once the website is published, we can finally access it from mobile. Take your mobile device and open the URL <code>https://my-gituser.github.io/my-twa</code> in the mobile browser.</p>
+<p>This is a good opportunity to try the mobile-mobile flow. In the mobile browser, tap on the "Connect Wallet" button and choose "Tonkeeper" (or any other supporting wallet you're using). This should switch you to the TonKeeper mobile app where you can approve the connection. After approval, you should be switched back to the website. Now tap the "Increment" button. This should switch you to the TonKeeper mobile app where you can approve the transaction. As you can see, in the mobile-mobile flow there are no QR codes involved since the dapp and the wallet run on the same device.</p>
+<h2 id="step10publishwebappastwaintelegram">Step 10: Publish web app as TWA in Telegram</h2>
+<p>Having our dapp accessible through a web browser is not enough. We want to make the most from the seamless integration into Telegram messenger. To feature our dapp in Telegram, we will also have to publish it as a TWA. Luckily, this is pretty easy to do.</p>
+<p>The first step is to add the <a href="https://github.com/twa-dev">TWA SDK</a> to our project. This will allow us to get theme properties while inside Telegram. Run in terminal:</p>
+<pre><code class="console language-console">npm install @twa-dev/sdk
+</code></pre>
+<p>Then, edit <code>src/App.tsx</code> and add the following import:</p>
+<pre><code class="ts language-ts">import '@twa-dev/sdk';
+</code></pre>
+<p>Now rebuild the website for publishing by running in terminal:</p>
+<pre><code class="console language-console">npm run build
+</code></pre>
+<p>Publish the updated website like we did in step 9, probably just by pushing it to git to the correct branch.</p>
+<p>The final step is to create a new Telegram bot and have it showcase our website when opened. To do that we will interact with another Telegram bot called "botfather". On a device where your Telegram messenger is logged in, open <a href="https://t.me/botfather">https://t.me/botfather</a> and then switch to the bot inside the Telegram app. Choose "Start".</p>
+<p>To create a new bot select "/newbot". Choose a name for the bot and then a username according to the on-screen instructions. Make a note of the username since this is how end-users will access your TWA. Assuming that your bot username is <code>my_twa_bot</code>, it will be accessible in the Telegram chat by typing <code>@my_twa_bot</code> or through the URL <a href="https://t.me/my_twa_bot">https://t.me/my_twa_bot</a>. You can even purchase a premium Telegram username for your bot on the auction platform <a href="https://fragment.com">Fragment</a>.</p>
+<p>Back in botfather, tap the menu button and edit your bots by selecting "/mybots". Select the bot you've just created. Select "Bot Settings" and then select "Menu Button". Now select "Configure menu button" to edit the URL and type your published website URL:</p>
+<pre><code class="console language-console">https://my-gituser.github.io/my-twa
+</code></pre>
+<p>That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations.</p>
+<p><img src="https://i.imgur.com/lVL1Bl0.png" width=300 /><br></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/03-client/test">here</a>.</p>
+<p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
+<p>Happy coding!</p>
          </div>
         
          <div class="post" data-combination="testnet-npmton">
@@ -241,7 +569,7 @@ export function useTonClient() {
 <p>In the previous tutorial we deployed a Counter smart contract to TON blockchain (either testnet or mainnet). This contract acts as the <em>backend server</em> of our application. In this tutorial, we will implement the <em>frontend</em> or <em>client</em> and allow end-users to access it from a web browser.</p>
 <p>We will also recall that the appilcation that we're building is <em>decentralized</em>. Decentralized apps (dapps) have special <a href="https://defi.org/ton/#app-safety-guidelines">properties</a>. For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.</p>
 <h2 id="usagepatterns">Usage patterns</h2>
-<p>TON blockchain is inspired and complementary to <a href="https://telegram.org/">Telegram</a> messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.</p>
+<p>TON blockchain is inspired by and complementary to <a href="https://telegram.org/">Telegram</a> messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.</p>
 <p>The first usage patten of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like <a href="https://pages.github.com/">GitHub Pages</a>. End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.</p>
 <p>The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building <a href="https://core.telegram.org/bots/webapps">Telegam Web Apps</a> (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.</p>
 <video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video>
@@ -264,13 +592,14 @@ npm install @orbs-network/ton-access
 <pre><code class="console language-console">npm install vite-plugin-node-polyfills
 </code></pre>
 <p>Now modify the file <code>vite.config.ts</code> so it looks like this:</p>
-<pre><code class="ts language-ts">import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
+<pre><code class="ts language-ts">import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), nodePolyfills()],
+  base: '/',
 });
 </code></pre>
 <p>To see your empty app template, run in terminal:</p>
@@ -284,32 +613,32 @@ export default defineConfig({
 </code></pre>
 <p>When our app connects to the user's wallet, it will identify itself using a <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a> file. The wallet will ask for the user's permission to connect to the app and display the information from the manifest. Since the manifest needs to be publicly available on the Internet, we're going to use an example one that I've deployed in advance during development. Later, when we deploy our website, we will replace the example manifest with your real one.</p>
 <p>Modify the file <code>src/main.tsx</code> to use the TON Connect provider:</p>
-<pre><code class="tsx language-tsx">import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
+<pre><code class="tsx language-tsx">import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
 // this manifest is used temporarily for development purposes
 const manifestUrl = 'https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <TonConnectUIProvider manifestUrl={manifestUrl}>
-    <App />
-  </TonConnectUIProvider>,
+  &lt;TonConnectUIProvider manifestUrl={manifestUrl}&gt;
+    &lt;App /&gt;
+  &lt;/TonConnectUIProvider&gt;,
 )
 </code></pre>
 <h2 id="step5addaconnectbuttontotheapp">Step 5: Add a Connect button to the app</h2>
 <p>The first action we're going to offer the user is to <em>Connect</em> their wallet to the app. By connecting, the user agrees to share their public wallet address with the app. This isn't very dangerous since the entire transaction history of the wallet and its balance are publicly available on-chain anyways.</p>
 <p>Edit the file <code>src/App.tsx</code> and replace its contents with the following:</p>
-<pre><code class="tsx language-tsx">import './App.css'
+<pre><code class="tsx language-tsx">import './App.css';
 import { TonConnectButton } from '@tonconnect/ui-react';
 
 function App() {
   return (
-    <div>
-      <TonConnectButton />
-    </div>
+    &lt;div&gt;
+      &lt;TonConnectButton /&gt;
+    &lt;/div&gt;
   );
 }
 
@@ -323,14 +652,14 @@ export default App
 <p>If everything is wired properly, you should see a confirmation dialong in the wallet mobile app. If you approve the connection, you will see your address in the web app UI!</p>
 <h2 id="step6readthecountervaluefromthechain">Step 6: Read the counter value from the chain</h2>
 <p>It's time to interact with our Counter contract and show the current counter value. To do that, we will need the TypeScript interface class that we created in tutorial 2. This class is useful because it defines all possible interactions with the contract in a manner that abstracts implementation and encoding details. This is particularly useful when you have one developer in your team that writes the contract and a different developer that builds the frontend.</p>
-<p>Copy <code>counter.ts</code> from tutorial 2 to <code>src/contracts/counter.ts</code> (also available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/contracts/counter.ts">here</a>).</p>
+<p>Copy <code>counter.ts</code> from tutorial 2 to <code>src/contracts/counter.ts</code> (also available <a href="https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/src/contracts/counter.ts">here</a>).</p>
 <p>The next thing we'll do is implement a general purpose React <a href="https://reactjs.org/docs/hooks-intro.html">hook</a> that will assist us in initializing async objects. Create the file <code>src/hooks/useAsyncInitialize.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { useEffect, useState } from 'react';
 
-export function useAsyncInitialize<T>(func: () => Promise<T>, deps: any[] = []) {
-  const [state, setState] = useState<T | undefined>();
-  useEffect(() => {
-    (async () => {
+export function useAsyncInitialize&lt;T&gt;(func: () =&gt; Promise&lt;T&gt;, deps: any[] = []) {
+  const [state, setState] = useState&lt;T | undefined&gt;();
+  useEffect(() =&gt; {
+    (async () =&gt; {
       setState(await func());
     })();
   }, deps);
@@ -346,29 +675,343 @@ import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
   return useAsyncInitialize(
-    async () =>
+    async () =&gt;
       new TonClient({
         endpoint: await getHttpEndpoint({ network: 'testnet' }),
       })
   );
 }
 </code></pre>
-<hr />
-<h2 id="networkmainnet">network:mainnet</h2>
-<pre><code class="ts language-ts">import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from 'ton';
+<p>Our final hook will open the Counter contract instance on-chain by address and allow the app to access it. When our frontend developer starts working on the client, the contract should already be deployed. This means all they need to access it is the deployment address. We've done the deployment in tutorial 2 step 8. The address we got was <code>EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb</code> but yours should be different.</p>
+<p>Create the file <code>src/hooks/useCounterContract.ts</code> with the following content. Be sure to replace our deployed contract address with yours in the code below:</p>
+<pre><code class="ts language-ts">import { useEffect, useState } from 'react';
+import Counter from '../contracts/counter';
+import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
+import { Address, OpenedContract } from 'ton-core';
 
-export function useTonClient() {
-  return useAsyncInitialize(
-    async () =>
-      new TonClient({
-        endpoint: await getHttpEndpoint(),
-      })
-  );
+export function useCounterContract() {
+  const client = useTonClient();
+  const [val, setVal] = useState&lt;null | number&gt;();
+
+  const counterContract = useAsyncInitialize(async () =&gt; {
+    if (!client) return;
+    const contract = new Counter(
+      Address.parse('EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb') // replace with your address from tutorial 2 step 8
+    );
+    return client.open(contract) as OpenedContract&lt;Counter&gt;;
+  }, [client]);
+
+  useEffect(() =&gt; {
+    async function getValue() {
+      if (!counterContract) return;
+      setVal(null);
+      const val = await counterContract.getCounter();
+      setVal(Number(val));
+    }
+    getValue();
+  }, [counterContract]);
+
+  return {
+    value: val,
+    address: counterContract?.address.toString(),
+  };
 }
 </code></pre>
-<hr />
+<p>We're almost done. Let's add some simple UI to show this information on the main app screen. Replace <code>src/App.tsx</code> with the following content:</p>
+<pre><code class="ts language-ts">import './App.css';
+import { TonConnectButton } from '@tonconnect/ui-react';
+import { useCounterContract } from './hooks/useCounterContract';
+
+function App() {
+  const { value, address } = useCounterContract();
+
+  return (
+    &lt;div className='App'&gt;
+      &lt;div className='Container'&gt;
+        &lt;TonConnectButton /&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Address&lt;/b&gt;
+          &lt;div className='Hint'&gt;{address?.slice(0, 30) + '...'}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Value&lt;/b&gt;
+          &lt;div&gt;{value ?? 'Loading...'}&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App
+</code></pre>
+<p>To rebuilt the web app, run in terminal:</p>
+<pre><code class="console language-console">npm run dev
+</code></pre>
+<p>Then refresh the web browser viewing the URL shown on-screen. You should see both the counter address and the counter value taken from the chain on the main screen. As you recall, we initialized the counter value to a very large value (number of milliseconds since the epoch, something like 1674271323207). Don't worry about styling, we will handle this later.</p>
+<h2 id="step7incrementthecounteronchain">Step 7: Increment the counter on-chain</h2>
+<p>The last interaction was read-only, let's change the contract state by sending a transaction. The main action our counter contract supports is <em>increment</em>. Let's add a button to the main screen that sends this transaction. As you recall, sending a transaction on-chain costs gas, so we would expect the wallet to approve this action with the user and show how much TON coin will be spent.</p>
+<p>Before starting, we're going a add another hook that will generate a <code>sender</code> object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.</p>
+<p>Create the file <code>src/hooks/useTonConnect.ts</code> with the following content:</p>
+<pre><code class="ts language-ts">import { useTonConnectUI } from '@tonconnect/ui-react';
+import { Sender, SenderArguments } from 'ton-core';
+
+export function useTonConnect(): { sender: Sender; connected: boolean } {
+  const [tonConnectUI] = useTonConnectUI();
+
+  return {
+    sender: {
+      send: async (args: SenderArguments) =&gt; {
+        tonConnectUI.sendTransaction({
+          messages: [
+            {
+              address: args.to.toString(),
+              amount: args.value.toString(),
+              payload: args.body?.toBoc().toString('base64'),
+            },
+          ],
+          validUntil: Date.now() + 5 * 60 * 1000, // 5 minutes for user to approve
+        });
+      },
+    },
+    connected: tonConnectUI.connected,
+  };
+}
+</code></pre>
+<p>The next thing we're going to do is improve our existing <code>useCounterContract</code> hook and add two small features. The first is automatic polling of the counter value every 5 seconds. This will come in handy to show the user that the value indeed changed. The second is exposing the <code>sendIncrement</code> of our interface class and wiring it to the <code>sender</code>.</p>
+<p>Open the file <code>src/hooks/useCounterContract.ts</code> and replace its contents with:</p>
+<pre><code class="ts language-ts">import { useEffect, useState } from 'react';
+import Counter from '../contracts/counter';
+import { useTonClient } from './useTonClient';
+import { useAsyncInitialize } from './useAsyncInitialize';
+import { useTonConnect } from './useTonConnect';
+import { Address, OpenedContract } from 'ton-core';
+
+export function useCounterContract() {
+  const client = useTonClient();
+  const [val, setVal] = useState&lt;null | string&gt;();
+  const { sender } = useTonConnect();
+
+  const sleep = (time: number) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, time));
+
+  const counterContract = useAsyncInitialize(async () =&gt; {
+    if (!client) return;
+    const contract = new Counter(
+      Address.parse('EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb') // replace with your address from tutorial 2 step 8
+    );
+    return client.open(contract) as OpenedContract&lt;Counter&gt;;
+  }, [client]);
+
+  useEffect(() =&gt; {
+    async function getValue() {
+      if (!counterContract) return;
+      setVal(null);
+      const val = await counterContract.getCounter();
+      setVal(val.toString());
+      await sleep(5000); // sleep 5 seconds and poll value again
+      getValue();
+    }
+    getValue();
+  }, [counterContract]);
+
+  return {
+    value: val,
+    address: counterContract?.address.toString(),
+    sendIncrement: () =&gt; {
+      return counterContract?.sendIncrement(sender);
+    },
+  };
+}
+</code></pre>
+<p>We're almost done. Let's add simple UI to allow the user to trigger the increment. Replace <code>src/App.tsx</code> with the following content:</p>
+<pre><code class="ts language-ts">import './App.css';
+import { TonConnectButton } from '@tonconnect/ui-react';
+import { useTonConnect } from './hooks/useTonConnect';
+import { useCounterContract } from './hooks/useCounterContract';
+
+function App() {
+  const { connected } = useTonConnect();
+  const { value, address, sendIncrement } = useCounterContract();
+
+  return (
+    &lt;div className='App'&gt;
+      &lt;div className='Container'&gt;
+        &lt;TonConnectButton /&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Address&lt;/b&gt;
+          &lt;div className='Hint'&gt;{address?.slice(0, 30) + '...'}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div className='Card'&gt;
+          &lt;b&gt;Counter Value&lt;/b&gt;
+          &lt;div&gt;{value ?? 'Loading...'}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;a
+          className={`Button ${connected ? 'Active' : 'Disabled'}`}
+          onClick={() =&gt; {
+            sendIncrement();
+          }}
+        &gt;
+          Increment
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App
+</code></pre>
+<p>Time to rebuilt the web app, run in terminal:</p>
+<pre><code class="console language-console">npm run dev
+</code></pre>
+<p>Then refresh the web browser viewing the URL shown on-screen. You should see a new "Increment" link on the bottom of the screen. I'm assuming that you're still on desktop, make a note of the counter value and click the link. </p>
+<p>Since your mobile TonKeeper wallet is connected, this action should reach the TonKeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.</p>
+<p>If everything is working, the counter value on screen should refresh automatically and you should a value that his higher by one.</p>
+<h2 id="step8styletheapp">Step 8: Style the app</h2>
+<p>Functionally our app is working, but we can definitely improve what it looks like. Giving a polished user experience is particularly important on TON blockchain. We are aiming to reach mass adoption and the next billion users. We won't succeed unless our apps look as polished as the ones these users are already using.</p>
+<p>Replace <code>src/index.css</code> with the following content:</p>
+<pre><code class="css language-css">:root {
+  --tg-theme-bg-color: #efeff3;
+  --tg-theme-button-color: #63d0f9;
+  --tg-theme-button-text-color: black;
+}
+
+.App {
+  height: 100vh;
+  background-color: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+}
+
+.Container {
+  padding: 2rem;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.Button {
+  background-color: var(--tg-theme-button-color);
+  color: var(--tg-theme-button-text-color);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+}
+
+.Disabled {
+  filter: brightness(50%);
+  cursor: initial;
+}
+
+.Button.Active:hover {
+  filter: brightness(105%);
+}
+
+.Hint {
+  color: var(--tg-theme-hint-color);
+}
+
+.Card {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-theme-bg-color: #131415;
+    --tg-theme-text-color: #fff;
+    --tg-theme-button-color: #32a6fb;
+    --tg-theme-button-text-color: #fff;
+  }
+
+  .Card {
+    background-color: var(--tg-theme-bg-color);
+    filter: brightness(165%);
+  }
+
+  .CounterValue {
+    border-radius: 16px;
+    color: white;
+    padding: 10px;
+  }
+}
+</code></pre>
+<p>As usual, to rebuilt the web app, run in terminal:</p>
+<pre><code class="console language-console">npm run dev
+</code></pre>
+<p>And refresh the web browser viewing the URL shown on-screen. Our app should look pretty now.</p>
+<p>Up until now we used our app in a desktop-mobile flow due to the development cycle. It would be nice to try our app in a mobile-mobile flow. This means we need to open the app's web page from a mobile device. This will be much easier to do after our web app is published to the Internet.</p>
+<h2 id="step9publishwebapptogithubpages">Step 9: Publish web app to GitHub Pages</h2>
+<p>I believe that the best place to publish dapps is <a href="https://pages.github.com/">GitHub Pages</a> - not just for development but also for production. GitHub Pages is a free service for open source projects that allows them to publish static websites (HTML/CSS/JS) directly from a GitHub repo. Since all dapps should always be <a href="https://defi.org/ton/#app-safety-guidelines">open source</a>, all dapps qualify. GitHub Pages also supports <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">custom domains</a>, so the end result will be identical to any other production publishing service.</p>
+<p>Another benefit of GitHub Pages is that it supports static websites only that only run client-side. There's no backend that can run code or server-side rendering. This limitation is actually a feature for dapps, because decentralized apps should never depend on backend servers as those are centralized.</p>
+<p>The last important feature of GitHub Pages that makes it particularly appropriate for dapps is that the reliance on a git repo gives us many community governance features for free. For example, a group of maintainers can share the website deployment privilege easily because all of them have write access to the repo. Outside collaborators from the community can submit PRs and if those are merged, these community members can influence the live dapp. And lastly, if anyone from the community is unhappy with how the dapp is governed, they can always fork the GitHub repo and create their own independent client that can also be published to GitHub Pages in one click.</p>
+<p>Let's assume that your GitHub username is <code>my-gituser</code> and that you pushed the client project to a GitHub repo named <code>my-twa</code> under this user. The GitHub URL of the repo is therefore <code>https://github.com/my-gituser/my-twa</code>. You will naturally have to replace the names in this example with the actual names that you're using.</p>
+<p>Unless you connect a custom domain to GitHub Pages, the website will be published under the URL:</p>
+<pre><code class="console language-console">https://my-gituser.github.io/my-twa
+</code></pre>
+<p>Since we're about to go live, it's time to use a proper TON Connect <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a>. This will allow us to style the initial connection dialog that appears in wallets like TonKeeper.</p>
+<p>Create the file <code>public/tonconnect-manifest.json</code> with this content:</p>
+<pre><code class="json language-json">{
+  "url": "https://my-gituser.github.io/my-twa",
+  "name": "My TWA",
+  "iconUrl": "https://my-gituser.github.io/my-twa/icon.png"
+}
+</code></pre>
+<p>Replace the URL field with your webite URL and choose a short name of your dapp. For icon, create a PNG file 180x180 pixels in size and put it under <code>public/icon.png</code>.</p>
+<p>After we publish the website, this manifest file will be available at:</p>
+<pre><code class="console language-console">https://my-gituser.github.io/my-twa/tonconnect-manifest.json
+</code></pre>
+<p>Edit <code>src/main.tsx</code> and replace the constant <code>manifestUrl</code> with the future URL of your manifest:</p>
+<pre><code class="ts language-ts">const manifestUrl = 'https://my-gituser.github.io/my-twa/tonconnect-manifest.json';
+</code></pre>
+<p>Another step to remember is changing the <code>base</code> property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set <code>base</code> to the root directory of the website under the domain. In the example above, since the repo name is <code>my-twa</code> and the URL is <code>https://my-gituser.github.io/my-twa</code>, the website is published under the directory <code>/my-twa/</code> in the domain. Let's set this in <code>vite.config.js</code>:</p>
+<pre><code class="ts language-ts">export default defineConfig({
+  plugins: [react(), nodePolyfills()],
+  base: '/my-twa/',
+});
+</code></pre>
+<p>Build the website for publishing by running in terminal:</p>
+<pre><code class="console language-console">npm run build
+</code></pre>
+<p>Publishing to GitHub Pages is pretty straightforward. You would normally create a git branch named <code>gh-pages</code> in your repo that contains the static website files that were generated in the <code>dist</code> directory during the build. Then you would normally open the repo on GitHub's web UI and enable "Pages" under "Settings" (pointing the "Branch" to "gh-pages" after it is pushed).</p>
+<p>For the exact steps, you can follow Vite's tutorial for <a href="https://vitejs.dev/guide/static-deploy.html#github-pages">Deploying to GitHub Pages</a>.</p>
+<p>Once the website is published, we can finally access it from mobile. Take your mobile device and open the URL <code>https://my-gituser.github.io/my-twa</code> in the mobile browser.</p>
+<p>This is a good opportunity to try the mobile-mobile flow. In the mobile browser, tap on the "Connect Wallet" button and choose "Tonkeeper" (or any other supporting wallet you're using). This should switch you to the TonKeeper mobile app where you can approve the connection. After approval, you should be switched back to the website. Now tap the "Increment" button. This should switch you to the TonKeeper mobile app where you can approve the transaction. As you can see, in the mobile-mobile flow there are no QR codes involved since the dapp and the wallet run on the same device.</p>
+<h2 id="step10publishwebappastwaintelegram">Step 10: Publish web app as TWA in Telegram</h2>
+<p>Having our dapp accessible through a web browser is not enough. We want to make the most from the seamless integration into Telegram messenger. To feature our dapp in Telegram, we will also have to publish it as a TWA. Luckily, this is pretty easy to do.</p>
+<p>The first step is to add the <a href="https://github.com/twa-dev">TWA SDK</a> to our project. This will allow us to get theme properties while inside Telegram. Run in terminal:</p>
+<pre><code class="console language-console">npm install @twa-dev/sdk
+</code></pre>
+<p>Then, edit <code>src/App.tsx</code> and add the following import:</p>
+<pre><code class="ts language-ts">import '@twa-dev/sdk';
+</code></pre>
+<p>Now rebuild the website for publishing by running in terminal:</p>
+<pre><code class="console language-console">npm run build
+</code></pre>
+<p>Publish the updated website like we did in step 9, probably just by pushing it to git to the correct branch.</p>
+<p>The final step is to create a new Telegram bot and have it showcase our website when opened. To do that we will interact with another Telegram bot called "botfather". On a device where your Telegram messenger is logged in, open <a href="https://t.me/botfather">https://t.me/botfather</a> and then switch to the bot inside the Telegram app. Choose "Start".</p>
+<p>To create a new bot select "/newbot". Choose a name for the bot and then a username according to the on-screen instructions. Make a note of the username since this is how end-users will access your TWA. Assuming that your bot username is <code>my_twa_bot</code>, it will be accessible in the Telegram chat by typing <code>@my_twa_bot</code> or through the URL <a href="https://t.me/my_twa_bot">https://t.me/my_twa_bot</a>. You can even purchase a premium Telegram username for your bot on the auction platform <a href="https://fragment.com">Fragment</a>.</p>
+<p>Back in botfather, tap the menu button and edit your bots by selecting "/mybots". Select the bot you've just created. Select "Bot Settings" and then select "Menu Button". Now select "Configure menu button" to edit the URL and type your published website URL:</p>
+<pre><code class="console language-console">https://my-gituser.github.io/my-twa
+</code></pre>
+<p>That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations.</p>
+<p><img src="https://i.imgur.com/lVL1Bl0.png" width=300 /><br></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/03-client/test">here</a>.</p>
+<p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
+<p>Happy coding!</p>
          </div>
         
       </div>
