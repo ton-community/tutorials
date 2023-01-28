@@ -13,7 +13,7 @@ The first usage patten of our dapp would be through a regular web browser. Our f
 
 The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
-<video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video>
+<video src="https://core.telegram.org/file/464001679/11aa9/KQx_BlPVXRo.4922145.mp4/c65433c8ac11a347a8" loop muted autoplay width=400 preload="auto"></video>&nbsp;
 
 During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.
 
@@ -83,7 +83,7 @@ When our app connects to the user's wallet, it will identify itself using a [man
 
 Modify the file `src/main.tsx` to use the TON Connect provider:
 
-```ts
+```tsx
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
@@ -96,7 +96,7 @@ const manifestUrl = 'https://raw.githubusercontent.com/ton-community/tutorials/m
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <TonConnectUIProvider manifestUrl={manifestUrl}>
     <App />
-    </TonConnectUIProvider>,
+  </TonConnectUIProvider>,
 )
 ```
 
@@ -106,7 +106,7 @@ The first action we're going to offer the user is to *Connect* their wallet to t
 
 Edit the file `src/App.tsx` and replace its contents with the following:
 
-```ts
+```tsx
 import './App.css'
 import { TonConnectButton } from '@tonconnect/ui-react';
 
@@ -131,4 +131,51 @@ Then refresh the web browser viewing the URL shown on-screen. I'm assuming you'r
 
 TON Connect supports both mobile-mobile user flows and desktop-mobile user flows. Since development is a desktop-mobile flow, TON Connect will rely on scanning QR codes in order to communicate with the wallet running on your mobile device. Open the TonKeeper mobile app, tap the QR button on the top right and scan the code from your desktop screen.
 
-If everything is connected properly, you should see a confirmation dialong in the wallet mobile app. If you approve the connection, you will see your address in the web app UI.
+If everything is wired properly, you should see a confirmation dialong in the wallet mobile app. If you approve the connection, you will see your address in the web app UI!
+
+## Step 6: Read the counter value from the chain
+
+It's time to interact with our Counter contract and show the current counter value. To do that, we will need the TypeScript interface class that we created in tutorial 2. This class is useful because it defines all possible interactions with the contract in a manner that abstracts implementation and encoding details. This is particularly useful when you have one developer in your team that writes the contract and a different developer that builds the frontend.
+
+Copy `counter.ts` from tutorial 2 to `src/contracts/counter.ts` (also available [here](https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/contracts/counter.ts)).
+
+The next thing we'll do is implement a general purpose React [hook](https://reactjs.org/docs/hooks-intro.html) that will assist us in initializing async objects. Create the file `src/hooks/useAsyncInitialize.ts` with the following content:
+
+```ts
+import { useEffect, useState } from 'react';
+
+export function useAsyncInitialize<T>(func: () => Promise<T>, deps: any[] = []) {
+  const [state, setState] = useState<T | undefined>();
+  useEffect(() => {
+    (async () => {
+      setState(await func());
+    })();
+  }, deps);
+
+  return state;
+}
+```
+
+Next, we're going to create another React hook that will rely on `useAsyncInitialize` and will initialize an RPC client in our app. An RPC service provider similar to [Infura](https://infura.io) on Ethereum will allow us to query data from the chain. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+
+Create the file `src/hooks/useTonClient.ts` with the following content:
+
+---
+network:mainnet
+---
+```ts
+import { getHttpEndpoint } from '@orbs-network/ton-access';
+import { TonClient } from 'ton';
+import { useAsyncInitialize } from './useAsyncInitialize';
+
+export function useTonClient() {
+  return useAsyncInitialize(
+    async () =>
+      new TonClient({
+        endpoint: await getHttpEndpoint(),
+      })
+  );
+}
+```
+
+---
