@@ -1,6 +1,6 @@
 <h1 id="tonhelloworldpart1stepbystepguideforworkingwithyourfirsttonwallet">TON Hello World part 1: Step by step guide for working with your first TON wallet</h1>
 <p>The TON blockchain is <a href="https://ton-blockchain.github.io/docs/ton.pdf">based</a> on the <a href="https://coinmarketcap.com/currencies/toncoin/">TON coin</a> (previously labeled TonCoin). This cryptocurrency is used to pay for executing transactions (gas), much like ETH on the Ethereum blockchain. If you're participating in the TON ecosystem, most likely that you're already holding some TON and probably already have a wallet.</p>
-<p>In this step by step tutorial, we will create a new TON wallet using one of the wallet apps and then try to access it programatically. This can be useful for example if you're planning on deploying a smart contract through code or writing a bot that receives and sends TON. We'll also understand how wallets work on TON and become comfortable with using them.</p>
+<p>In this step by step tutorial, we will create a new TON wallet using one of the wallet apps and then try to access it programmatically. This can be useful for example if you're planning on deploying a smart contract through code or writing a bot that receives and sends TON. We'll also understand how wallets work on TON and become comfortable with using them.</p>
 <h2 id="mainnetortestnet">Mainnet or testnet</h2>
 <p>There are two variations of the TON blockchain we can work on - <em>mainnet</em> and <em>testnet</em>. Mainnet is the real thing, where we would have to pay real TON coin in order to transact and staked validators would execute our transactions and guarantee a very high level of security - our wallet would be able to do dangerous things like holding large amounts of money without worrying too much.</p>
 <p>Testnet is a testing playground where the TON coin isn't real and is available for free. Naturally, testnet doesn't offer any real security so we would just use it to practice and see that our code is behaving as expected.</p>
@@ -43,7 +43,7 @@
 <p><img src="https://i.imgur.com/xsZbZ5X.png" width=600 /><br></p>
 <p>Is it possible for the same secret mnemonic to have multiple wallets deployed with different versions? Definitely! This means that the same user may have multiple different wallets, each with its own unique address. This can get confusing. The next time you try to access your wallet using your secret mnemonic and you see a different address than you expect and a balance of zero, don't be alarmed. Nobody stole your money, you are probably just looking at the wrong wallet version.</p>
 <h2 id="step6setupyourlocalmachineforcoding">Step 6: Set up your local machine for coding</h2>
-<p>We're about to use code to access our wallet programatically. Before we can start writing code, we need to install certain developer tools on our computer.</p>
+<p>We're about to use code to access our wallet programmatically. Before we can start writing code, we need to install certain developer tools on our computer.</p>
 <p>The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
 <p>For a choice of IDE, you will need anything that has decent TypeScript support. I recommend <a href="https://code.visualstudio.com">Visual Studio Code</a> - it's free and open source.</p>
 <p>Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:</p>
@@ -52,7 +52,7 @@
 <p>Next, we're going to install a JavaScript package named <a href="https://github.com/toncenter/tonweb">TonWeb</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
 <pre><code class="console language-console">npm install tonweb tonweb-mnemonic
 </code></pre>
-<h2 id="step7getthewalletaddressprogramatically">Step 7: Get the wallet address programatically</h2>
+<h2 id="step7getthewalletaddressprogrammatically">Step 7: Get the wallet address programmatically</h2>
 <p>The first thing we'll do is calculate the address of our wallet in code and see that it matches what we saw in the explorer. This action is completely offline since the wallet address is derived from the version of the wallet and the private key used to create it.</p>
 <p>Let's assume that your secret 24 word mnemonic is <code>unfold sugar water ...</code> - this is the phrase we backed up in step 2.</p>
 <p>Create the file <code>step7.ts</code> with the following content:</p>
