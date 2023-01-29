@@ -293,6 +293,8 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
+If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance.
+
 The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 <img src="https://i.imgur.com/SLR7nmE.png" width=600 /><br>

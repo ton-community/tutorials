@@ -25,7 +25,7 @@
 <p>If this wallet is indeed new and hasn't been used before, its Tonscan page should show "State" as "Inactive". When you look under the "Contract" tab, you should see the message "This address doesn't contain any data in blockchain - it was either never used or the contract was deleted."</p>
 <p><img src="https://i.imgur.com/r1POqo9.png" width=600 /><br></p>
 <p>Wallets in TON are also smart contracts! What this message means is that this smart contract hasn't been deployed yet and is therefore uninitialized. Deploying a smart contract means uploading its code onto the blockchain.</p>
-<p>Another interesting thing to notice is that the address shown in Tonscan may be different from the addres you typed in the search bar. There are multiple ways to encode the same TON address. You can use <a href="https://ton.org/address">https://ton.org/address</a> to see some additional representations and verify that they all share the same HEX public key.</p>
+<p>Another interesting thing to notice is that the address shown in Tonscan may be different from the address you typed in the search bar! There are multiple ways to encode the same TON address. You can use <a href="https://ton.org/address">https://ton.org/address</a> to see some additional representations and verify that they all share the same HEX public key.</p>
 <h2 id="step4fundanddeployyourwalletcontract">Step 4: Fund and deploy your wallet contract</h2>
 <p>As you can see in the explorer, the TON balance of our wallet is currently zero. We will need to fund our wallet by asking somebody to transfer some TON coins to our address. But wait… isn't this dangerous? How can we transfer some coins to the smart contract before it is deployed?</p>
 <p>It turns out that this isn't a problem on TON. The TON blockchain maintains a list of accounts by address and stores the TON coin balance per address. Since our wallet smart contract has an address, it can have a balance, even before it has been deployed. Let's send 2 TON to our wallet address.</p>
@@ -120,6 +120,7 @@ main();
 <p>To see the balance and seqno, run using terminal:</p>
 <pre><code class="console language-console">npx ts-node step8.ts
 </code></pre>
+<p>If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the <a href="https://t.me/TONAccessSupport">Telegram support chat</a> for TON access to get assistance.</p>
 <h2 id="step9sendtransfertransactiontothechain">Step 9: Send transfer transaction to the chain</h2>
 <p>The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.</p>
 <p>Create a new file <code>step9.ts</code> with this content:</p>

@@ -70,7 +70,7 @@ If this wallet is indeed new and hasn't been used before, its Tonscan page shoul
 
 Wallets in TON are also smart contracts! What this message means is that this smart contract hasn't been deployed yet and is therefore uninitialized. Deploying a smart contract means uploading its code onto the blockchain.
 
-Another interesting thing to notice is that the address shown in Tonscan may be different from the addres you typed in the search bar. There are multiple ways to encode the same TON address. You can use [https://ton.org/address](https://ton.org/address) to see some additional representations and verify that they all share the same HEX public key.
+Another interesting thing to notice is that the address shown in Tonscan may be different from the address you typed in the search bar! There are multiple ways to encode the same TON address. You can use [https://ton.org/address](https://ton.org/address) to see some additional representations and verify that they all share the same HEX public key.
 
 ## Step 4: Fund and deploy your wallet contract
 
@@ -424,6 +424,8 @@ To see the balance and seqno, run using terminal:
 ```console
 npx ts-node step8.ts
 ```
+
+If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance.
 
 ## Step 9: Send transfer transaction to the chain
 

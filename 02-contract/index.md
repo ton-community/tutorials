@@ -357,6 +357,8 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
+If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance.
+
 ---
 network:testnet
 ---

@@ -13,7 +13,7 @@ The first usage patten of our dapp would be through a regular web browser. Our f
 
 The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
-<video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay width=300></video><br>
+<video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay playsinline width=300></video><br>
 
 During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.
 
@@ -255,6 +255,8 @@ npm run dev
 ```
 
 Then refresh the web browser viewing the URL shown on-screen. You should see both the counter address and the counter value taken from the chain on the main screen. As you recall, we initialized the counter value to a very large value (number of milliseconds since the epoch, something like 1674271323207). Don't worry about styling, we will handle this later.
+
+If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance.
 
 ## Step 7: Increment the counter on-chain
 
