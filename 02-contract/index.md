@@ -144,7 +144,7 @@ The func-js package contains everything we need to compile our contract to bytec
 npx func-js counter.fc --boc counter.cell
 ```
 
-You'll notice that we immediately get a bunch of compilation errors on some function definitions missing like `set_data` and `begin_cell`. It's good practice to see what compilation errors look like. Indeed, our code relies on these standard library functions, but where are they defined? The TON foundation publishes these in the main TON repo in the file [stdlib.fc](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc). Since I've seen multiple versions of this file running around, it's good practice to download it and include it as part of your project.
+You'll notice that we immediately get a bunch of compilation errors on some function definitions missing like `set_data` and `begin_cell`. **It's good practice to see what compilation errors look like.** Indeed, our code relies on these standard library functions, but where are they defined? The TON foundation publishes these in the main TON repo in the file [stdlib.fc](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc). Since I've seen multiple versions of this file running around, it's good practice to download it and include it as part of your project.
 
 Download [stdlib.fc](https://raw.githubusercontent.com/ton-blockchain/ton/master/crypto/smartcont/stdlib.fc) and save it in the project directory. 
 
