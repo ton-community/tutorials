@@ -1,13 +1,13 @@
 
 # TON Hello World part 1: Step by step guide for working with your first TON wallet
 
-The TON blockchain is [based](https://ton-blockchain.github.io/docs/ton.pdf) on the [TON coin](https://coinmarketcap.com/currencies/toncoin/) (previously labeled TonCoin). This cryptocurrency is used to pay for executing transactions (gas), much like ETH on the Ethereum blockchain. If you're participating in the TON ecosystem, most likely that you're already holding some TON and probably already have a wallet.
+TON Blockchain is [based](https://ton-blockchain.github.io/docs/ton.pdf) on the [TON coin](https://coinmarketcap.com/currencies/toncoin/) (previously labeled TonCoin). This cryptocurrency is used to pay for executing transactions (gas), much like ETH on the Ethereum blockchain. If you're participating in the TON ecosystem, most likely that you're already holding some TON and probably already have a wallet.
 
 In this step by step tutorial, we will create a new TON wallet using one of the wallet apps and then try to access it programmatically. This can be useful for example if you're planning on deploying a smart contract through code or writing a bot that receives and sends TON. We'll also understand how wallets work on TON and become comfortable with using them.
 
 ## Mainnet or testnet
 
-There are two variations of the TON blockchain we can work on - *mainnet* and *testnet*. Mainnet is the real thing, where we would have to pay real TON coin in order to transact and staked validators would execute our transactions and guarantee a very high level of security - our wallet would be able to do dangerous things like holding large amounts of money without worrying too much.
+There are two variations of TON Blockchain we can work on - *mainnet* and *testnet*. Mainnet is the real thing, where we would have to pay real TON coin in order to transact and staked validators would execute our transactions and guarantee a very high level of security - our wallet would be able to do dangerous things like holding large amounts of money without worrying too much.
 
 Testnet is a testing playground where the TON coin isn't real and is available for free. Naturally, testnet doesn't offer any real security so we would just use it to practice and see that our code is behaving as expected.
 
@@ -19,11 +19,11 @@ Since TON transactions are very cheap, about 1 cent per transaction, investing j
 
 The simplest way to create a TON wallet is visit [https://ton.org/wallets](https://ton.org/wallets) and choose one of the wallet apps from the list. This page explains the difference between custodial and non-custodial wallets. With a non-custodial wallet, you own the wallet and hold its private key by yourself. With a custodial wallet, you trust somebody else to do this for you.
 
-The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose [TonKeeper](https://tonkeeper.com). Go ahead and install the TonKeeper app on your phone and run it.
+The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose [Tonkeeper](https://tonkeeper.com). Go ahead and install the Tonkeeper app on your phone and run it.
 
-TonKeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Version number on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.
+Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Version number on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.
 
-If you don't already have a wallet connected to the app, tap on the "Set up wallet" button. We're going to create a new wallet. After a few seconds, your wallet is created and TonKeeper displays your recovery phrase - the secret 24 words that give access to your wallet funds.
+If you don't already have a wallet connected to the app, tap on the "Set up wallet" button. We're going to create a new wallet. After a few seconds, your wallet is created and Tonkeeper displays your recovery phrase - the secret 24 words that give access to your wallet funds.
 
 ## Step 2: Backup the 24 word recovery phrase
 
@@ -33,7 +33,7 @@ Why 24 words? The OG crypto wallets, like Bitcoin in its early days, did not use
 
 ## Step 3: View the wallet by address in an explorer
 
-If you click on the top left in the TonKeeper app you will copy your wallet address. Alternatively, you can tap on the "Receive" button and see your wallet address displayed on screen.
+If you click on the top left in the Tonkeeper app you will copy your wallet address. Alternatively, you can tap on the "Receive" button and see your wallet address displayed on screen.
 
 It should look something like this:
 
@@ -59,7 +59,7 @@ Another interesting thing to notice is that the address shown in Tonscan may be 
 
 As you can see in the explorer, the TON balance of our wallet is currently zero. We will need to fund our wallet by asking somebody to transfer some TON coins to our address. But wait... isn't this dangerous? How can we transfer some coins to the smart contract before it is deployed?
 
-It turns out that this isn't a problem on TON. The TON blockchain maintains a list of accounts by address and stores the TON coin balance per address. Since our wallet smart contract has an address, it can have a balance, even before it has been deployed. Let's send 2 TON to our wallet address.
+It turns out that this isn't a problem on TON. TON Blockchain maintains a list of accounts by address and stores the TON coin balance per address. Since our wallet smart contract has an address, it can have a balance, even before it has been deployed. Let's send 2 TON to our wallet address.
 
 When using testnet, TON coins can be received for free. Using Telegram messenger, open the faucet [https://t.me/testgiver_ton_bot](https://t.me/testgiver_ton_bot) and request some coins from the bot by providing your wallet address.
 
@@ -67,9 +67,9 @@ Refresh the explorer after the coins have been sent. As you can see, the balance
 
 <img src="https://i.imgur.com/OdIRwvo.png" width=600 /><br>
 
-So when is your wallet smart contract being deployed? This would normally happen when you execute your first transaction - normally an outgoing transfer. This transaction is going to cost gas, so your balance cannot be zero to make it. TonKeeper is going to deploy our smart contract automatically when we issue the first transfer. Let's send 0.01 TON somewhere through TonKeeper.
+So when is your wallet smart contract being deployed? This would normally happen when you execute your first transaction - normally an outgoing transfer. This transaction is going to cost gas, so your balance cannot be zero to make it. Tonkeeper is going to deploy our smart contract automatically when we issue the first transfer. Let's send 0.01 TON somewhere through Tonkeeper.
 
-Refresh the explorer after approving the transaction. We can see that TonKeeper indeed deployed our contract! The "State" is now "Active". The contract is no longer uninitialized and shows "wallet v4 r2" instead. Your contract may show a different version if TonKeeper was updated since this tutorial was written.
+Refresh the explorer after approving the transaction. We can see that Tonkeeper indeed deployed our contract! The "State" is now "Active". The contract is no longer uninitialized and shows "wallet v4 r2" instead. Your contract may show a different version if Tonkeeper was updated since this tutorial was written.
 
 <img src="https://i.imgur.com/P9uuKaU.png" width=600 /><br>
 
@@ -77,7 +77,7 @@ We can also see that we've also paid some gas for the deployment and transfer fe
 
 ## Step 5: Wallets contracts have versions
 
-The explorer shows that "Contract Type" is "wallet v4 r2" (or possibly a different version if your TonKeeper was since updated). This refers to the version of our smart contract code. If our wallet smart contract was deployed with "v4" as its code, this means somewhere must exist "v1", "v2" and "v3".
+The explorer shows that "Contract Type" is "wallet v4 r2" (or possibly a different version if your Tonkeeper was since updated). This refers to the version of our smart contract code. If our wallet smart contract was deployed with "v4" as its code, this means somewhere must exist "v1", "v2" and "v3".
 
 This is indeed correct. Over time, the TON core team has [published](https://github.com/toncenter/tonweb/blob/master/src/contract/wallet/WalletSources.md) multiple versions of the wallet contract - this is [v4 source code](https://github.com/ton-blockchain/wallet-contract/tree/v4r2-stable).
 
@@ -151,7 +151,7 @@ Notice that we're not just printing the address, we're also printing the workcha
 
 Let's take things up a notch and read some live state data from our wallet contract that will force us to connect to the live blockchain network. We're going to read the live wallet TON coin balance (we saw that on the explorer earlier). We're also going to read the wallet `seqno` - the sequence number of the last transaction that the wallet sent. Every time the wallet sends a transaction the seqno increments.
 
-To query info from the live network will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+To query info from the live network will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
 
 Install it by opening terminal in the project directory and running:
 
@@ -256,7 +256,7 @@ Execute the script by running in terminal:
 npx ts-node step9.ts
 ```
 
-Once the wallet signs and sends a transaction, we must wait until the TON blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
+Once the wallet signs and sends a transaction, we must wait until TON Blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
 
 ## Conclusion
 

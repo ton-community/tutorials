@@ -1,7 +1,7 @@
 
 # TON Hello World part 2: Step by step guide for writing your first smart contract
 
-A smart contract is simply a computer program running on TON blockchain - or more exactly its [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on the TON blockchain.
+A smart contract is simply a computer program running on TON Blockchain - or more exactly its [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on TON Blockchain.
 
 In the world of blockchain, *code is law*, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before enagaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.
 
@@ -9,7 +9,7 @@ In the world of blockchain, *code is law*, meaning that instead of lawyers and p
 
 Smart contracts are a key part of *decentralized apps* - a special type of application invented in the blockchain era, that does not depend on any single entity to run it. Unlike the app Uber, for example, which depends on the company Uber Inc to run it - a *decentralized Uber* would allow riders and drivers to interact directly (order, pay for and fulfill rides) without any intermediary like Uber Inc. Dapps are also unstoppable - if we don't depend on anyone specific to run them, nobody can take them down.
 
-Dapps on TON blockchain are usually made of 2 main projects:
+Dapps on TON Blockchain are usually made of 2 main projects:
 
 * Smart contracts in the [FunC](https://ton.org/docs/develop/func/overview) programming language that are deployed on-chain - these act as the *backend server* of the app, with a *database* for persistent storage.
 
@@ -65,7 +65,7 @@ Much like everything else in life, smart contracts in FunC are divided into 3 se
 
 The **storage** section deals with our contract's persistent data. Our contract will have to store data between calls from different users, for example the value of our *counter* variable. To write this data to state storage, we will need a write/encode function and to read this data back from state storage, we will need a read/decode function.
 
-The **messages** section deals with messages sent to our contract. The main form of interaction with contracts on TON blockchain is by sending them messages. We mentioned before that our contract will need to support a variety of actions like *increment*, *deposit*, *withdraw* and *transfer ownership*. All of these operations are performed by users as transactions. These operations are not read-only because they change something in the contract's persistent state.
+The **messages** section deals with messages sent to our contract. The main form of interaction with contracts on TON Blockchain is by sending them messages. We mentioned before that our contract will need to support a variety of actions like *increment*, *deposit*, *withdraw* and *transfer ownership*. All of these operations are performed by users as transactions. These operations are not read-only because they change something in the contract's persistent state.
 
 The **getters** section deals with read-only interactions that don't change state. For example, we would want to allow users to query the value of our *counter*, so we can implement a getter for that. We've also mentioned that the contract has a special *owner*, so what about a getter to query that. Since our contract can hold money (TON coins), another useful getter could be to query the current balance.
 
@@ -73,7 +73,7 @@ The **getters** section deals with read-only interactions that don't change stat
 
 We're about to write our first lines in FunC! Our first task would be to implement the *counter* feature of our contract.
 
-The FunC programming language is very similar to the [C language](https://en.wikipedia.org/wiki/C_(programming_language)). It has strict types, which is a good idea, since compilation errors will help us spot contract mistakes early on. The language was designed specifically for TON blockchain, so you will not find a lot of documentation beyond the [official FunC docs](https://ton.org/docs/develop/func/overview).
+The FunC programming language is very similar to the [C language](https://en.wikipedia.org/wiki/C_(programming_language)). It has strict types, which is a good idea, since compilation errors will help us spot contract mistakes early on. The language was designed specifically for TON Blockchain, so you will not find a lot of documentation beyond the [official FunC docs](https://ton.org/docs/develop/func/overview).
 
 ### Storage
 
@@ -136,7 +136,7 @@ That's it. We completed our 3 sections and the first version of our contract is 
 
 Right now, the contract is just FunC source code. To get it to run on-chain, we need to convert it to TVM [bytecode](https://ton.org/docs/learn/tvm-instructions/instructions). 
 
-In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called [Fift](https://ton-blockchain.github.io/docs/fiftbase.pdf). Just like FunC, Fift is another language that was designed specifically for TON blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.
+In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called [Fift](https://ton-blockchain.github.io/docs/fiftbase.pdf). Just like FunC, Fift is another language that was designed specifically for TON Blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.
 
 The func-js package contains everything we need to compile our contract to bytecode. To use it, open terminal in the project directory and run the following:
 
@@ -160,7 +160,7 @@ The build should now succeed, with the output of this command being a new file -
 
 Now that our contract has been compiled to bytecode, we can finally see it in action running on-chain. The act of uploading the bytecode to the blockchain is called *deployment*. The deployment result would be an address where the contract resides. This address will allow us to communicate with this specific contract instance later on and send it transactions.
 
-There are two variations of the TON blockchain we can deploy to - *mainnet* and *testnet*. We covered both in the previous tutorial. Personally, I almost never deploy to testnet. There are far better ways to gain confidence that my code is working as expected. The primary of which is writing a dedicated *test suite*. We will cover this in detail in one of the next tutorials. For now, let's assume the code is working perfectly and no further debugging is required.
+There are two variations of TON Blockchain we can deploy to - *mainnet* and *testnet*. We covered both in the previous tutorial. Personally, I almost never deploy to testnet. There are far better ways to gain confidence that my code is working as expected. The primary of which is writing a dedicated *test suite*. We will cover this in detail in one of the next tutorials. For now, let's assume the code is working perfectly and no further debugging is required.
 
 ### Init arguments
 
@@ -215,7 +215,7 @@ The resulting source file should look like [this](https://github.com/ton-communi
 
 ## Step 8: Deploy the contract on-chain
 
-Communicating with the live network for the deployment will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
+Communicating with the live network for the deployment will require an RPC service provider - similar to [Infura](https://infura.io) on Ethereum. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. [TON Access](https://orbs.com/ton-access) is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.
 
 Install it by opening terminal in the project directory and running:
 
@@ -225,7 +225,7 @@ npm install @orbs-network/ton-access
 
 The deployment is going to cost gas and should be done through a wallet that will fund it. I'm assuming that you have some familiarity with TON wallets and how they're derived from 24 word secret mnemonics. If not, be sure to follow the previous tutorial in this series.
 
-As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch [TonKeeper](https://tonkeeper.com) through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.
+As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch [Tonkeeper](https://tonkeeper.com) through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.
 
 Create a new script `deploy.ts` that will use the interface class we just wrote:
 

@@ -13,9 +13,9 @@ Personally, I don't view testing as an afterthought taking place only when your 
 
 Because testing is such as big deal in smart contract development, there's a surprising amount of tools and infrastructure in the TON ecosystem devoted to this topic. Before jumping in to the methodology that I believe in, I want to give a quick overview of the plethora of testing tools that are available out there:
 
-1. **Deploying your contract to testnet** - Testnet is a live alternative instance of the entire TON blockchain where TON coin isn't the real deal and is free to get. This instance is obviously not as secure as mainnet, but offers an interesting staging environment where you can play.
+1. **Deploying your contract to testnet** - Testnet is a live alternative instance of the entire TON Blockchain where TON coin isn't the real deal and is free to get. This instance is obviously not as secure as mainnet, but offers an interesting staging environment where you can play.
 
-2. **Local blockchain with MyLocalTon** - [MyLocalTon](https://github.com/neodiX42/MyLocalTon) is a Java-based desktop executable that runs a personal local instance of TON blockchain on your machine that you can deploy contracts to and interact with. Another way to run a local private TON network is using Kubernetes with [ton-k8s](https://github.com/disintar/ton-k8s).
+2. **Local blockchain with MyLocalTon** - [MyLocalTon](https://github.com/neodiX42/MyLocalTon) is a Java-based desktop executable that runs a personal local instance of TON Blockchain on your machine that you can deploy contracts to and interact with. Another way to run a local private TON network is using Kubernetes with [ton-k8s](https://github.com/disintar/ton-k8s).
 
 3. **Writing tests in FunC** - [toncli](https://github.com/disintar/toncli) is a command-line tool written in Python that runs on your machine and supports [debug](https://github.com/disintar/toncli/blob/master/docs/advanced/transaction_debug.md) and [unit tests](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md) for FunC contracts where the tests are also written in FunC ([example](https://github.com/BorysMinaiev/func-contest-1-tests-playground/blob/main/task-1/tests/test.fc)).
 
@@ -79,7 +79,7 @@ And finally, run in terminal:
 npm install ton-core @ton-community/sandbox @ton-community/test-utils
 ```
 
-This will install [Sandbox](https://github.com/ton-community/sandbox) and its dependencies. Sandbox is our magical library that will emulate TON blockchain locally by running a bare-bones version of the TVM in process. This will guarantee that our tests will be blazingly fast and completely isolated.
+This will install [Sandbox](https://github.com/ton-community/sandbox) and its dependencies. Sandbox is our magical library that will emulate TON Blockchain locally by running a bare-bones version of the TVM in process. This will guarantee that our tests will be blazingly fast and completely isolated.
 
 ## Step 2: Load our contract in a test
 
@@ -136,7 +136,7 @@ describe("Counter tests", () => {
 
 This code is remarkably similar to the deploy code we had in tutorial 2. This is the benefit of using the TypeScript interface class. No matter where we use our contract, we always access it in the same familiar way.
 
-The only strange part in this snippet is the treasury. What is it exactly? A treasury is simply a wallet contract, very similar to the v4 wallet you used with [TonKeeper](https://tonkeeper.com) in previous tutorials. What's useful with a treasury is that it's already pre initialized with a big TON coin balance. There's no need to fund it from a faucet.
+The only strange part in this snippet is the treasury. What is it exactly? A treasury is simply a wallet contract, very similar to the v4 wallet you used with [Tonkeeper](https://tonkeeper.com) in previous tutorials. What's useful with a treasury is that it's already pre initialized with a big TON coin balance. There's no need to fund it from a faucet.
 
 To execute the test, run in terminal:
 

@@ -1,24 +1,24 @@
 <h1 id="tonhelloworldpart3stepbystepguideforbuildingyourfirstwebclient">TON Hello World part 3: Step by step guide for building your first web client</h1>
-<p>In the previous tutorial we deployed a Counter smart contract to TON blockchain (either testnet or mainnet). This contract acts as the <em>backend server</em> of our application. In this tutorial, we will implement the <em>frontend</em> or <em>client</em> and allow end-users to access it from a web browser.</p>
+<p>In the previous tutorial we deployed a Counter smart contract to TON Blockchain (either testnet or mainnet). This contract acts as the <em>backend server</em> of our application. In this tutorial, we will implement the <em>frontend</em> or <em>client</em> and allow end-users to access it from a web browser.</p>
 <p>We will also recall that the appilcation that we're building is <em>decentralized</em>. Decentralized apps (dapps) have special <a href="https://defi.org/ton/#app-safety-guidelines">properties</a>. For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.</p>
 <h2 id="usagepatterns">Usage patterns</h2>
-<p>TON blockchain is inspired by and complementary to <a href="https://telegram.org/">Telegram</a> messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.</p>
+<p>TON Blockchain is inspired by and complementary to <a href="https://telegram.org/">Telegram</a> messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.</p>
 <p>The first usage patten of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like <a href="https://pages.github.com/">GitHub Pages</a>. End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.</p>
-<p>The second usage pattern is a bit more special. Since TON blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building <a href="https://core.telegram.org/bots/webapps">Telegam Web Apps</a> (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.</p>
+<p>The second usage pattern is a bit more special. Since TON Blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building <a href="https://core.telegram.org/bots/webapps">Telegam Web Apps</a> (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.</p>
 <video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay playsinline width=300></video>
 <p><br></p>
 <p>During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.</p>
 <h2 id="step2setupyourlocalmachine">Step 2: Set up your local machine</h2>
 <p>Before we can start writing code, we need to install certain developer tools on our computer.</p>
 <p>Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
-<p>The second tool we need is an initialized TON wallet like <a href="https://tonkeeper.com">TonKeeper</a>. If you don't have a wallet, please take a look at tutorial 1. The wallet will communicate with our dapp via a protocol called <a href="https://github.com/ton-connect">TON Connect 2</a>. If you choose a different wallet than TonKeeper, please verify it supports this version of TON Connect. Don't forget to make sure your wallet is connected to the correct network - mainnet or testnet.</p>
+<p>The second tool we need is an initialized TON wallet like <a href="https://tonkeeper.com">Tonkeeper</a>. If you don't have a wallet, please take a look at tutorial 1. The wallet will communicate with our dapp via a protocol called <a href="https://github.com/ton-connect">TON Connect 2</a>. If you choose a different wallet than Tonkeeper, please verify it supports this version of TON Connect. Don't forget to make sure your wallet is connected to the correct network - mainnet or testnet.</p>
 <h2 id="step3setuptheproject">Step 3: Set up the project</h2>
 <p>We will build our frontend with <a href="https://reactjs.org/">React</a>. To create our project we will rely on <a href="https://vitejs.dev/">Vite</a> and its React template. Choose a name for your project, for example <code>my-twa</code>, then open terminal and run the following:</p>
 <pre><code class="console language-console">npm create vite@latest my-twa -- --template react-ts
 cd my-twa
 npm install
 </code></pre>
-<p>We will need to install a few more packages that will allow us to interact with TON blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:</p>
+<p>We will need to install a few more packages that will allow us to interact with TON Blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:</p>
 <pre><code class="console language-console">npm install ton ton-core
 npm install @orbs-network/ton-access
 </code></pre>
@@ -81,8 +81,8 @@ export default App
 <p>The only thing our new app UI will have is the Connect button. To run the app, run in terminal:</p>
 <pre><code class="console language-console">npm run dev
 </code></pre>
-<p>Then refresh the web browser viewing the URL shown on-screen. I'm assuming you're using the web browser on your desktop (where you're developing) and your TonKeeper wallet is installed on your mobile device. Click "Connect Wallet" on the desktop and choose "Tonkeeper" (or any other supporting wallet you're using).</p>
-<p>TON Connect supports both mobile-mobile user flows and desktop-mobile user flows. Since development is a desktop-mobile flow, TON Connect will rely on scanning QR codes in order to communicate with the wallet running on your mobile device. Open the TonKeeper mobile app, tap the QR button on the top right and scan the code from your desktop screen.</p>
+<p>Then refresh the web browser viewing the URL shown on-screen. I'm assuming you're using the web browser on your desktop (where you're developing) and your Tonkeeper wallet is installed on your mobile device. Click "Connect Wallet" on the desktop and choose "Tonkeeper" (or any other supporting wallet you're using).</p>
+<p>TON Connect supports both mobile-mobile user flows and desktop-mobile user flows. Since development is a desktop-mobile flow, TON Connect will rely on scanning QR codes in order to communicate with the wallet running on your mobile device. Open the Tonkeeper mobile app, tap the QR button on the top right and scan the code from your desktop screen.</p>
 <p>If everything is wired properly, you should see a confirmation dialong in the wallet mobile app. If you approve the connection, you will see your address in the web app UI!</p>
 <h2 id="step6readthecountervaluefromthechain">Step 6: Read the counter value from the chain</h2>
 <p>It's time to interact with our Counter contract and show the current counter value. To do that, we will need the TypeScript interface class that we created in tutorial 2. This class is useful because it defines all possible interactions with the contract in a manner that abstracts implementation and encoding details. This is particularly useful when you have one developer in your team that writes the contract and a different developer that builds the frontend.</p>
@@ -101,7 +101,7 @@ export function useAsyncInitialize&lt;T&gt;(func: () =&gt; Promise&lt;T&gt;, dep
   return state;
 }
 </code></pre>
-<p>Next, we're going to create another React hook that will rely on <code>useAsyncInitialize</code> and will initialize an RPC client in our app. An RPC service provider similar to <a href="https://infura.io">Infura</a> on Ethereum will allow us to query data from the chain. These providers run TON blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
+<p>Next, we're going to create another React hook that will rely on <code>useAsyncInitialize</code> and will initialize an RPC client in our app. An RPC service provider similar to <a href="https://infura.io">Infura</a> on Ethereum will allow us to query data from the chain. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Create the file <code>src/hooks/useTonClient.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from '@orbs-network/ton-access';
 import { TonClient } from 'ton';
@@ -304,10 +304,10 @@ export default App
 <pre><code class="console language-console">npm run dev
 </code></pre>
 <p>Then refresh the web browser viewing the URL shown on-screen. You should see a new "Increment" link on the bottom of the screen. I'm assuming that you're still on desktop, make a note of the counter value and click the link. </p>
-<p>Since your mobile TonKeeper wallet is connected, this action should reach the TonKeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.</p>
+<p>Since your mobile Tonkeeper wallet is connected, this action should reach the Tonkeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.</p>
 <p>If everything is working, the counter value on screen should refresh automatically and you should a value that his higher by one.</p>
 <h2 id="step8styletheapp">Step 8: Style the app</h2>
-<p>Functionally our app is working, but we can definitely improve what it looks like. Giving a polished user experience is particularly important on TON blockchain. We are aiming to reach mass adoption and the next billion users. We won't succeed unless our apps look as polished as the ones these users are already using.</p>
+<p>Functionally our app is working, but we can definitely improve what it looks like. Giving a polished user experience is particularly important on TON Blockchain. We are aiming to reach mass adoption and the next billion users. We won't succeed unless our apps look as polished as the ones these users are already using.</p>
 <p>Replace <code>src/index.css</code> with the following content:</p>
 <pre><code class="css language-css">:root {
   --tg-theme-bg-color: #efeff3;
@@ -396,7 +396,7 @@ export default App
 <p>Unless you connect a custom domain to GitHub Pages, the website will be published under the URL:</p>
 <pre><code class="console language-console">https://my-gituser.github.io/my-twa
 </code></pre>
-<p>Since we're about to go live, it's time to use a proper TON Connect <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a>. This will allow us to style the initial connection dialog that appears in wallets like TonKeeper.</p>
+<p>Since we're about to go live, it's time to use a proper TON Connect <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a>. This will allow us to style the initial connection dialog that appears in wallets like Tonkeeper.</p>
 <p>Create the file <code>public/tonconnect-manifest.json</code> with this content:</p>
 <pre><code class="json language-json">{
   "url": "https://my-gituser.github.io/my-twa",
@@ -424,7 +424,7 @@ export default App
 <p>Publishing to GitHub Pages is pretty straightforward. You would normally create a git branch named <code>gh-pages</code> in your repo that contains the static website files that were generated in the <code>dist</code> directory during the build. Then you would normally open the repo on GitHub's web UI and enable "Pages" under "Settings" (pointing the "Branch" to "gh-pages" after it is pushed).</p>
 <p>For the exact steps, you can follow Vite's tutorial for <a href="https://vitejs.dev/guide/static-deploy.html#github-pages">Deploying to GitHub Pages</a>.</p>
 <p>Once the website is published, we can finally access it from mobile. Take your mobile device and open the URL <code>https://my-gituser.github.io/my-twa</code> in the mobile browser.</p>
-<p>This is a good opportunity to try the mobile-mobile flow. In the mobile browser, tap on the "Connect Wallet" button and choose "Tonkeeper" (or any other supporting wallet you're using). This should switch you to the TonKeeper mobile app where you can approve the connection. After approval, you should be switched back to the website. Now tap the "Increment" button. This should switch you to the TonKeeper mobile app where you can approve the transaction. As you can see, in the mobile-mobile flow there are no QR codes involved since the dapp and the wallet run on the same device.</p>
+<p>This is a good opportunity to try the mobile-mobile flow. In the mobile browser, tap on the "Connect Wallet" button and choose "Tonkeeper" (or any other supporting wallet you're using). This should switch you to the Tonkeeper mobile app where you can approve the connection. After approval, you should be switched back to the website. Now tap the "Increment" button. This should switch you to the Tonkeeper mobile app where you can approve the transaction. As you can see, in the mobile-mobile flow there are no QR codes involved since the dapp and the wallet run on the same device.</p>
 <h2 id="step10publishwebappastwaintelegram">Step 10: Publish web app as TWA in Telegram</h2>
 <p>Having our dapp accessible through a web browser is not enough. We want to make the most from the seamless integration into Telegram messenger. To feature our dapp in Telegram, we will also have to publish it as a TWA. Luckily, this is pretty easy to do.</p>
 <p>The first step is to add the <a href="https://github.com/twa-dev">TWA SDK</a> to our project. This will allow us to get theme properties while inside Telegram. Run in terminal:</p>
