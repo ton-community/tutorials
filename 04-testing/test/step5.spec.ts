@@ -26,6 +26,7 @@ describe("Counter tests", () => {
 
   it("should send ton coin to the contract", async () => {
     console.log("sending 7.123 TON");
+    await blockchain.setVerbosityForAddress(counterContract.address,"vm_logs");
     await wallet1.send({
       to: counterContract.address,
       value: toNano("7.123")
@@ -34,6 +35,7 @@ describe("Counter tests", () => {
 
   it("should increment the counter value", async () =>  {
     console.log("sending increment message");
+    await blockchain.setVerbosityForAddress(counterContract.address,"vm_logs");
     await counterContract.sendIncrement(wallet1.getSender());
   })
 });
