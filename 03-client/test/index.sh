@@ -1,3 +1,4 @@
+set -ev
 rm -rf ./temp
 npm create vite@latest temp -- --template react-ts
 cd temp

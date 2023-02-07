@@ -1,3 +1,4 @@
+set -ev
 npm init --yes
 npm install dotenv
 npm install typescript jest @types/jest ts-jest
