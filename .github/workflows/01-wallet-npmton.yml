@@ -3,8 +3,6 @@ name: 01-wallet-npmton
 on:
   schedule:
     - cron:  '0 8 2 * *'
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:

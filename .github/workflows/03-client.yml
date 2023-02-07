@@ -3,8 +3,6 @@ name: 03-client
 on:
   schedule:
     - cron:  '0 8 2 * *'
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -16,4 +14,5 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+      - run: echo MNEMONIC=\"${{ secrets.TUTORIALS_TESTNET_MNEMONIC }}\" > .env
       - run: cd 03-client/test && ./index.sh
