@@ -354,7 +354,7 @@ main();
 <pre><code class="console language-console">npx ts-node step9.ts
 </code></pre>
 <p>Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.</p>
-<p>Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.</p>
+<p>Another interesting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.</p>
 <h2 id="step10sendatransactiontothedeployedcontract">Step 10: Send a transaction to the deployed contract</h2>
 <p>Unlike getters that are read-only, messages can write and change contract state in storage. In our contract implementation we handled messages in <code>recv_internal()</code> and assigned op #1 = <em>increment</em>. Sending messages costs gas and requires payment in TON coin. The reason is that this operation is not read-only, so it requires waiting for consensus by the validators and is stored as a transaction in a block on-chain for all eternity. We will send less TON coin this time since this action is much cheaper than the deployment.</p>
 <h3 id="interfaceclass-2">Interface class</h3>
@@ -426,9 +426,12 @@ function sleep(ms: number) {
 <pre><code class="console language-console">npx ts-node step10.ts
 </code></pre>
 <p>Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = <em>increment</em>, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.</p>
-<p>Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.</p>
+<p>Messages can be sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test">here</a>.</p>
+<p>In this tutorial we handled the build and deploy processes manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have these processes managed automatically by an awesome dev tool called <a href="https://github.com/ton-community/blueprint">Blueprint</a>. To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:</p>
+<pre><code class="console language-console">npm create ton@latest
+</code></pre>
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
@@ -687,7 +690,7 @@ main();
 <pre><code class="console language-console">npx ts-node step9.ts
 </code></pre>
 <p>Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.</p>
-<p>Another intersting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.</p>
+<p>Another interesting thing to remember is that getters are only accessible off-chain, for example from a JavaScript client making a call through an RPC service provider. In particular, this means that contracts cannot call getters on other contracts.</p>
 <h2 id="step10sendatransactiontothedeployedcontract">Step 10: Send a transaction to the deployed contract</h2>
 <p>Unlike getters that are read-only, messages can write and change contract state in storage. In our contract implementation we handled messages in <code>recv_internal()</code> and assigned op #1 = <em>increment</em>. Sending messages costs gas and requires payment in TON coin. The reason is that this operation is not read-only, so it requires waiting for consensus by the validators and is stored as a transaction in a block on-chain for all eternity. We will send less TON coin this time since this action is much cheaper than the deployment.</p>
 <h3 id="interfaceclass-2">Interface class</h3>
@@ -759,9 +762,12 @@ function sleep(ms: number) {
 <pre><code class="console language-console">npx ts-node step10.ts
 </code></pre>
 <p>Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = <em>increment</em>, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.</p>
-<p>Messeges can sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.</p>
+<p>Messages can be sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test">here</a>.</p>
+<p>In this tutorial we handled the build and deploy processes manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have these processes managed automatically by an awesome dev tool called <a href="https://github.com/ton-community/blueprint">Blueprint</a>. To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:</p>
+<pre><code class="console language-console">npm create ton@latest
+</code></pre>
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>

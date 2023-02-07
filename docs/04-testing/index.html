@@ -264,19 +264,26 @@ describe("Counter tests", () =&gt; {
 <pre><code class="console language-console">  console.log
     sending 7.123 TON
 
-  console.warn
+  console.log
     #DEBUG#: s0 = 7123000000
 
   console.log
     sending increment message
 
-  console.warn
+  console.log
     #DEBUG#: s0 = 2000000
 
-  console.warn
+  console.log
     #DEBUG#: increment received
 </code></pre>
 <p>We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of <code>msg_value</code>. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.</p>
+<p>If you would like to see even more verbose log output from running your contracts, you can <a href="https://github.com/ton-community/sandbox#viewing-logs">increase the verbosity</a> of the <code>blockchain</code> object after creating it in beforeEach:</p>
+<pre><code class="ts language-ts">blockchain.verbosity = {
+  blockchainLogs: true,
+  vmLogs: "vm_logs_full",
+  debugLogs: true,
+}
+</code></pre>
 <h2 id="step6testinproductionwithouttestnet">Step 6: Test in production (without testnet)</h2>
 <p>Steps 2-5 above are all part of approach (4) - where I promised to spend 90% of our testing time. These tests are very fast to run (there's nothing faster than an in-process instance of a bare-bones TVM) and are very CI-friendly. They are also free and don't require you to spend any TON coin. These tests should give you the majority of confidence that your code is actually working.</p>
 <p>What about the remaining 10%? All of our tests so far worked inside a lab. Before we're launching our contract, we should run some tests in the wild! This is what approach (5) is all about.</p>
@@ -290,6 +297,9 @@ describe("Counter tests", () =&gt; {
 </ul>
 <h2 id="conclusion">Conclusion</h2>
 <p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test">here</a>.</p>
+<p>In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called <a href="https://github.com/ton-community/blueprint">Blueprint</a>. To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:</p>
+<pre><code class="console language-console">npm create ton@latest
+</code></pre>
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>

@@ -281,20 +281,30 @@ The console output should include something like this:
   console.log
     sending 7.123 TON
 
-  console.warn
+  console.log
     #DEBUG#: s0 = 7123000000
 
   console.log
     sending increment message
 
-  console.warn
+  console.log
     #DEBUG#: s0 = 2000000
 
-  console.warn
+  console.log
     #DEBUG#: increment received
 ```
 
 We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of `msg_value`. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.
+
+If you would like to see even more verbose log output from running your contracts, you can [increase the verbosity](https://github.com/ton-community/sandbox#viewing-logs) of the `blockchain` object after creating it in beforeEach:
+
+```ts
+blockchain.verbosity = {
+  blockchainLogs: true,
+  vmLogs: "vm_logs_full",
+  debugLogs: true,
+}
+```
 
 ## Step 6: Test in production (without testnet)
 
@@ -317,6 +327,12 @@ If this step is so easy, why am I devoting so much time to discuss it? Because, 
 ## Conclusion
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
+
+In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called [Blueprint](https://github.com/ton-community/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:
+
+```console
+npm create ton@latest
+```
 
 If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
