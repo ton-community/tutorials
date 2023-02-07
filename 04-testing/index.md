@@ -281,20 +281,30 @@ The console output should include something like this:
   console.log
     sending 7.123 TON
 
-  console.warn
+  console.log
     #DEBUG#: s0 = 7123000000
 
   console.log
     sending increment message
 
-  console.warn
+  console.log
     #DEBUG#: s0 = 2000000
 
-  console.warn
+  console.log
     #DEBUG#: increment received
 ```
 
 We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of `msg_value`. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.
+
+If you would like to see even more verbose log output from running your contracts, you can [increase the verbosity](https://github.com/ton-community/sandbox#viewing-logs) of the `blockchain` object after creating it in beforeEach:
+
+```ts
+blockchain.verbosity = {
+  blockchainLogs: true,
+  vmLogs: "vm_logs_full",
+  debugLogs: true,
+}
+```
 
 ## Step 6: Test in production (without testnet)
 
