@@ -2,7 +2,7 @@ name: 01-wallet-npmton
 
 on:
   schedule:
-    - cron:  '0 8 2 * *'
+    - cron:  '0 9 * * 1,4'
   workflow_dispatch:
 
 jobs:
