@@ -151,6 +151,8 @@ The first thing we'll do is calculate the address of our wallet in code and see 
 
 Let's assume that your secret 24 word mnemonic is `unfold sugar water ...` - this is the phrase we backed up in step 2.
 
+Also, let's assume that the wallet version we discused in Step 5 be V4 - so we can import ```WalletContractV4``` and move froward. In case it uses "wallet v3 r2" or below, make sure you replace ```WalletContractV4``` wherever used here onwards with ```WalletContractV3R2``` or respective versions supported.
+
 Create the file `step7.ts` with the following content:
 
 ---
@@ -164,7 +166,8 @@ async function main() {
   // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
-  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });//for "wallet v4"
+  // const wallet = WalletContractV3R2.create({ publicKey: key.publicKey, workchain: 0 });//for "wallet v3 r2"
 
   // print wallet address
   console.log(wallet.address.toString({ testOnly: true }));

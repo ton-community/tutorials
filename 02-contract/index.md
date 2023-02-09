@@ -258,7 +258,8 @@ async function deploy() {
   // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
-  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });//for "wallet v4"
+  // const wallet = WalletContractV3R2.create({ publicKey: key.publicKey, workchain: 0 });//for "wallet v3 r2"
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);
