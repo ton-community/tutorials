@@ -63,7 +63,9 @@ Refresh the explorer after the coins have been sent. As you can see, the balance
 
 <img src="https://i.imgur.com/OdIRwvo.png" width=600 /><br>
 
-So when is your wallet smart contract being deployed? This would normally happen when you execute your first transaction - normally an outgoing transfer. This transaction is going to cost gas, so your balance cannot be zero to make it. Tonkeeper is going to deploy our smart contract automatically when we issue the first transfer. Let's send 0.01 TON somewhere through Tonkeeper.
+So when is your wallet smart contract being deployed? This would normally happen when you execute your first transaction - normally an outgoing transfer. This transaction is going to cost gas, so your balance cannot be zero to make it. Tonkeeper is going to deploy our smart contract automatically when we issue the first transfer.
+
+Let's send 0.01 TON somewhere through Tonkeeper.
 
 Refresh the explorer after approving the transaction. We can see that Tonkeeper indeed deployed our contract! The "State" is now "Active". The contract is no longer uninitialized and shows "wallet v4 r2" instead. Your contract may show a different version if Tonkeeper was updated since this tutorial was written.
 
@@ -139,6 +141,8 @@ npx ts-node step7.ts
 
 Notice that we're not just printing the address, we're also printing the workchain number. TON supports multiple parallel blockchain instances called *workchains*. Today, only two workchains exist, workchain 0 is used for all of our regular contracts, and workchain -1 (the masterchain) is used by the validators. Unless you're doing something special, you'll always use workchain 0.
 
+As discussed in step 5, if your wallet has a different version from "wallet v4 r2" you will need to modify slightly the code above. Let's say for example that your version is "wallet v3 r2", then replace `WalletContractV4` with `WalletContractV3R2`.
+
 ## Step 8: Read wallet state from the chain
 
 Let's take things up a notch and read some live state data from our wallet contract that will force us to connect to the live blockchain network. We're going to read the live wallet TON coin balance (we saw that on the explorer earlier). We're also going to read the wallet `seqno` - the sequence number of the last transaction that the wallet sent. Every time the wallet sends a transaction the seqno increments.
@@ -210,6 +214,11 @@ async function main() {
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
 
+  // make sure wallet is deployed
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
+
   // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
@@ -250,6 +259,8 @@ npx ts-node step9.ts
 ```
 
 Once the wallet signs and sends a transaction, we must wait until TON Blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
+
+If you're getting errors in this step, please triple check that the wallet contract you're using is deployed and funded. If you're using the wrong wallet version for example, you'll end up using a wallet contract that isn't deployed and the transaction will fail.
 
 ## Conclusion
 

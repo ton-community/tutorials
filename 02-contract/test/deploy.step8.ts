@@ -21,13 +21,16 @@ async function deploy() {
   // exit if contract is already deployed
   console.log("contract address:", counter.address.toString());
   if (await client.isContractDeployed(counter.address)) {
-    return console.log("already deployed");
+    return console.log("Counter already deployed");
   }
 
   // open wallet v4 (notice the correct wallet version here)
   const mnemonic = process.env.MNEMONIC;
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);

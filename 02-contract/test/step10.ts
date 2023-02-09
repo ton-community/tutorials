@@ -16,6 +16,9 @@ async function main() {
   const mnemonic = process.env.MNEMONIC;
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);

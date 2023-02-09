@@ -225,7 +225,7 @@ npm install @orbs-network/ton-access
 
 The deployment is going to cost gas and should be done through a wallet that will fund it. I'm assuming that you have some familiarity with TON wallets and how they're derived from 24 word secret mnemonics. If not, be sure to follow the previous tutorial in this series.
 
-As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch [Tonkeeper](https://tonkeeper.com) through "Settings" to this version, or modify the code to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.
+As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch [Tonkeeper](https://tonkeeper.com) through "Settings" to this version, or modify the code below to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.
 
 Create a new script `deploy.ts` that will use the interface class we just wrote:
 
@@ -252,13 +252,16 @@ async function deploy() {
   // exit if contract is already deployed
   console.log("contract address:", counter.address.toString());
   if (await client.isContractDeployed(counter.address)) {
-    return console.log("already deployed");
+    return console.log("Counter already deployed");
   }
 
   // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);
@@ -311,13 +314,16 @@ async function deploy() {
   // exit if contract is already deployed
   console.log("contract address:", counter.address.toString());
   if (await client.isContractDeployed(counter.address)) {
-    return console.log("already deployed");
+    return console.log("Counter already deployed");
   }
 
   // open wallet v4 (notice the correct wallet version here)
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);
@@ -357,11 +363,11 @@ To run `deploy.ts` use terminal once again:
 npx ts-node deploy.ts
 ```
 
-If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance.
-
 ---
 network:testnet
 ---
+If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance. A common mistake is trying to use a wallet contract that isn't deployed or funded. This can happen if you're setting the wrong wallet version. As explained in the previous tutorial, check your wallet address in an [explorer](https://testnet.tonscan.org) and if your wallet has a different version from "wallet v4 r2" you will need to modify slightly the code above. Let's say for example that your version is "wallet v3 r2", then replace `WalletContractV4` with `WalletContractV3R2`.
+
 The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://testnet.tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 ---
@@ -369,6 +375,8 @@ The script will print the newly deployed contract address - mine is `EQBYLTm4nsv
 ---
 network:mainnet
 ---
+If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the [Telegram support chat](https://t.me/TONAccessSupport) for TON access to get assistance. A common mistake is trying to use a wallet contract that isn't deployed or funded. This can happen if you're setting the wrong wallet version. As explained in the previous tutorial, check your wallet address in an [explorer](https://tonscan.org) and if your wallet has a different version from "wallet v4 r2" you will need to modify slightly the code above. Let's say for example that your version is "wallet v3 r2", then replace `WalletContractV4` with `WalletContractV3R2`.
+
 The script will print the newly deployed contract address - mine is `EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb`. You can open your address in an [explorer](https://tonscan.org) to verify that the deploy went smoothly. This is what it should look like:
 
 ---
@@ -523,6 +531,9 @@ async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);
@@ -574,6 +585,9 @@ async function main() {
   const mnemonic = "unfold sugar water ..."; // your 24 secret words (replace ... with the rest of the words)
   const key = await mnemonicToWalletKey(mnemonic.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
+  if (!await client.isContractDeployed(wallet.address)) {
+    return console.log("wallet is not deployed");
+  }
 
   // open wallet and read the current seqno of the wallet
   const walletContract = client.open(wallet);
