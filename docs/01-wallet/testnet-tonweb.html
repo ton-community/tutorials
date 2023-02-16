@@ -124,7 +124,7 @@ main();
 </code></pre>
 <p>If you have network connectivity issues and get errors like backend nodes unhealthy or timeouts, please join the <a href="https://t.me/TONAccessSupport">Telegram support chat</a> for TON access to get assistance.</p>
 <h2 id="step9sendtransfertransactiontothechain">Step 9: Send transfer transaction to the chain</h2>
-<p>The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.</p>
+<p>The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a privileged write action, the private key is required.</p>
 <p>Create a new file <code>step9.ts</code> with this content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToKeyPair } from "tonweb-mnemonic";

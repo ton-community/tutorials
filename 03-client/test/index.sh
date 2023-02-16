@@ -3,7 +3,7 @@ rm -rf ./temp
 npm create vite@latest temp -- --template react-ts
 cd temp
 npm install
-npm install ton ton-core
+npm install ton ton-core ton-crypto
 npm install @orbs-network/ton-access
 npm install vite-plugin-node-polyfills
 cp -f ../vite.config.ts .

@@ -204,7 +204,7 @@ If you have network connectivity issues and get errors like backend nodes unheal
 
 ## Step 9: Send transfer transaction to the chain
 
-The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a priviliged write action, the private key is required.
+The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a privileged write action, the private key is required.
 
 Create a new file `step9.ts` with this content:
 

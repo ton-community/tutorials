@@ -38,7 +38,7 @@ npm install
 We will need to install a few more packages that will allow us to interact with TON Blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:
 
 ```console
-npm install ton ton-core
+npm install ton ton-core ton-crypto
 npm install @orbs-network/ton-access
 ```
 
