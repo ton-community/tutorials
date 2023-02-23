@@ -1,6 +1,9 @@
 name: 03-client
 
 on:
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron:  '0 9 * * 1,4'
   workflow_dispatch:
