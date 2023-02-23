@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import { Cell } from "ton-core";
-import { Blockchain, OpenedContract, TreasuryContract } from "@ton-community/sandbox";
+import { Blockchain, SandboxContract, TreasuryContract } from "@ton-community/sandbox";
 import Counter from "./counter"; // this is the interface class from tutorial 2
 
 describe("Counter tests", () => {
   let blockchain: Blockchain;
-  let wallet1: OpenedContract<TreasuryContract>;
-  let counterContract: OpenedContract<Counter>;
+  let wallet1: SandboxContract<TreasuryContract>;
+  let counterContract: SandboxContract<Counter>;
   
   beforeEach(async () =>  {
     // prepare Counter's initial code and data cells for deployment

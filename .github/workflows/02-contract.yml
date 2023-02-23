@@ -1,6 +1,9 @@
 name: 02-contract
 
 on:
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron:  '0 9 * * 1,4'
   workflow_dispatch:
