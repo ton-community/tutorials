@@ -453,7 +453,7 @@ network:testnet library:npmton
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, internal } from "ton";
+import { TonClient, WalletContractV4, internal, SendMode } from "ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -476,6 +476,7 @@ async function main() {
   await walletContract.sendTransfer({
     secretKey: key.secretKey,
     seqno: seqno,
+    sendMode: SendMode.PAY_GAS_SEPARATELY,
     messages: [
       internal({
         to: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
