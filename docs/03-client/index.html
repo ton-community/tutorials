@@ -159,8 +159,7 @@ export default defineConfig({
 </code></pre>
 <p>When our app connects to the user's wallet, it will identify itself using a <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a> file. The wallet will ask for the user's permission to connect to the app and display the information from the manifest. Since the manifest needs to be publicly available on the Internet, we're going to use an example one that I've deployed in advance during development. Later, when we deploy our website, we will replace the example manifest with your real one.</p>
 <p>Modify the file <code>src/main.tsx</code> to use the TON Connect provider:</p>
-<pre><code class="tsx language-tsx">import React from 'react';
-import ReactDOM from 'react-dom/client';
+<pre><code class="tsx language-tsx">import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
@@ -621,8 +620,7 @@ export default defineConfig({
 </code></pre>
 <p>When our app connects to the user's wallet, it will identify itself using a <a href="https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest">manifest</a> file. The wallet will ask for the user's permission to connect to the app and display the information from the manifest. Since the manifest needs to be publicly available on the Internet, we're going to use an example one that I've deployed in advance during development. Later, when we deploy our website, we will replace the example manifest with your real one.</p>
 <p>Modify the file <code>src/main.tsx</code> to use the TON Connect provider:</p>
-<pre><code class="tsx language-tsx">import React from 'react';
-import ReactDOM from 'react-dom/client';
+<pre><code class="tsx language-tsx">import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';

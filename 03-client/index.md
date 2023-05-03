@@ -85,7 +85,6 @@ When our app connects to the user's wallet, it will identify itself using a [man
 Modify the file `src/main.tsx` to use the TON Connect provider:
 
 ```tsx
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
