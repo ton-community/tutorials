@@ -202,10 +202,10 @@ If you have network connectivity issues and get errors like backend nodes unheal
 
 The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a privileged write action, the private key is required.
 
-<strong>Reward:</strong> We will send 0.05 TON to the address that mints an NFT from <a href="https://testnet.getgems.io/collection/EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e">"TON Masters"</a> collection:
+<strong>Reward:</strong> We will send 0.05 TON to the special address to mint a secret NFT from <a target="_blank" href="https://getgems.io/collection/EQChHpu8-rFBQyVCXJtT1aTwODTBc1dFUAEatbYy11ZLcBST">"TON Masters"</a> collection  (<a target="_blank" href="https://testnet.getgems.io/collection/EQChHpu8-rFBQyVCXJtT1aTwODTBc1dFUAEatbYy11ZLcBST">testnet link</a>). Here is how your reward looks like:
 
 <video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
-  <source src="https://ddejfvww7sqtk.cloudfront.net/nft-content-cache/video/EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e/a04f2536bc1a8ca3" type="video/mp4">
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/1-wallet/video.mp4" type="video/mp4">
 </video>
 
 Create a new file `step9.ts` with this content:
