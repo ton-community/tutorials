@@ -18,12 +18,12 @@ async function main() {
   const WalletClass = tonweb.wallet.all["v4R2"];
   const wallet = new WalletClass(tonweb.provider, { publicKey: key.publicKey });
 
-  // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+  // send 0.05 TON to EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e
   const seqno = await wallet.methods.seqno().call() || 0;
   await wallet.methods.transfer({
     secretKey: key.secretKey,
-    toAddress: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
-    amount: TonWeb.utils.toNano("0.001"), // 0.001 TON
+    toAddress: "EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e",
+    amount: TonWeb.utils.toNano("0.05"), // 0.05 TON
     seqno: seqno,
     payload: "Hello", // optional comment
     sendMode: 3,

@@ -197,6 +197,12 @@ If you have network connectivity issues and get errors like backend nodes unheal
 
 The previous action was read-only and should generally be possible even if you don't have the private key of the wallet. Now, we're going to transfer some TON from the wallet. Since this is a privileged write action, the private key is required.
 
+<strong>Reward:</strong> We will send 0.05 TON to the address that mints an NFT from <a href="https://testnet.getgems.io/collection/EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e">"TON Masters"</a> collection:
+
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ddejfvww7sqtk.cloudfront.net/nft-content-cache/video/EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e/a04f2536bc1a8ca3" type="video/mp4">
+</video>
+
 Create a new file `step9.ts` with this content:
 
 ```ts
@@ -219,7 +225,7 @@ async function main() {
     return console.log("wallet is not deployed");
   }
 
-  // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+  // send 0.05 TON to EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
   await walletContract.sendTransfer({
@@ -227,8 +233,8 @@ async function main() {
     seqno: seqno,
     messages: [
       internal({
-        to: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
-        value: "0.001", // 0.001 TON
+        to: "EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e",
+        value: "0.05", // 0.05 TON
         body: "Hello", // optional comment
         bounce: false,
       })
@@ -258,7 +264,7 @@ Execute the script by running in terminal:
 npx ts-node step9.ts
 ```
 
-Once the wallet signs and sends a transaction, we must wait until TON Blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer.
+Once the wallet signs and sends a transaction, we must wait until TON Blockchain validators insert this transaction into a new block. Since block time on TON is approx 5 seconds, it will usually take 5-10 seconds until the transaction confirms. Try looking for this outgoing transaction in the Tonscan explorer. After running the code, you will see the NFT minted in your wallet soon.
 
 If you're getting errors in this step, please triple check that the wallet contract you're using is deployed and funded. If you're using the wrong wallet version for example, you'll end up using a wallet contract that isn't deployed and the transaction will fail.
 

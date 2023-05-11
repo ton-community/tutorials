@@ -21,7 +21,7 @@ async function main() {
     return console.log("wallet is not deployed");
   }
 
-  // send 0.001 TON to EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI
+  // send 0.05 TON to EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
   await walletContract.sendTransfer({
@@ -29,8 +29,8 @@ async function main() {
     seqno: seqno,
     messages: [
       internal({
-        to: "EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI",
-        value: "0.001", // 0.001 TON
+        to: "EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e",
+        value: "0.05", // 0.05 TON to mint NFT
         body: "Hello", // optional comment
         bounce: false,
       })
