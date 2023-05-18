@@ -300,6 +300,7 @@ If you would like to see even more verbose log output from running your contract
 
 ```ts
 blockchain.verbosity = {
+  print: true,
   blockchainLogs: true,
   vmLogs: "vm_logs_full",
   debugLogs: true,
