@@ -16,11 +16,6 @@ async function main() {
   const client = new TonClient({ endpoint });
   //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
 
-  // make sure wallet is deployed
-  if (!await client.isContractDeployed(wallet.address)) {
-    return console.log("wallet is not deployed");
-  }
-
   // send 0.05 TON to EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e
   const walletContract = client.open(wallet);
   const seqno = await walletContract.getSeqno();
