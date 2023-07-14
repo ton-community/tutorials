@@ -1,21 +1,21 @@
 
-# TON Hello World part 3: Step by step guide for building your first web client
+# TON Hello World part 3: Step-by-step guide for building your first web client
 
-In the previous tutorial we deployed a Counter smart contract to TON Blockchain (either testnet or mainnet). This contract acts as the *backend server* of our application. In this tutorial, we will implement the *frontend* or *client* and allow end-users to access it from a web browser.
+In the previous tutorial, we deployed a Counter smart contract to TON Blockchain (either testnet or mainnet). This contract acts as the *backend server* of our application. In this tutorial, we will implement the *frontend* or *client* and allow end-users to access it from a web browser.
 
-We will also recall that the appilcation that we're building is *decentralized*. Decentralized apps (dapps) have special [properties](https://defi.org/ton/#app-safety-guidelines). For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.
+We will also recall that the application that we're building is *decentralized*. Decentralized apps (dapps) have special [properties](https://defi.org/ton/#app-safety-guidelines). For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.
 
 ## Usage patterns
 
 TON Blockchain is inspired by and complementary to [Telegram](https://telegram.org/) messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.
 
-The first usage patten of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like [GitHub Pages](https://pages.github.com/). End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.
+The first usage pattern of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like [GitHub Pages](https://pages.github.com/). End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.
 
-The second usage pattern is a bit more special. Since TON Blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
+The second usage pattern is a bit more special. Since TON Blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides a special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
 <video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay playsinline width=300></video><br>
 
-During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.
+During the course of this tutorial, we will create a single codebase that will accommodate both usage patterns.
 
 ## Step 2: Set up your local machine
 
@@ -27,7 +27,7 @@ The second tool we need is an initialized TON wallet like [Tonkeeper](https://to
 
 ## Step 3: Set up the project
 
-We will build our frontend with [React](https://reactjs.org/). To create our project we will rely on [Vite](https://vitejs.dev/) and its React template. Choose a name for your project, for example `my-twa`, then open terminal and run the following:
+We will build our frontend with [React](https://reactjs.org/). To create our project we will rely on [Vite](https://vitejs.dev/) and its React template. Choose a name for your project, for example, `my-twa`, then open terminal and run the following:
 
 ```console
 npm create vite@latest my-twa -- --template react-ts
@@ -72,7 +72,7 @@ Then open a web browser and direct it the URL shown on-screen (like `http://loca
 
 ## Step 4: Set up TON Connect
 
-[TON Connect](https://github.com/ton-connect) is the protocol by which our app will communicate with the end-user's wallet. The TON Connect React library will provide us with some useful services like showing the end-user a list of TON Connect 2 supported wallets, querying the user's wallet for its public address and sending a transaction through the wallet.
+[TON Connect](https://github.com/ton-connect) is the protocol by which our app will communicate with the end-user's wallet. The TON Connect React library will provide us with some useful services like showing the end-user a list of TON Connect 2 supported wallets, querying the user's wallet for its public address, and sending a transaction through the wallet.
 
 Install the library by running in terminal:
 
@@ -90,7 +90,7 @@ import App from './App';
 import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-// this manifest is used temporarily for development purposes
+// This manifest is used temporarily for development purposes
 const manifestUrl = 'https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/public/tonconnect-manifest.json';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
@@ -131,7 +131,7 @@ Then refresh the web browser viewing the URL shown on-screen. I'm assuming you'r
 
 TON Connect supports both mobile-mobile user flows and desktop-mobile user flows. Since development is a desktop-mobile flow, TON Connect will rely on scanning QR codes in order to communicate with the wallet running on your mobile device. Open the Tonkeeper mobile app, tap the QR button on the top right and scan the code from your desktop screen.
 
-If everything is wired properly, you should see a confirmation dialong in the wallet mobile app. If you approve the connection, you will see your address in the web app UI!
+If everything is wired properly, you should see a confirmation dialog in the wallet mobile app. If you approve the connection, you will see your address in the web app UI!
 
 ## Step 6: Read the counter value from the chain
 
@@ -139,7 +139,7 @@ It's time to interact with our Counter contract and show the current counter val
 
 Copy `counter.ts` from tutorial 2 to `src/contracts/counter.ts` (also available [here](https://raw.githubusercontent.com/ton-community/tutorials/main/03-client/test/src/contracts/counter.ts)).
 
-The next thing we'll do is implement a general purpose React [hook](https://reactjs.org/docs/hooks-intro.html) that will assist us in initializing async objects. Create the file `src/hooks/useAsyncInitialize.ts` with the following content:
+The next thing we'll do is implement a general-purpose React [hook](https://reactjs.org/docs/hooks-intro.html) that will assist us in initializing async objects. Create the file `src/hooks/useAsyncInitialize.ts` with the following content:
 
 ```ts
 import { useEffect, useState } from 'react';
@@ -419,7 +419,7 @@ Then refresh the web browser viewing the URL shown on-screen. You should see a n
 
 Since your mobile Tonkeeper wallet is connected, this action should reach the Tonkeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.
 
-If everything is working, the counter value on screen should refresh automatically and you should see a value that is higher by one.
+If everything is working, the counter value on the screen should refresh automatically and you should see a value that is higher by one.
 
 ## Step 8: Style the app
 
@@ -515,11 +515,11 @@ Up until now we used our app in a desktop-mobile flow due to the development cyc
 
 ## Step 9: Publish web app to GitHub Pages
 
-I believe that the best place to publish dapps is [GitHub Pages](https://pages.github.com/) - not just for development but also for production. GitHub Pages is a free service for open source projects that allows them to publish static websites (HTML/CSS/JS) directly from a GitHub repo. Since all dapps should always be [open source](https://defi.org/ton/#app-safety-guidelines), all dapps qualify. GitHub Pages also supports [custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site), so the end result will be identical to any other production publishing service.
+I believe that the best place to publish dapps is [GitHub Pages](https://pages.github.com/) - not just for development but also for production. GitHub Pages is a free service for open source projects that allows them to publish static websites (HTML/CSS/JS) directly from a GitHub repo. Since all dapps should always be [open source](https://defi.org/ton/#app-safety-guidelines), all dapps qualify. GitHub Pages also support [custom domains](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site), so the end result will be identical to any other production publishing service.
 
 Another benefit of GitHub Pages is that it supports static websites only that only run client-side. There's no backend that can run code or server-side rendering. This limitation is actually a feature for dapps, because decentralized apps should never depend on backend servers as those are centralized.
 
-The last important feature of GitHub Pages that makes it particularly appropriate for dapps is that the reliance on a git repo gives us many community governance features for free. For example, a group of maintainers can share the website deployment privilege easily because all of them have write access to the repo. Outside collaborators from the community can submit PRs and if those are merged, these community members can influence the live dapp. And lastly, if anyone from the community is unhappy with how the dapp is governed, they can always fork the GitHub repo and create their own independent client that can also be published to GitHub Pages in one click.
+The last important feature of GitHub Pages that makes it particularly appropriate for dapps is that the reliance on a git repo gives us many community governance features for free. For example, a group of maintainers can share the website deployment privilege easily because all of them have written access to the repo. Outside collaborators from the community can submit PRs and if those are merged, these community members can influence the live dapp. And lastly, if anyone from the community is unhappy with how the dapp is governed, they can always fork the GitHub repo and create their own independent client that can also be published to GitHub Pages in one click.
 
 Let's assume that your GitHub username is `my-gituser` and that you pushed the client project to a GitHub repo named `my-twa` under this user. The GitHub URL of the repo is therefore `https://github.com/my-gituser/my-twa`. You will naturally have to replace the names in this example with the actual names that you're using.
 
@@ -608,7 +608,7 @@ The final step is to create a new Telegram bot and have it showcase our website 
 
 To create a new bot select "/newbot". Choose a name for the bot and then a username according to the on-screen instructions. Make a note of the username since this is how end-users will access your TWA. Assuming that your bot username is `my_twa_bot`, it will be accessible in the Telegram chat by typing `@my_twa_bot` or through the URL [https://t.me/my_twa_bot](https://t.me/my_twa_bot). You can even purchase a premium Telegram username for your bot on the auction platform [Fragment](https://fragment.com).
 
-Back in botfather, tap the menu button and edit your bots by selecting "/mybots". Select the bot you've just created. Select "Bot Settings" and then select "Menu Button". Now select "Configure menu button" to edit the URL and type your published website URL:
+Back in botfather, tap the menu button and edit your bots by selecting "/mybots". Select the bot you've just created. Select "Bot Settings" and then select "Menu Button". Now select the "Configure menu button" to edit the URL and type your published website URL:
 
 ```console
 https://my-gituser.github.io/my-twa
@@ -620,7 +620,7 @@ That's it! The bot should be ready. Start a Telegram chat with your bot via the 
 
 ## Conclusion
 
-For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/03-client/test).
+For your convenience, all the code in this tutorial is available in the executable form [here](https://github.com/ton-community/tutorials/blob/main/03-client/test).
 
 In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new client project, you can start from a ready-made template that will save you most of the setup work:<br>[https://github.com/ton-community/twa-template](https://github.com/ton-community/twa-template)
 
