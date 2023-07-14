@@ -18,6 +18,47 @@ If something in the tutorial isn't working, these are the possible causes:
 
     This can happen, we are only human. Try to investigate the problem and suggest a change in the tutorial to make it more clear for the next person. The source code of the tutorials is available [here](https://github.com/ton-community/tutorials/) in the directories `01-wallet`, `02-contract`, etc. You can submit your proposal for an edit by submitting a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Start by creating a [fork](https://github.com/ton-community/tutorials/fork) and then use GitHub's web UI to [open a new PR](https://github.com/ton-community/tutorials/pulls).
 
+4. **You are experiencing connectivity issues.**
+
+    If you are experiencing connectivity issues while following the tutorials with errors such as:
+
+    ```bash
+    Error: exception in fetch(https://ton.access.orbs.network/mngr/nodes?npm_version=2.3.3): FetchError: request to https://ton.access.orbs.network/mngr/nodes?npm_version=2.3.3 failed, reason: read ECONNRESET
+        at Nodes.
+    ```
+
+    then we need to determine if you have access to the TON Access network.
+
+    Try the following command in your terminal:
+
+    ```bash
+    curl https://ton.access.orbs.network
+    ```
+
+    If you receive a HTML response, then you are able to access the TON Access network! This means the issue is not a connectivity one.
+
+    Otherwise, if you received an error message from the `curl` command like this:
+
+    ```bash
+    curl: (35) Recv failure: Connection was reset
+    ```
+
+    then your connection to the TON Access network is being blocked.
+
+    This could mean a number of things. You may be living in a sanctioned country and your government or ISP is blocking access to the TON Access network. It could also be the network you are on could be restricting access.
+
+    To get around this issue you can use a VPN and route your traffic through a different network.
+
+    If you are already using a VPN and still experiencing issues, then your VPN software may not be routing all network traffic like your terminal or command line editor.
+
+    We would recommend using the following VPN software:
+
+    - NordVPN: <https://nordvpn.com/>
+    - ExpressVPN: <https://www.expressvpn.com/>
+    - Nekoray: <https://github.com/MatsuriDayo/nekoray>
+    - Windscribe: <https://windscribe.com/>
+
+
 If you're really stuck, contact us in the following community channels:
 
 * Submit a question in https://answers.ton.org (a StackOverflow clone dedicated to TON)
