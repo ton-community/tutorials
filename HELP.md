@@ -49,7 +49,7 @@ If something in the tutorial isn't working, these are the possible causes:
 
     To get around this issue you can use a VPN and route your traffic through a different network.
 
-    If you are already using a VPN and still experiencing issues, then your VPN software may not be routing all network traffic like your terminal or command line editor.
+    If you are already using a VPN and still experiencing issues, then your VPN software may not be routing all network traffic from your terminal or command line editor.
 
     We would recommend using the following VPN software:
 
