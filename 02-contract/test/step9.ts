@@ -12,7 +12,7 @@ async function main() {
   //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
 
   // open Counter instance by address
-  const counterAddress = Address.parse(process.env.COUNTER_ADDRESS!);
+  const counterAddress = Address.parse(process.env.COUNTER_ADDRESS!.trim());
   const counter = new Counter(counterAddress);
   const counterContract = client.open(counter);
 
