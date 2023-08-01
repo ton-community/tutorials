@@ -26,7 +26,7 @@ async function main() {
   const seqno = await walletContract.getSeqno();
 
   // open Counter instance by address
-  const counterAddress = Address.parse(process.env.COUNTER_ADDRESS!);
+  const counterAddress = Address.parse(process.env.COUNTER_ADDRESS!.trim());
   const counter = new Counter(counterAddress);
   const counterContract = client.open(counter);
 
