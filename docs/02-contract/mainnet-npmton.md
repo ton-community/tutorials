@@ -3,7 +3,7 @@
 
 A smart contract is simply a computer program running on TON Blockchain - or more exactly its [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on TON Blockchain.
 
-In the world of blockchain, *code is law*, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before enagaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.
+In the world of blockchain, *code is law*, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before engaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.
 
 ## Dapps - decentralized applications
 
@@ -459,6 +459,12 @@ Notice that the message will take a few seconds to be processed by validators an
 Messages can be sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
 
 ## Conclusion
+
+Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a> to receive your reward. Here's how it will look like:
+
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/2-smart/video.mp4" type="video/mp4">
+</video>
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
 

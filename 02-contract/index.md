@@ -633,6 +633,13 @@ Messages can be sent to our contract by other contracts. This means a different 
 
 ## Conclusion
 
+Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a> to receive your reward. Here's how it will look like:
+
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/2-smart/video.mp4" type="video/mp4">
+</video>
+
+
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
 
 In this tutorial we handled the build and deploy processes manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have these processes managed automatically by an awesome dev tool called [Blueprint](https://github.com/ton-community/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:

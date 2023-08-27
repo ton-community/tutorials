@@ -261,7 +261,7 @@ If you have network connectivity issues and get errors like backend nodes unheal
 
 The last interaction was read-only, let's change the contract state by sending a transaction. The main action our counter contract supports is *increment*. Let's add a button to the main screen that sends this transaction. As you recall, sending a transaction on-chain costs gas, so we would expect the wallet to approve this action with the user and show how much TON coin will be spent.
 
-Before starting, we're going a add another hook that will generate a `sender` object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.
+Before starting, we're going to add another hook that will generate a `sender` object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.
 
 Create the file `src/hooks/useTonConnect.ts` with the following content:
 
@@ -394,7 +394,7 @@ Then refresh the web browser viewing the URL shown on-screen. You should see a n
 
 Since your mobile Tonkeeper wallet is connected, this action should reach the Tonkeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.
 
-If everything is working, the counter value on screen should refresh automatically and you should a value that his higher by one.
+If everything is working, the counter value on screen should refresh automatically and you should see a value that is higher by one.
 
 ## Step 8: Style the app
 
@@ -594,6 +594,12 @@ That's it! The bot should be ready. Start a Telegram chat with your bot via the 
 <img src="https://i.imgur.com/lVL1Bl0.png" width=300 /><br>
 
 ## Conclusion
+
+Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAD0yCaOQwnT&amount=50000000">here</a> to receive your reward. Here's how it will look like:
+
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/3-twa/video.mp4" type="video/mp4">
+</video>
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/03-client/test).
 

@@ -620,6 +620,13 @@ That's it! The bot should be ready. Start a Telegram chat with your bot via the 
 
 ## Conclusion
 
+Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAD0yCaOQwnT&amount=50000000">here</a> to receive your reward. Here's how it will look like:
+
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/3-twa/video.mp4" type="video/mp4">
+</video>
+
+
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/03-client/test).
 
 In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new client project, you can start from a ready-made template that will save you most of the setup work:<br>[https://github.com/ton-community/twa-template](https://github.com/ton-community/twa-template)

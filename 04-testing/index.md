@@ -327,6 +327,12 @@ If this step is so easy, why am I devoting so much time to discuss it? Because, 
 
 ## Conclusion
 
+Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAAEJBO8En6j&amount=50000000">here</a> to receive your reward. Here's how it will look like:
+
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/4-testing/video.mp4" type="video/mp4">
+</video>
+
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
 
 In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called [Blueprint](https://github.com/ton-community/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:
