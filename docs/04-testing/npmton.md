@@ -1,7 +1,7 @@
 
 # TON Hello World part 4: Step by step guide for testing your first smart contract
 
-Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract devleopers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.
+Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract developers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.
 
 A thorough test suite is also a good signal to your users that you've taken your role as a contract developer seriously. I would personally be very hesitant to deposit a substantial amount of money in any contract that has no tests. Since *code is law*, any bug in the contract code is also part of the agreement, so a user wouldn't really have anyone to blame for money lost, but themselves.
 
@@ -300,6 +300,7 @@ If you would like to see even more verbose log output from running your contract
 
 ```ts
 blockchain.verbosity = {
+  print: true,
   blockchainLogs: true,
   vmLogs: "vm_logs_full",
   debugLogs: true,

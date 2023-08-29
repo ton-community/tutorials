@@ -38,7 +38,7 @@ npm install
 We will need to install a few more packages that will allow us to interact with TON Blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:
 
 ```console
-npm install ton ton-core ton-crypto
+npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 ```
 
@@ -209,7 +209,7 @@ import { useEffect, useState } from 'react';
 import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -292,7 +292,7 @@ Create the file `src/hooks/useTonConnect.ts` with the following content:
 
 ```ts
 import { useTonConnectUI } from '@tonconnect/ui-react';
-import { Sender, SenderArguments } from 'ton-core';
+import { Sender, SenderArguments } from '@ton/core';
 
 export function useTonConnect(): { sender: Sender; connected: boolean } {
   const [tonConnectUI] = useTonConnectUI();
@@ -327,7 +327,7 @@ import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonConnect } from './useTonConnect';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();

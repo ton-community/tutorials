@@ -1,5 +1,5 @@
 <h1 id="tonhelloworldpart4stepbystepguidefortestingyourfirstsmartcontract">TON Hello World part 4: Step by step guide for testing your first smart contract</h1>
-<p>Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract devleopers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.</p>
+<p>Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract developers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.</p>
 <p>A thorough test suite is also a good signal to your users that you've taken your role as a contract developer seriously. I would personally be very hesitant to deposit a substantial amount of money in any contract that has no tests. Since <em>code is law</em>, any bug in the contract code is also part of the agreement, so a user wouldn't really have anyone to blame for money lost, but themselves.</p>
 <p>Personally, I don't view testing as an afterthought taking place only when your code is complete. If done correctly, tests can be a powerful aid to the development process itself from the beginning, that will allow you to write better code faster.</p>
 <h2 id="ohsomanywaystotest">Oh so many ways to test</h2>
@@ -201,6 +201,7 @@ describe("Counter tests", () =&gt; {
 <p>We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of <code>msg_value</code>. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.</p>
 <p>If you would like to see even more verbose log output from running your contracts, you can <a href="https://github.com/ton-community/sandbox#viewing-logs">increase the verbosity</a> of the <code>blockchain</code> object after creating it in beforeEach:</p>
 <pre><code class="ts language-ts">blockchain.verbosity = {
+  print: true,
   blockchainLogs: true,
   vmLogs: "vm_logs_full",
   debugLogs: true,

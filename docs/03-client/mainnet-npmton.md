@@ -38,7 +38,7 @@ npm install
 We will need to install a few more packages that will allow us to interact with TON Blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:
 
 ```console
-npm install ton ton-core ton-crypto
+npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 ```
 
@@ -184,7 +184,7 @@ import { useEffect, useState } from 'react';
 import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -261,13 +261,13 @@ If you have network connectivity issues and get errors like backend nodes unheal
 
 The last interaction was read-only, let's change the contract state by sending a transaction. The main action our counter contract supports is *increment*. Let's add a button to the main screen that sends this transaction. As you recall, sending a transaction on-chain costs gas, so we would expect the wallet to approve this action with the user and show how much TON coin will be spent.
 
-Before starting, we're going a add another hook that will generate a `sender` object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.
+Before starting, we're going to add another hook that will generate a `sender` object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.
 
 Create the file `src/hooks/useTonConnect.ts` with the following content:
 
 ```ts
 import { useTonConnectUI } from '@tonconnect/ui-react';
-import { Sender, SenderArguments } from 'ton-core';
+import { Sender, SenderArguments } from '@ton/core';
 
 export function useTonConnect(): { sender: Sender; connected: boolean } {
   const [tonConnectUI] = useTonConnectUI();
@@ -302,7 +302,7 @@ import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonConnect } from './useTonConnect';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -394,7 +394,7 @@ Then refresh the web browser viewing the URL shown on-screen. You should see a n
 
 Since your mobile Tonkeeper wallet is connected, this action should reach the Tonkeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.
 
-If everything is working, the counter value on screen should refresh automatically and you should a value that his higher by one.
+If everything is working, the counter value on screen should refresh automatically and you should see a value that is higher by one.
 
 ## Step 8: Style the app
 

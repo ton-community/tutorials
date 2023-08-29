@@ -54,7 +54,7 @@ This will install the package [func-js](https://github.com/ton-community/func-js
 And finally, run in terminal:
 
 ```console
-npm install ton ton-crypto ton-core
+npm install @ton/ton @ton/crypto @ton/core
 ```
 
 This will install a library that you should be familiar with - [ton](https://www.npmjs.com/package/ton). We'll use it to deploy our contract and interact with it.
@@ -175,7 +175,7 @@ The recommended way to interact with contracts is to create a small TypeScript c
 Use the following code in `counter.ts` to create the initial data cell for deployment:
 
 ```ts
-import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "ton-core";
+import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "@ton/core";
 
 export default class Counter implements Contract {
 
@@ -192,7 +192,7 @@ export default class Counter implements Contract {
 }
 ```
 
-Notice a few interesting things about this TypeScript code. First, it depends on the package [ton-core](https://www.npmjs.com/package/ton-core) instead of [ton](https://www.npmjs.com/package/ton), which contains a small subset of base types and is therefore slower to change - an important feature when building a stable interface for our contract. Second, the code that creates the data cell mimics the FunC API and is almost identical to our `save_data()` FunC function. Third, we can see the derivation of the contract address from the code cell and data cell using the function `contractAddress`.
+Notice a few interesting things about this TypeScript code. First, it depends on the package [@ton/core](https://www.npmjs.com/package/@ton/core) instead of [ton](https://www.npmjs.com/package/ton), which contains a small subset of base types and is therefore slower to change - an important feature when building a stable interface for our contract. Second, the code that creates the data cell mimics the FunC API and is almost identical to our `save_data()` FunC function. Third, we can see the derivation of the contract address from the code cell and data cell using the function `contractAddress`.
 
 The actual deployment involves sending the first message that will cause our contract to be deployed. We can piggyback any message that is directed towards our contract. This can even be the increment message with op #1, but we will do something simpler. We will just send some TON coins to our contract (an empty message) and piggyback that. Let's make this part of our interface. Add the function `sendDeploy()` to `counter.ts` - this function will send the deployment message:
 
@@ -235,7 +235,7 @@ network:testnet
 ```ts
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";
 import Counter from "./counter"; // this is the interface class from step 7
 
@@ -297,7 +297,7 @@ network:mainnet
 ```ts
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";
 import Counter from "./counter"; // this is the interface class from step 7
 
@@ -518,7 +518,7 @@ network:testnet
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, Address } from "ton";
 import Counter from "./counter"; // this is the interface class we just implemented
 
@@ -572,7 +572,7 @@ network:mainnet
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, Address } from "ton";
 import Counter from "./counter"; // this is the interface class we just implemented
 
