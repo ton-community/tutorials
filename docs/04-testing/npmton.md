@@ -19,7 +19,7 @@ Because testing is such as big deal in smart contract development, there's a sur
 
 3. **Writing tests in FunC** - [toncli](https://github.com/disintar/toncli) is a command-line tool written in Python that runs on your machine and supports [debug](https://github.com/disintar/toncli/blob/master/docs/advanced/transaction_debug.md) and [unit tests](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md) for FunC contracts where the tests are also written in FunC ([example](https://github.com/BorysMinaiev/func-contest-1-tests-playground/blob/main/task-1/tests/test.fc)).
 
-4. **Bare-bones TVM with Sandbox** - [Sandbox](https://github.com/ton-community/sandbox) is a bare-bones version of just the [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) running on [WebAssembly](https://webassembly.org/) with a thin JavaScript wrapper that allows test interactions from TypeScript.
+4. **Bare-bones TVM with Sandbox** - [Sandbox](https://github.com/ton-org/sandbox) is a bare-bones version of just the [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) running on [WebAssembly](https://webassembly.org/) with a thin JavaScript wrapper that allows test interactions from TypeScript.
 
 5. **Deploying beta contracts to mainnet** - This form of "testing in production" simply deploys alternative beta versions of your contracts to mainnet and uses real (not free) TON coin to play with them in a real environment. If you found a bug, you simply deploy new fixed beta versions and waste a little more money.
 
@@ -76,10 +76,10 @@ module.exports = {
 And finally, run in terminal:
 
 ```console
-npm install ton-core @ton-community/sandbox @ton-community/test-utils
+npm install @ton/core @ton/sandbox @ton/test-utils
 ```
 
-This will install [Sandbox](https://github.com/ton-community/sandbox) and its dependencies. Sandbox is our magical library that will emulate TON Blockchain locally by running a bare-bones version of the TVM in process. This will guarantee that our tests will be blazingly fast and completely isolated.
+This will install [Sandbox](https://github.com/ton-org/sandbox) and its dependencies. Sandbox is our magical library that will emulate TON Blockchain locally by running a bare-bones version of the TVM in process. This will guarantee that our tests will be blazingly fast and completely isolated.
 
 ## Step 2: Load our contract in a test
 
@@ -104,8 +104,8 @@ Create the file `step2.spec.ts` with the following content:
 
 ```ts
 import * as fs from "fs";
-import { Cell } from "ton-core";
-import { Blockchain, SandboxContract, TreasuryContract } from "@ton-community/sandbox";
+import { Cell } from "@ton/core";
+import { Blockchain, SandboxContract, TreasuryContract } from "@ton/sandbox";
 import Counter from "./counter"; // this is the interface class from tutorial 2
 
 describe("Counter tests", () => {
@@ -296,7 +296,7 @@ The console output should include something like this:
 
 We can see that the debug messages are printed when the test is running. When we send some TON coin explicitly to the contract (7.123 coins), we can see that the first debug print indeed shows the expected value of `msg_value`. Since the TVM doesn't support floating points, the number is represented internally as a large integer (with 9 decimals, meaning multiplied by 10^9). On the second test, when we send the increment op, we can see both debug prints showing. This is because this message also includes a small amount of coins for gas.
 
-If you would like to see even more verbose log output from running your contracts, you can [increase the verbosity](https://github.com/ton-community/sandbox#viewing-logs) of the `blockchain` object after creating it in beforeEach:
+If you would like to see even more verbose log output from running your contracts, you can [increase the verbosity](https://github.com/ton-org/sandbox#viewing-logs) of the `blockchain` object after creating it in beforeEach:
 
 ```ts
 blockchain.verbosity = {
@@ -329,7 +329,7 @@ If this step is so easy, why am I devoting so much time to discuss it? Because, 
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
 
-In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called [Blueprint](https://github.com/ton-community/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:
+In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called [Blueprint](https://github.com/ton-org/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:
 
 ```console
 npm create ton@latest

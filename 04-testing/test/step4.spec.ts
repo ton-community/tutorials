@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import { Cell } from "ton-core";
-import { Blockchain, SandboxContract, TreasuryContract } from "@ton-community/sandbox";
+import { Cell } from "@ton/core";
+import { Blockchain, SandboxContract, TreasuryContract } from "@ton/sandbox";
 import Counter from "./counter"; // this is the interface class from tutorial 2
 import "@ton-community/test-utils"; // register matchers
 
