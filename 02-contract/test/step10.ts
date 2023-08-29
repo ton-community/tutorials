@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, Address } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "./counter.step10"; // this is the interface class we just implemented
 
 async function main() {

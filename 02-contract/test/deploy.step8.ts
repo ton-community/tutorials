@@ -3,8 +3,8 @@ dotenv.config({ path: "../../.env" });
 
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, Cell, WalletContractV4 } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
 import Counter from "./counter.step7"; // this is the interface class from step 7
 
 async function deploy() {

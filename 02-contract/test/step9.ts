@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { TonClient, Address } from "ton";
+import { TonClient, Address } from "@ton/ton";
 import Counter from "./counter.step9"; // this is the interface class we just implemented
 
 async function main() {
