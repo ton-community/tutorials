@@ -2,7 +2,7 @@ set -ev
 npm init --yes
 npm install dotenv
 npm install ts-node
-npm install @ton/ton @ton/core@0.52.0 @ton/crypto
+npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 npx ts-node step7.ts > step7.output.txt
 diff step7.output.txt step7.expected.txt
