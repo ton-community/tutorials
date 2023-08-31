@@ -621,6 +621,7 @@ That's it! The bot should be ready. Start a Telegram chat with your bot via the 
 ## Conclusion
 
 Congratulations on completing the tutorial! Scan this qr-code or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAD0yCaOQwnT&amount=50000000">here</a> to receive your SBT reward: 
+
 <img src="https://i.imgur.com/0UJOtIH.png" width=300/><br>
 
 

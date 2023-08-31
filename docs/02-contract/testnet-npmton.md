@@ -460,7 +460,8 @@ Messages can be sent to our contract by other contracts. This means a different 
 
 ## Conclusion
 
-Congratulations on completing the tutorial! Scan this qr-code or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a> to receive your SBT reward: 
+Congratulations on completing the tutorial! Scan this qr-code or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a> to receive your SBT reward:
+
 <img src="https://i.imgur.com/GEuOQjr.png" width=300/><br>
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
