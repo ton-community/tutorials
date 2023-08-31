@@ -633,7 +633,7 @@ Messages can be sent to our contract by other contracts. This means a different 
 
 ## Conclusion
 
-Congratulations on completing the tutorial! Scan this qr-code to receive your SBT reward: 
+Congratulations on completing the tutorial! Scan this qr-code or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a> to receive your SBT reward: 
 <img src="https://i.imgur.com/GEuOQjr.png" width=300/><br>
 
 
