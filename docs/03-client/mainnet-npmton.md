@@ -591,15 +591,12 @@ https://my-gituser.github.io/my-twa
 
 That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations!
 
-<img src="https://i.imgur.com/lVL1Bl0.png" width=300 /><br>
+<img src="https://i.imgur.com/lVL1Bl0.png" width=300/><br>
 
 ## Conclusion
 
-Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAD0yCaOQwnT&amount=50000000">here</a> to receive your reward. Here's how it will look like:
-
-<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
-  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/3-twa/video.mp4" type="video/mp4">
-</video>
+Congratulations on completing the tutorial! Scan this qr-code to receive your SBT reward: 
+<img src="https://i.imgur.com/0UJOtIH.png" width=300/><br>
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/03-client/test).
 

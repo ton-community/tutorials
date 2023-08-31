@@ -327,11 +327,8 @@ If this step is so easy, why am I devoting so much time to discuss it? Because, 
 
 ## Conclusion
 
-Congratulations on completing the tutorial! Click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAAPmEfY662P&amount=50000000">here</a> to receive your reward. Here's how it will look like:
-
-<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
-  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/4-testing/video.mp4" type="video/mp4">
-</video>
+Congratulations on completing the tutorial! Scan this qr-code to receive your SBT reward: 
+<img src="https://i.imgur.com/tewJ6Wg.png" /><br>
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
 
