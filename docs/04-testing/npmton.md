@@ -325,11 +325,17 @@ If this step is so easy, why am I devoting so much time to discuss it? Because, 
 
 * *"I don't want to pollute mainnet with abandoned test contracts"* - Don't worry about it. Users won't care since the chance of them reaching your unadvertised contract address by accident is zero. Validators won't care since you paid them for this service, they enjoy the traction. Also, TON has an auto-cleanup mechanism baked in, your contract will eventually run out of gas for rent and will be destroyed automatically.
 
+## Reward
+
+Congratulations on completing the tutorial! Here is how your reward looks like:
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/4-testing/video.mp4" type="video/mp4">
+</video>
+
+Scan this qr-code or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAAPmEfY662P&amount=50000000">here</a> to receive your SBT reward from <a target="_blank" href="https://getgems.io/collection/EQDMLnAidBQHajOXI-wKKdyy6NjP8pgBAIGiVmSRZ9mJF1iM">"TON Masters"</a> collection (<a target="_blank" href="https://testnet.getgems.io/collection/EQDMLnAidBQHajOXI-wKKdyy6NjP8pgBAIGiVmSRZ9mJF1iM">testnet link</a>):
+  <img src="https://i.imgur.com/tewJ6Wg.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/>
+
 ## Conclusion
-
-Congratulations on completing the tutorial! Scan this qr-code or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAAPmEfY662P&amount=50000000">here</a> to receive your SBT reward: 
-
-<img src="https://i.imgur.com/tewJ6Wg.png" width=300/><br>
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
 
