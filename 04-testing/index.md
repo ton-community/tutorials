@@ -325,6 +325,16 @@ If this step is so easy, why am I devoting so much time to discuss it? Because, 
 
 * *"I don't want to pollute mainnet with abandoned test contracts"* - Don't worry about it. Users won't care since the chance of them reaching your unadvertised contract address by accident is zero. Validators won't care since you paid them for this service, they enjoy the traction. Also, TON has an auto-cleanup mechanism baked in, your contract will eventually run out of gas for rent and will be destroyed automatically.
 
+## Reward
+
+Congratulations on successfully completing this tutorial! Before we conclude, let's take a quick look at the exciting reward awaiting you from the <a target="_blank" href="https://getgems.io/collection/EQDMLnAidBQHajOXI-wKKdyy6NjP8pgBAIGiVmSRZ9mJF1iM">"TON Masters"</a> collection:
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/4-testing/video.mp4" type="video/mp4">
+</video>
+
+Ready to claim your reward? Simply scan the QR code below or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAAPmEfY662P&amount=50000000">here</a>:
+  <img src="https://i.imgur.com/tewJ6Wg.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/>
+
 ## Conclusion
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).

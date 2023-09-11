@@ -3,7 +3,7 @@
 
 A smart contract is simply a computer program running on TON Blockchain - or more exactly its [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on TON Blockchain.
 
-In the world of blockchain, *code is law*, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before enagaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.
+In the world of blockchain, *code is law*, meaning that instead of lawyers and papers, computer instructions define in absolute terms the rules of interaction between the different users of the contract. Before engaging with any smart contract as a user, you're expected to review its code and thus understand its terms of agreement. Accordingly, we'll make an effort to make our contract as easy to read as possible, so its users could understand what they're getting into.
 
 ## Dapps - decentralized applications
 
@@ -457,6 +457,16 @@ npx ts-node step10.ts
 Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = *increment*, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.
 
 Messages can be sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
+
+## Reward
+
+Congratulations on successfully completing this tutorial! Before we conclude, let's take a quick look at the exciting reward awaiting you from the <a target="_blank" href="https://getgems.io/collection/EQA4RIS6uxt1GZkTTr19Wy423NZtcG0pRy29lg55X-qYq-Tf">"TON Masters"</a> collection:
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/2-smart/video.mp4" type="video/mp4">
+</video>
+
+Ready to claim your reward? Simply scan the QR code below or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a>:
+<img src="https://i.imgur.com/GEuOQjr.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/>
 
 ## Conclusion
 

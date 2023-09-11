@@ -631,6 +631,17 @@ Notice that the message will take a few seconds to be processed by validators an
 
 Messages can be sent to our contract by other contracts. This means a different contract can increment our counter. This allows the TON ecosystem to create composable apps and protocols that build on top of each other and interact in unforeseen ways.
 
+## Reward
+
+Congratulations on successfully completing this tutorial! Before we conclude, let's take a quick look at the exciting reward awaiting you from the <a target="_blank" href="https://getgems.io/collection/EQA4RIS6uxt1GZkTTr19Wy423NZtcG0pRy29lg55X-qYq-Tf">"TON Masters"</a> collection:
+<video style="border-radius: 10pt; margin: 25pt auto; display: block;" width="40%" autoplay loop muted playsinline>
+  <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/2-smart/video.mp4" type="video/mp4">
+</video>
+
+
+Ready to claim your reward? Simply scan the QR code below or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a>:
+<img src="https://i.imgur.com/GEuOQjr.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/>
+
 ## Conclusion
 
 For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
