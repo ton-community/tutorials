@@ -451,6 +451,8 @@ The previous action was read-only and should generally be possible even if you d
   <source src="https://ton-devrel.s3.eu-central-1.amazonaws.com/tal-tutorials/1-wallet/video.mp4" type="video/mp4">
 </video>
 
+Ready to claim your reward? Simply scan the QR code below or click <a target="_blank" href="ton://transfer/EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e?bin=te6cckEBAQEABgAACAAPmEfY662P&amount=50000000">here</a>.
+
 Create a new file `step9.ts` with this content:
 
 ---
