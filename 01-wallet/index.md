@@ -97,7 +97,7 @@ Refresh the explorer after approving the transaction. We can see that Tonkeeper 
 
 <img src="https://i.imgur.com/P9uuKaU.png" width=600 /><br>
 
-We can also see that we've also paid some gas for the deployment and transfer fees. After sending 0.01 TON we have 1.9764 TON remaining, meaning we paid a total of 0.0136 TON in fees, not too bad.
+We can also see that we've also paid some gas for the deployment and transfer fees. After sending 0.01 TON we have 1.9763 TON remaining, meaning we paid a total of 0.0136 TON in fees, not too bad.
 
 ## Step 5: Wallets contracts have versions
 
