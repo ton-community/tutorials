@@ -168,7 +168,8 @@ Copy the skeleton to a new file named `step3.spec.ts` and add the following test
   });
 ```
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/04-testing/test/step3.spec.ts).
+The resulting source file should look like [this](https://raw.githubusercontent.com/ton-community/tutorials/main/04-testing/test/step3.spec.ts).
+
 
 There's something interesting to notice in the assertion at the end of the test - the `expect()`. When we compare the counter value we don't compare it to the number `17`, but to `17n`. What is this notation? The `n` signifies that the number is a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). The FunC type returned from our getter is `int`. This TVM number type is [257 bit long](https://ton.org/docs/develop/func/types?id=atomic-types) (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript `number` type is limited to [64 bit](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.
 
