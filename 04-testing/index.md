@@ -209,7 +209,7 @@ Copy the last test file to a new file named `step4.spec.ts` and add the followin
   })
 ```
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/04-testing/test/step4.spec.ts).
+The resulting source file should look like [this](https://github.com/ton-community/tutorials/raw/main/04-testing/test/step4.spec.ts).
 
 Notice that we already know from the previous test that the counter is indeed initialized to 17, so if our message was successful, we can use the getter to get the counter value and make sure it has been incremented to 18.
 
