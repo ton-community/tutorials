@@ -7,7 +7,7 @@ import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";
 import Counter from "./counter.step7"; // this is the interface class from step 7
 
-async function deploy() {
+export async function run() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
@@ -17,7 +17,7 @@ async function deploy() {
   const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
   const initialCounterValue = Date.now(); // to avoid collisions use current number of milliseconds since epoch as initial value
   const counter = Counter.createForDeploy(counterCode, initialCounterValue);
-  
+
   // exit if contract is already deployed
   console.log("contract address:", counter.address.toString());
   if (await client.isContractDeployed(counter.address)) {
@@ -36,7 +36,7 @@ async function deploy() {
   const walletContract = client.open(wallet);
   const walletSender = walletContract.sender(key.secretKey);
   const seqno = await walletContract.getSeqno();
-  
+
   // send the deploy transaction
   const counterContract = client.open(counter);
   await counterContract.sendDeploy(walletSender);
@@ -50,8 +50,6 @@ async function deploy() {
   }
   console.log("deploy transaction confirmed!");
 }
-
-deploy();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

@@ -29,35 +29,25 @@ In later tutorials we will make this contract a little more advanced and allow T
 
 Before we can start writing code, we need to install certain developer tools on our computer.
 
-For convenience, our development environment will rely on several clever scripts for testing, compiling and deploying our code. The most convenient language for these scripts is JavaScript, executed by an engine called Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running `node -v` in terminal.
+For convenience, our development environment will rely on several clever scripts for testing, compiling and deploying our code. The most convenient language for these scripts is JavaScript, executed by an engine called Node.js. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v18. You can verify your nodejs version by running `node -v` in terminal.
 
 You will also need a decent IDE with FunC and TypeScript support. I recommend [Visual Studio Code](https://code.visualstudio.com/) - it's free and open source. Also install the [FunC Plugin](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode) to add syntax highlighting for the FunC language.
 
 ## Step 3: Set up the project
 
-Let's create a new directory for our project. Open terminal in the project directory and run the following:
+Let's open a terminal in the project directory where you want to place your project. When you run the following command, be sure to choose "Counter" as the contract name and select "an empty contract (FunC)" from the list of templates. This will help prevent any issues in the future.
 
 ```console
-npm install ts-node
+npm create ton@latest
 ```
 
-This will allow us to easily run TypeScript files. Now run in terminal:
+This will create a new project with a preconfigured structure, which includes a workflow for developing, testing, and deploying smart contracts using the Blueprint SDK. The project structure will initially consist of four directories: `contracts`, `wrappers`, `tests`, and `scripts`. Later on, we will also create a `build` directory.
+
+And finally, execute the following command to open a folder, allowing us to proceed with the tutorial:
 
 ```console
-npm install @ton-community/func-js
+cd your_project_directory
 ```
-
-This will install the package [func-js](https://github.com/ton-community/func-js), a cross-platform compiler for FunC.
-
-> In previous iterations of this tutorial we used to deal with [binaries executables](https://github.com/ton-defi-org/ton-binaries) of the `func` and `fift` compilers, but those were platform specific (different binaries for Mac, Windows and Linux). Relying on func-js will make life easier since it's cross-platform. In general, using executable binaries in the TON ecosystem is obsolete.
-
-And finally, run in terminal:
-
-```console
-npm install ton ton-crypto ton-core
-```
-
-This will install a library that you should be familiar with - [ton](https://www.npmjs.com/package/ton). We'll use it to deploy our contract and interact with it.
 
 ## Step 4: Structuring our smart contract
 
@@ -74,6 +64,12 @@ The **getters** section deals with read-only interactions that don't change stat
 We're about to write our first lines in FunC! Our first task would be to implement the *counter* feature of our contract.
 
 The FunC programming language is very similar to the [C language](https://en.wikipedia.org/wiki/C_(programming_language)). It has strict types, which is a good idea, since compilation errors will help us spot contract mistakes early on. The language was designed specifically for TON Blockchain, so you will not find a lot of documentation beyond the [official FunC docs](https://ton.org/docs/develop/func/overview).
+
+Before the first section, please remember to keep the following line of code at the beginning of the file to import the standard library, as its absence can cause issues later on.
+
+```func
+#include "imports/stdlib.fc";
+```
 
 ### Storage
 
@@ -130,7 +126,7 @@ int counter() method_id {        ;; getter declaration - returns int as result
 
 We can choose what input arguments the getter takes as input and what output it returns as result. Also notice the function modifier appearing in the declaration - [*method_id*](https://ton.org/docs/develop/func/functions#method_id). It is customary to place `method_id` on all getters.
 
-That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above to a single file named `counter.fc` and save it. This will be the FunC (`.fc` file extension) source file of our contract. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.fc).
+That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in `contracts/counter.fc`. This will be the FunC (`.fc` file extension) source file of our contract. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.fc).
 
 ## Step 6: Build the counter contract
 
@@ -138,23 +134,19 @@ Right now, the contract is just FunC source code. To get it to run on-chain, we 
 
 In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called [Fift](https://ton-blockchain.github.io/docs/fiftbase.pdf). Just like FunC, Fift is another language that was designed specifically for TON Blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.
 
+Since we're using func-js for building, it would be a good idea to create a directory where we can store the build result. To do this, open the terminal and run the following command:
+
+```console
+mkdir build 
+```
+
 The func-js package contains everything we need to compile our contract to bytecode. To use it, open terminal in the project directory and run the following:
 
 ```console
-npx func-js counter.fc --boc counter.cell
+npx func-js contracts/counter.fc --boc build/counter.cell
 ```
 
-You'll notice that we immediately get a bunch of compilation errors on some function definitions missing like `set_data` and `begin_cell`. **It's good practice to see what compilation errors look like.** Indeed, our code relies on these standard library functions, but where are they defined? The TON foundation publishes these in the main TON repo in the file [stdlib.fc](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/stdlib.fc). Since I've seen multiple versions of this file running around, it's good practice to download it and include it as part of your project.
-
-Download [stdlib.fc](https://raw.githubusercontent.com/ton-blockchain/ton/master/crypto/smartcont/stdlib.fc) and save it in the project directory. 
-
-The func-js compiler supports taking multiple input files as arguments. Note that order matters in this case, so `stdlib.fc` needs to be appear before `counter.fc` which relies on it:
-
-```console
-npx func-js stdlib.fc counter.fc --boc counter.cell
-```
-
-The build should now succeed, with the output of this command being a new file - `counter.cell`. This is a binary file that finally contains the TVM bytecode in cell format that is ready to be deployed on-chain. This will actually be the only file we need for deployment moving forward (we won't need the FunC source file).
+The build should succeed, with the output of this command being a new file - `counter.cell`. This is a binary file that finally contains the TVM bytecode in cell format that is ready to be deployed on-chain. This will actually be the only file we need for deployment moving forward (we won't need the FunC source file).
 
 ## Step 7: Prepare init data for deploying on-chain
 
@@ -170,9 +162,8 @@ The bytecode part is easy, we have that ready as a cell in the file `counter.cel
 
 ### Interface class
 
-The recommended way to interact with contracts is to create a small TypeScript class that will implement the interaction interface with the contract. We would normally give it the same name, so create the file `counter.ts` and place it next to the FunC source `counter.fc`.
-
-Use the following code in `counter.ts` to create the initial data cell for deployment:
+The recommended way to interact with contracts is to create a small TypeScript class that will implement the interaction interface with the contract. We're using the project structure created by Blueprint, but we're still working on low-level aspects.
+Use the following code in `wrappers/Counter.ts` to create the initial data cell for deployment:
 
 ```ts
 import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "ton-core";
@@ -194,7 +185,7 @@ export default class Counter implements Contract {
 
 Notice a few interesting things about this TypeScript code. First, it depends on the package [ton-core](https://www.npmjs.com/package/ton-core) instead of [ton](https://www.npmjs.com/package/ton), which contains a small subset of base types and is therefore slower to change - an important feature when building a stable interface for our contract. Second, the code that creates the data cell mimics the FunC API and is almost identical to our `save_data()` FunC function. Third, we can see the derivation of the contract address from the code cell and data cell using the function `contractAddress`.
 
-The actual deployment involves sending the first message that will cause our contract to be deployed. We can piggyback any message that is directed towards our contract. This can even be the increment message with op #1, but we will do something simpler. We will just send some TON coins to our contract (an empty message) and piggyback that. Let's make this part of our interface. Add the function `sendDeploy()` to `counter.ts` - this function will send the deployment message:
+The actual deployment involves sending the first message that will cause our contract to be deployed. We can piggyback any message that is directed towards our contract. This can even be the increment message with op #1, but we will do something simpler. We will just send some TON coins to our contract (an empty message) and piggyback that. Let's make this part of our interface. Add the function `sendDeploy()` to `wrappers/Counter.ts` - this function will send the deployment message:
 
 ```ts
 // export default class Counter implements Contract {
@@ -227,7 +218,7 @@ The deployment is going to cost gas and should be done through a wallet that wil
 
 As you recall from the previous tutorial, TON wallets can come in multiple versions. The code below relies on "wallet v4 r2", if your wallet is different, either switch [Tonkeeper](https://tonkeeper.com) through "Settings" to this version, or modify the code below to use your version. Also remember to use a wallet works with the correct network you've chosen - testnet or mainnet.
 
-Create a new script `deploy.ts` that will use the interface class we just wrote:
+Replace the current code in `scripts/deployCounter.ts` with a script that will use the interface class we have just written:
 
 ---
 network:testnet
@@ -237,15 +228,15 @@ import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";
-import Counter from "./counter"; // this is the interface class from step 7
+import Counter from "../wrappers/Counter"; // this is the interface class from step 7
 
-async function deploy() {
+export async function run() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
 
   // prepare Counter's initial code and data cells for deployment
-  const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
+  const counterCode = Cell.fromBoc(fs.readFileSync("build/counter.cell"))[0]; // compilation output from step 6
   const initialCounterValue = Date.now(); // to avoid collisions use current number of milliseconds since epoch as initial value
   const counter = Counter.createForDeploy(counterCode, initialCounterValue);
   
@@ -281,8 +272,6 @@ async function deploy() {
   }
   console.log("deploy transaction confirmed!");
 }
-
-deploy();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -299,15 +288,15 @@ import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, Cell, WalletContractV4 } from "ton";
-import Counter from "./counter"; // this is the interface class from step 7
+import Counter from "../wrappers/Counter"; // this is the interface class from step 7
 
-async function deploy() {
+export async function run() {
   // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
 
   // prepare Counter's initial code and data cells for deployment
-  const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
+  const counterCode = Cell.fromBoc(fs.readFileSync("build/counter.cell"))[0]; // compilation output from step 6
   const initialCounterValue = Date.now(); // to avoid collisions use current number of milliseconds since epoch as initial value
   const counter = Counter.createForDeploy(counterCode, initialCounterValue);
   
@@ -344,8 +333,6 @@ async function deploy() {
   console.log("deploy transaction confirmed!");
 }
 
-deploy();
-
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -357,10 +344,10 @@ Before running this code, make sure you have enough TON in your wallet for the g
 
 Another thing to watch out for is collisions between different users of this tutorial. As you recall, if the code and initial data of two contracts are identical, they will have the same address. If all followers of this tutorial would choose initial counter value of `1` - then all of them would collide and only the first would actually deploy the contract. To make sure this doesn't happen, the code above initializes the counter value to the current number of milliseconds since the epoch (something like 1674253934361). This guarantees that your contract for deployment is unique.
 
-To run `deploy.ts` use terminal once again:
+To deploy a contract using our script, run the following command in the terminal and follow the on-screen instructions:
 
 ```console
-npx ts-node deploy.ts
+npx blueprint run
 ```
 
 ---
@@ -393,7 +380,7 @@ Anyone who wants to access the contract from TypeScript would simply use this in
 
 ### Interface class
 
-Add the following to `counter.ts`:
+Add the following to `wrappers/Counter.ts`:
 
 ```ts
 // export default class Counter implements Contract {
@@ -412,7 +399,7 @@ Notice that methods in the interface class that call getters must start with the
 
 Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.
 
-Let's create a new script `step9.ts` and use our shiny interface class to make the call. We're going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:
+Let's create a new script called `getCounter.ts` in the `scripts` folder and use our shiny interface class to make the call. We're going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:
 
 ---
 network:testnet
@@ -420,9 +407,9 @@ network:testnet
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { TonClient, Address } from "ton";
-import Counter from "./counter"; // this is the interface class we just implemented
+import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
-async function main() {
+export async function run() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
@@ -436,8 +423,6 @@ async function main() {
   const counterValue = await counterContract.getCounter();
   console.log("value:", counterValue.toString());
 }
-
-main();
 ```
 
 ---
@@ -448,9 +433,9 @@ network:mainnet
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { TonClient, Address } from "ton";
-import Counter from "./counter"; // this is the interface class we just implemented
+import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
-async function main() {
+export async function run() {
   // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
@@ -464,16 +449,14 @@ async function main() {
   const counterValue = await counterContract.getCounter();
   console.log("value:", counterValue.toString());
 }
-
-main();
 ```
 
 ---
 
-As usual, run the script with terminal:
+As always, run the script using the terminal and follow the instructions displayed on the screen. Make sure to choose "getCounter" from the list of available scripts.
 
 ```console
-npx ts-node step9.ts
+npx blueprint run
 ```
 
 Make a note of the current counter value. After we send the increment message in the next step we would like to confirm that this value indeed increases by 1.
@@ -486,7 +469,7 @@ Unlike getters that are read-only, messages can write and change contract state 
 
 ### Interface class
 
-Add the following to `counter.ts`:
+Add the following to `wrappers/Counter.ts`:
 
 ```ts
 // export default class Counter implements Contract {
@@ -511,7 +494,7 @@ Notice that methods in the interface class that send messages must start with th
 
 ### Executing the send
 
-The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script `step10.ts` and use your wallet to fund the send:
+The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script `sendIncrement.ts` in the `scripts` folder and use your wallet to fund the send:
 
 ---
 network:testnet
@@ -520,9 +503,9 @@ network:testnet
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, WalletContractV4, Address } from "ton";
-import Counter from "./counter"; // this is the interface class we just implemented
+import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
-async function main() {
+export async function run() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
@@ -558,8 +541,6 @@ async function main() {
   console.log("transaction confirmed!");
 }
 
-main();
-
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -574,9 +555,9 @@ network:mainnet
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
 import { TonClient, WalletContractV4, Address } from "ton";
-import Counter from "./counter"; // this is the interface class we just implemented
+import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
-async function main() {
+export async function run() {
   // initialize ton rpc client on mainnet
   const endpoint = await getHttpEndpoint();
   const client = new TonClient({ endpoint });
@@ -612,8 +593,6 @@ async function main() {
   console.log("transaction confirmed!");
 }
 
-main();
-
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -621,10 +600,10 @@ function sleep(ms: number) {
 
 ---
 
-As usual, run the script with terminal:
+As always, run the script using the terminal and follow the instructions displayed on the screen. Make sure to choose "sendIncrement" from the list of available scripts.
 
 ```console
-npx ts-node step10.ts
+npx blueprint run
 ```
 
 Notice that the message will take a few seconds to be processed by validators and will only change contract state after it has been processed. The normal wait time is a block or two, since validators need to produce a new block that contains our sent transaction. The op that was sent above is #1 = *increment*, which means that after processing, the counter value will increase by 1. Verify this by re-running the script from step 9 to print the new counter value.
