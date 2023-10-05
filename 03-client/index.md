@@ -557,12 +557,17 @@ const manifestUrl = 'https://my-gituser.github.io/my-twa/tonconnect-manifest.jso
 
 Another step to remember is changing the `base` property of the Vite config file. If your future website is not going to be on the root of the domain (like you normally have with a custom domain), you must set `base` to the root directory of the website under the domain. In the example above, since the repo name is `my-twa` and the URL is `https://my-gituser.github.io/my-twa`, the website is published under the directory `/my-twa/` in the domain.
 
-Let's set this in `vite.config.js`:
+By the time GitHub allows selecting source files either from `/ (root)` or `/docs` folders, so we also modify the build directory to be `/docs`.
+
+Let's set all this in `vite.config.ts`:
 
 ```ts
 export default defineConfig({
   plugins: [react(), nodePolyfills()],
   base: '/my-twa/',
+    build: {
+    outDir: 'docs'  // custom build dir
+  }
 });
 ```
 
@@ -572,7 +577,7 @@ Build the website for publishing by running in terminal:
 npm run build
 ```
 
-Publishing to GitHub Pages is pretty straightforward. You would normally create a git branch named `gh-pages` in your repo that contains the static website files that were generated in the `dist` directory during the build. Then you would normally open the repo on GitHub's web UI and enable "Pages" under "Settings" (pointing the "Branch" to "gh-pages" after it is pushed).
+Publishing to GitHub Pages is pretty straightforward. You would normally create a git branch named `gh-pages` in your repo that contains the static website files that were generated in the `dist` directory during the build. Then you would normally open the repo on GitHub's web UI and enable "Pages" under "Settings" by selecting the Source to be "Deploy from a branch" and pointing it to "gh-pages" branch and "/docs" folder after it is pushed. 
 
 For the exact steps, you can follow Vite's tutorial for [Deploying to GitHub Pages](https://vitejs.dev/guide/static-deploy.html#github-pages).
 
