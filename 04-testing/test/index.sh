@@ -2,7 +2,7 @@ set -ev
 npm init --yes
 npm install dotenv
 npm install typescript jest @types/jest ts-jest
-npm install ton-core @ton-community/sandbox @ton-community/test-utils
+npm install npm install ton-core@latest @ton-community/sandbox@latest @ton-community/test-utils@latest
 npx jest step2
 npx jest step3
 npx jest step4
