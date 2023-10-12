@@ -1,4 +1,4 @@
-import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "ton-core";
+import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "@ton/core";
 
 export default class Counter implements Contract {
 

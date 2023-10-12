@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "../../../.env" });
 
-import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4 } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4 } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)

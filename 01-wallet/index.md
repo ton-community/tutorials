@@ -131,7 +131,7 @@ library:npmton
 Next, we're going to install a JavaScript package named [ton](https://www.npmjs.com/package/ton) that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:
 
 ```console
-npm install ton ton-crypto ton-core
+npm install @ton/ton @ton/crypto @ton/core
 ```
 
 ---
@@ -159,7 +159,7 @@ Create the file `step7.ts` with the following content:
 network:testnet library:npmton
 ---
 ```ts
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4 } from "ton";
 
 async function main() {
@@ -184,7 +184,7 @@ main();
 network:mainnet library:npmton
 ---
 ```ts
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4 } from "ton";
 
 async function main() {
@@ -302,7 +302,7 @@ network:testnet library:npmton
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "ton";
 
 async function main() {
@@ -335,7 +335,7 @@ network:mainnet library:npmton
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "ton";
 
 async function main() {
@@ -458,7 +458,7 @@ network:testnet library:npmton
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, internal } from "ton";
 
 async function main() {
@@ -516,7 +516,7 @@ network:mainnet library:npmton
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, internal } from "ton";
 
 async function main() {

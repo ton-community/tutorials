@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../../.env" });
 
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4, TonClient, fromNano } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
