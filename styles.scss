@@ -29,6 +29,11 @@ a {
   border-bottom: .75px solid #08c9;
 }
 
+a.selected {
+  text-decoration: underline;
+  pointer-events: none;
+}
+
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
