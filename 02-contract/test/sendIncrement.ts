@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "@ton/crypto";
-import { TonClient, WalletContractV4, Address } from "@ton/ton";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, WalletContractV4, Address } from "ton";
 import Counter from "./counter.step10"; // this is the interface class we just implemented
 
 export async function run() {
@@ -46,3 +46,5 @@ export async function run() {
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+run(); // only for testing purposes

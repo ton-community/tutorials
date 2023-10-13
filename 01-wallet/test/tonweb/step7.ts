@@ -5,7 +5,8 @@ import { mnemonicToKeyPair } from "tonweb-mnemonic";
 import TonWeb from "tonweb";
 
 async function main() {
-  const mnemonic = process.env.MNEMONIC; // your 24 secret words (replace ... with the rest of the words)
+  // Update step7.expected.txt before running the test, since it depends on your wallet address
+  const mnemonic = process.env.MNEMONIC; // your 24 secret words
   const key = await mnemonicToKeyPair(mnemonic!.split(" "));
 
   // open wallet v4 (notice the correct wallet version here)

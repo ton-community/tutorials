@@ -2,13 +2,13 @@ import * as fs from "fs";
 import { Cell } from "@ton/core";
 import { Blockchain, SandboxContract, TreasuryContract } from "@ton/sandbox";
 import Counter from "./counter"; // this is the interface class from tutorial 2
-import "@ton-community/test-utils"; // register matchers
+import "@ton/test-utils"; // register matchers
 
 describe("Counter tests", () => {
   let blockchain: Blockchain;
   let wallet1: SandboxContract<TreasuryContract>;
   let counterContract: SandboxContract<Counter>;
-  
+
   beforeEach(async () =>  {
     // prepare Counter's initial code and data cells for deployment
     const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from tutorial 2

@@ -3,8 +3,8 @@ dotenv.config({ path: "../../.env" });
 
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "@ton/crypto";
-import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
+import { mnemonicToWalletKey } from "ton-crypto";
+import { TonClient, Cell, WalletContractV4 } from "ton";
 import Counter from "./counter.step7"; // this is the interface class from step 7
 
 export async function run() {
@@ -50,6 +50,8 @@ export async function run() {
   }
   console.log("deploy transaction confirmed!");
 }
+
+run();
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

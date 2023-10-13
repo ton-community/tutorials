@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { TonClient, Address } from "@ton/ton";
+import { TonClient, Address } from "ton";
 import Counter from "./counter.step9"; // this is the interface class we just implemented
 
 export async function run() {
@@ -21,3 +21,5 @@ export async function run() {
   //console.log("value:", counterValue.toString());
   console.log("value:", counterValue >= 1000000000000n ? "more than 1T" : "less than 1T");
 }
+
+run(); // only for testing purposes
