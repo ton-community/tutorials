@@ -5,11 +5,11 @@ In the previous tutorial we deployed a Counter smart contract to TON Blockchain 
 
 We will also recall that the appilcation that we're building is *decentralized*. Decentralized apps (dapps) have special [properties](https://defi.org/ton/#app-safety-guidelines). For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.
 
-## Usage patterns
+## Step 1: Define usage patterns
 
 TON Blockchain is inspired by and complementary to [Telegram](https://telegram.org/) messenger. It aims for mass adoption by the next billion users. Since Telegram messenger is a mobile-first app, it makes sense that we design our dapp to be mobile-first as well.
 
-The first usage patten of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like [GitHub Pages](https://pages.github.com/). End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.
+The first usage pattern of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like [GitHub Pages](https://pages.github.com/). End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.
 
 The second usage pattern is a bit more special. Since TON Blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
