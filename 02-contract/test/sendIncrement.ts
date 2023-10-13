@@ -6,7 +6,7 @@ import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "./counter.step10"; // this is the interface class we just implemented
 
-export async function main() {
+export async function run() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
@@ -43,7 +43,7 @@ export async function main() {
   console.log("transaction confirmed!");
 }
 
-main()
+run()
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

@@ -12,6 +12,15 @@ const getSelectedCombination = () => {
 
 const getSelectBoxes = () => document.querySelectorAll(".selectbox");
 const getPosts = () => document.querySelectorAll(".post");
+const getTutorialLinks = () => document.querySelectorAll("[data=tutorial-link]")
+
+const setSelectedTutorialLink = () => {
+  getTutorialLinks().forEach((tutorialLink) => {
+    if(tutorialLink.href === window.location.href) {
+      tutorialLink.classList.add("selected");
+    }
+  });
+};
 
 const onOutsideClick = (container) => {
   document.addEventListener("click", (event) => {
@@ -129,6 +138,7 @@ const updateCombination = () => {
 };
 
 window.onload = () => {
+  setSelectedTutorialLink();
   updateCombination();
   getSelectBoxes().forEach((selectbox) => {
     const selected = selectbox.querySelector(".selectbox-selected");

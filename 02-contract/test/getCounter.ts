@@ -5,7 +5,7 @@ import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { TonClient, Address } from "@ton/ton";
 import Counter from "./counter.step9"; // this is the interface class we just implemented
 
-export async function main() {
+export async function run() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
@@ -23,7 +23,7 @@ export async function main() {
   console.log("value:", counterValue >= 1000000000000n ? "more than 1T" : "less than 1T");
 }
 
-main()
+run()
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
