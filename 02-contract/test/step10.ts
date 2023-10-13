@@ -2,11 +2,11 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, Address } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "./counter.step10"; // this is the interface class we just implemented
 
-export async function run() {
+export async function main() {
   // initialize ton rpc client on testnet
   const endpoint = await getHttpEndpoint({ network: "testnet" });
   const client = new TonClient({ endpoint });
@@ -42,6 +42,8 @@ export async function run() {
   }
   console.log("transaction confirmed!");
 }
+
+main()
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

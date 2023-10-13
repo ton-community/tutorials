@@ -172,14 +172,14 @@
 <pre><code class="console language-console">npm install ts-node
 </code></pre>
 <p>Next, we're going to install a JavaScript package named <a href="https://www.npmjs.com/package/ton">ton</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
-<pre><code class="console language-console">npm install ton ton-crypto ton-core
+<pre><code class="console language-console">npm install @ton/ton @ton/crypto @ton/core
 </code></pre>
 <h2 id="step7getthewalletaddressprogrammatically">Step 7: Get the wallet address programmatically</h2>
 <p>The first thing we'll do is calculate the address of our wallet in code and see that it matches what we saw in the explorer. This action is completely offline since the wallet address is derived from the version of the wallet and the private key used to create it.</p>
 <p>Let's assume that your secret 24 word mnemonic is <code>unfold sugar water ...</code> - this is the phrase we backed up in step 2.</p>
 <p>Create the file <code>step7.ts</code> with the following content:</p>
-<pre><code class="ts language-ts">import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4 } from "ton";
+<pre><code class="ts language-ts">import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4 } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -209,8 +209,8 @@ main();
 </code></pre>
 <p>Create the file <code>step8.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4, TonClient, fromNano } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -246,8 +246,8 @@ main();
 </video>
 <p>Create a new file <code>step9.ts</code> with this content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, internal } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { TonClient, WalletContractV4, internal } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -520,7 +520,7 @@ function sleep(ms: number) {
 <h2 id="step1createanewwalletusinganapp">Step 1: Create a new wallet using an app</h2>
 <p>The simplest way to create a TON wallet is visit <a href="https://ton.org/wallets">https://ton.org/wallets</a> and choose one of the wallet apps from the list. This page explains the difference between custodial and non-custodial wallets. With a non-custodial wallet, you own the wallet and hold its private key by yourself. With a custodial wallet, you trust somebody else to do this for you.</p>
 <p>The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose <a href="https://tonkeeper.com">Tonkeeper</a>. Go ahead and install the Tonkeeper app on your phone and run it.</p>
-<p>Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Version number on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.</p>
+<p>Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Tonkeeper Logo on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.</p>
 <p>If you don't already have a wallet connected to the app, tap on the "Set up wallet" button. We're going to create a new wallet. After a few seconds, your wallet is created and Tonkeeper displays your recovery phrase - the secret 24 words that give access to your wallet funds.</p>
 <h2 id="step2backupthe24wordrecoveryphrase">Step 2: Backup the 24 word recovery phrase</h2>
 <p>The recovery phrase is the key to accessing your wallet. Lose this phrase and you'll lose access to your funds. Give this phrase to somebody and they'll be able to take your funds. Keep this secret and backed up in a safe place.</p>
@@ -562,14 +562,14 @@ function sleep(ms: number) {
 <pre><code class="console language-console">npm install ts-node
 </code></pre>
 <p>Next, we're going to install a JavaScript package named <a href="https://www.npmjs.com/package/ton">ton</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
-<pre><code class="console language-console">npm install ton ton-crypto ton-core
+<pre><code class="console language-console">npm install @ton/ton @ton/crypto @ton/core
 </code></pre>
 <h2 id="step7getthewalletaddressprogrammatically">Step 7: Get the wallet address programmatically</h2>
 <p>The first thing we'll do is calculate the address of our wallet in code and see that it matches what we saw in the explorer. This action is completely offline since the wallet address is derived from the version of the wallet and the private key used to create it.</p>
 <p>Let's assume that your secret 24 word mnemonic is <code>unfold sugar water ...</code> - this is the phrase we backed up in step 2.</p>
 <p>Create the file <code>step7.ts</code> with the following content:</p>
-<pre><code class="ts language-ts">import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4 } from "ton";
+<pre><code class="ts language-ts">import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4 } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -599,8 +599,8 @@ main();
 </code></pre>
 <p>Create the file <code>step8.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4, TonClient, fromNano } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -636,8 +636,8 @@ main();
 </video>
 <p>Create a new file <code>step9.ts</code> with this content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, internal } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { TonClient, WalletContractV4, internal } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -717,7 +717,7 @@ function sleep(ms: number) {
 <h2 id="step1createanewwalletusinganapp">Step 1: Create a new wallet using an app</h2>
 <p>The simplest way to create a TON wallet is visit <a href="https://ton.org/wallets">https://ton.org/wallets</a> and choose one of the wallet apps from the list. This page explains the difference between custodial and non-custodial wallets. With a non-custodial wallet, you own the wallet and hold its private key by yourself. With a custodial wallet, you trust somebody else to do this for you.</p>
 <p>The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose <a href="https://tonkeeper.com">Tonkeeper</a>. Go ahead and install the Tonkeeper app on your phone and run it.</p>
-<p>Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Version number on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.</p>
+<p>Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Tonkeeper Logo on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.</p>
 <p>If you don't already have a wallet connected to the app, tap on the "Set up wallet" button. We're going to create a new wallet. After a few seconds, your wallet is created and Tonkeeper displays your recovery phrase - the secret 24 words that give access to your wallet funds.</p>
 <h2 id="step2backupthe24wordrecoveryphrase">Step 2: Backup the 24 word recovery phrase</h2>
 <p>The recovery phrase is the key to accessing your wallet. Lose this phrase and you'll lose access to your funds. Give this phrase to somebody and they'll be able to take your funds. Keep this secret and backed up in a safe place.</p>

@@ -21,7 +21,7 @@ The simplest way to create a TON wallet is visit [https://ton.org/wallets](https
 
 The point of blockchain is being in control of your own funds, so we'll naturally choose a non-custodial option. They're all pretty similar, let's choose [Tonkeeper](https://tonkeeper.com). Go ahead and install the Tonkeeper app on your phone and run it.
 
-Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Version number on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.
+Tonkeeper works by default on TON mainnet. If you decided to work on testnet, you will need to switch the app manually to dev mode. Open the "Settings" tab and tap 5 times quickly on the Tonkeeper Logo on the bottom. The "Dev Menu" should show up. Click on "Switch to Testnet" and make the switch. You can use this menu later to return to mainnet.
 
 If you don't already have a wallet connected to the app, tap on the "Set up wallet" button. We're going to create a new wallet. After a few seconds, your wallet is created and Tonkeeper displays your recovery phrase - the secret 24 words that give access to your wallet funds.
 

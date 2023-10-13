@@ -102,7 +102,7 @@ npm install ts-node
 Next, we're going to install a JavaScript package named [ton](https://www.npmjs.com/package/ton) that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:
 
 ```console
-npm install ton ton-crypto ton-core
+npm install @ton/ton @ton/crypto @ton/core
 ```
 
 ## Step 7: Get the wallet address programmatically
@@ -114,8 +114,8 @@ Let's assume that your secret 24 word mnemonic is `unfold sugar water ...` - thi
 Create the file `step7.ts` with the following content:
 
 ```ts
-import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4 } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4 } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -159,8 +159,8 @@ Create the file `step8.ts` with the following content:
 
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { WalletContractV4, TonClient, fromNano } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
@@ -207,8 +207,8 @@ Create a new file `step9.ts` with this content:
 
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, internal } from "ton";
+import { mnemonicToWalletKey } from "@ton/crypto";
+import { TonClient, WalletContractV4, internal } from "@ton/ton";
 
 async function main() {
   // open wallet v4 (notice the correct wallet version here)
