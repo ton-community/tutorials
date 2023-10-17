@@ -6,7 +6,15 @@ import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
 async function main() {
-  const mnemonic = process.env.MNEMONIC; 
+  // Notice:
+  // Due to limitations in GitHub Actions, we are unable to use secrets to 
+  // store a secure mnemonic for the wallet during the testing of pull 
+  // requests from forked repositories by our contributors. 
+  // As a result, we are currently using a public wallet with an exposed mnemonic in 
+  // our test files when running tests in GH Actions.
+  // const mnemonic = process.env.MNEMONIC;
+  const mnemonic =
+    'table jungle security cargo adjust barrel dance net permit pig soap simple rabbit upgrade unique update firm between deer minor ship thought ride physical';
 
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });

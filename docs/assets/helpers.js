@@ -16,8 +16,8 @@ const getTutorialLinks = () => document.querySelectorAll("[data=tutorial-link]")
 
 const setSelectedTutorialLink = () => {
   getTutorialLinks().forEach((tutorialLink) => {
-    if(tutorialLink.href === window.location.href) {
-      tutorialLink.classList.add("selected");
+    if (`${tutorialLink.href}/` === window.location.href) {
+      tutorialLink.classList.add('selected');
     }
   });
 };
