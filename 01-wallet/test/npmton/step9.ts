@@ -6,7 +6,7 @@ import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, internal } from "@ton/ton";
 
 async function main() {
-  // open wallet v4 (notice the correct wallet version here)
+
   const mnemonic = process.env.MNEMONIC;
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });

@@ -83,12 +83,12 @@
           
           </div>
           <div class="more">
-            <h3>More Tutorials</h3>
+            <h3>Tutorials</h3>
             <ul>
-              <li><a href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
-              <li><a href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
-              <li><a href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
-              <li><a href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
+              <li><a data="tutorial-link" href="https://ton-community.github.io/tutorials/01-wallet">01. Working with your first wallet</a></li>
+              <li><a data="tutorial-link" href="https://ton-community.github.io/tutorials/02-contract">02. Writing your first smart contract</a></li>
+              <li><a data="tutorial-link" href="https://ton-community.github.io/tutorials/03-client">03. Building your first web client</a></li>
+              <li><a data="tutorial-link" href="https://ton-community.github.io/tutorials/04-testing">04. Testing your first smart contract</a></li>
             </ul>
           </div>
           <div class="more">
@@ -131,7 +131,7 @@ cd my-twa
 npm install
 </code></pre>
 <p>We will need to install a few more packages that will allow us to interact with TON Blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:</p>
-<pre><code class="console language-console">npm install ton ton-core ton-crypto
+<pre><code class="console language-console">npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 </code></pre>
 <p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
@@ -233,7 +233,7 @@ export function useTonClient() {
 import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -302,7 +302,7 @@ export default App
 <p>Before starting, we're going to add another hook that will generate a <code>sender</code> object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.</p>
 <p>Create the file <code>src/hooks/useTonConnect.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { useTonConnectUI } from '@tonconnect/ui-react';
-import { Sender, SenderArguments } from 'ton-core';
+import { Sender, SenderArguments } from '@ton/core';
 
 export function useTonConnect(): { sender: Sender; connected: boolean } {
   const [tonConnectUI] = useTonConnectUI();
@@ -333,7 +333,7 @@ import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonConnect } from './useTonConnect';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -599,7 +599,7 @@ cd my-twa
 npm install
 </code></pre>
 <p>We will need to install a few more packages that will allow us to interact with TON Blockchain. We've seen these packages in action in the previous tutorial. Run the following in terminal:</p>
-<pre><code class="console language-console">npm install ton ton-core ton-crypto
+<pre><code class="console language-console">npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 </code></pre>
 <p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
@@ -701,7 +701,7 @@ export function useTonClient() {
 import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -770,7 +770,7 @@ export default App
 <p>Before starting, we're going to add another hook that will generate a <code>sender</code> object from the TON Connect interface. This sender represents the connected wallet and will allow us to send transactions on their behalf. While we're at it, we'll also expose the wallet connection state so we can alter the UI accordingly.</p>
 <p>Create the file <code>src/hooks/useTonConnect.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { useTonConnectUI } from '@tonconnect/ui-react';
-import { Sender, SenderArguments } from 'ton-core';
+import { Sender, SenderArguments } from '@ton/core';
 
 export function useTonConnect(): { sender: Sender; connected: boolean } {
   const [tonConnectUI] = useTonConnectUI();
@@ -801,7 +801,7 @@ import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonConnect } from './useTonConnect';
-import { Address, OpenedContract } from 'ton-core';
+import { Address, OpenedContract } from '@ton/core';
 
 export function useCounterContract() {
   const client = useTonClient();

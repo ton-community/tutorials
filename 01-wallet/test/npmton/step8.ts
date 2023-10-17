@@ -6,8 +6,8 @@ import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
 async function main() {
-  // open wallet v4 (notice the correct wallet version here)
-  const mnemonic = process.env.MNEMONIC;; // your 24 secret words (replace ... with the rest of the words)
+  const mnemonic = process.env.MNEMONIC; 
+
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
