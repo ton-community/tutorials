@@ -46,3 +46,9 @@
   > The official mnemonic appears in Github repo secrets since it's also used in CI. This should be the 24 word mnemonic for a deployed testnet v4 wallet that contains at least 1 TON.
 - Run `./build.sh`
 - Resulting files will be created in the `docs/` directory, ready for Github Pages
+
+### Notice
+
+> Due to limitations in GitHub Actions, we are unable to use secrets to store a secure mnemonic for the wallet during the testing of pull requests from forked repositories by our contributors. 
+> As a result, we are currently using a public wallet with an exposed mnemonic in our test files when running tests in GH Actions.
+
