@@ -22,7 +22,7 @@ npm install
 <pre><code class="console language-console">npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 </code></pre>
-<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
+<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/@ton/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
 <pre><code class="console language-console">npm install vite-plugin-node-polyfills
 </code></pre>
 <p>Now modify the file <code>vite.config.ts</code> so it looks like this:</p>
@@ -103,7 +103,7 @@ export function useAsyncInitialize&lt;T&gt;(func: () =&gt; Promise&lt;T&gt;, dep
 <p>Next, we're going to create another React hook that will rely on <code>useAsyncInitialize</code> and will initialize an RPC client in our app. An RPC service provider similar to <a href="https://infura.io">Infura</a> on Ethereum will allow us to query data from the chain. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Create the file <code>src/hooks/useTonClient.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from 'ton';
+import { TonClient } from "@ton/ton";
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {

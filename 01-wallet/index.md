@@ -128,7 +128,7 @@ npm install ts-node
 ---
 library:npmton
 ---
-Next, we're going to install a JavaScript package named [ton](https://www.npmjs.com/package/ton) that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:
+Next, we're going to install a JavaScript package named [@ton/ton](https://www.npmjs.com/package/@ton/ton) that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:
 
 ```console
 npm install @ton/ton @ton/crypto @ton/core

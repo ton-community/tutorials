@@ -42,7 +42,7 @@ npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 ```
 
-Last but not least, we will need to overcome [ton](https://www.npmjs.com/package/ton) library's reliance on Nodejs `Buffer` that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:
+Last but not least, we will need to overcome [@ton/ton](https://www.npmjs.com/package/@ton/ton) library's reliance on Nodejs `Buffer` that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:
 
 ```console
 npm install vite-plugin-node-polyfills
@@ -165,7 +165,7 @@ network:testnet
 ---
 ```ts
 import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from 'ton';
+import { TonClient } from "@ton/ton";
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
@@ -185,7 +185,7 @@ network:mainnet
 ---
 ```ts
 import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from 'ton';
+import { TonClient } from "@ton/ton";
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
@@ -214,7 +214,7 @@ import { Address, OpenedContract } from '@ton/core';
 export function useCounterContract() {
   const client = useTonClient();
   const [val, setVal] = useState<null | number>();
-  
+
   const counterContract = useAsyncInitialize(async () => {
     if (!client) return;
     const contract = new Counter(
@@ -335,7 +335,7 @@ export function useCounterContract() {
   const { sender } = useTonConnect();
 
   const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
-  
+
   const counterContract = useAsyncInitialize(async () => {
     if (!client) return;
     const contract = new Counter(
@@ -415,7 +415,7 @@ Time to rebuild the web app, run in terminal:
 npm run dev
 ```
 
-Then refresh the web browser viewing the URL shown on-screen. You should see a new "Increment" link on the bottom of the screen. I'm assuming that you're still on desktop, make a note of the counter value and click the link. 
+Then refresh the web browser viewing the URL shown on-screen. You should see a new "Increment" link on the bottom of the screen. I'm assuming that you're still on desktop, make a note of the counter value and click the link.
 
 Since your mobile Tonkeeper wallet is connected, this action should reach the Tonkeeper mobile app and cause it to display a confirmation dialog. Notice that this dialog shows the gas cost of the transaction. Approve the transaction on the mobile app. Since the app and wallet are connected, your approval should reach the app and cause it to display an indication that the transaction was sent. As you recall, new transactions must wait until they're included in a block, so this should take 5-10 seconds.
 

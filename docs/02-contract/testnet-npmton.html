@@ -44,7 +44,7 @@
 }
 
 () save_data(int counter) impure inline {  ;; write function declaration - takes an int as arg
-  set_data(begin_cell()                    ;; store the storage cell and create it with a builder 
+  set_data(begin_cell()                    ;; store the storage cell and create it with a builder
     .store_uint(counter, 64)               ;; write a 64 bit unsigned int to the builder
     .end_cell());                          ;; convert the builder to a cell
 }
@@ -79,7 +79,7 @@
 <p>Right now, the contract is just FunC source code. To get it to run on-chain, we need to convert it to TVM <a href="https://ton.org/docs/learn/tvm-instructions/instructions">bytecode</a>. </p>
 <p>In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called <a href="https://ton-blockchain.github.io/docs/fiftbase.pdf">Fift</a>. Just like FunC, Fift is another language that was designed specifically for TON Blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.</p>
 <p>Since we're using func-js for building, it would be a good idea to create a directory where we can store the build result. To do this, open the terminal and run the following command:</p>
-<pre><code class="console language-console">mkdir build 
+<pre><code class="console language-console">mkdir build
 </code></pre>
 <p>The func-js package contains everything we need to compile our contract to bytecode. To use it, open terminal in the project directory and run the following:</p>
 <pre><code class="console language-console">npx func-js contracts/counter.fc --boc build/counter.cell
@@ -94,7 +94,7 @@
 <h3 id="interfaceclass">Interface class</h3>
 <p>The recommended way to interact with contracts is to create a small TypeScript class that will implement the interaction interface with the contract. We're using the project structure created by Blueprint, but we're still working on low-level aspects.
 Use the following code in <code>wrappers/Counter.ts</code> to create the initial data cell for deployment:</p>
-<pre><code class="ts language-ts">import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "ton-core";
+<pre><code class="ts language-ts">import { Contract, ContractProvider, Sender, Address, Cell, contractAddress, beginCell } from "@ton/core";
 
 export default class Counter implements Contract {
 
@@ -110,7 +110,7 @@ export default class Counter implements Contract {
   constructor(readonly address: Address, readonly init?: { code: Cell, data: Cell }) {}
 }
 </code></pre>
-<p>Notice a few interesting things about this TypeScript code. First, it depends on the package <a href="https://www.npmjs.com/package/ton-core">ton-core</a> instead of <a href="https://www.npmjs.com/package/ton">ton</a>, which contains a small subset of base types and is therefore slower to change - an important feature when building a stable interface for our contract. Second, the code that creates the data cell mimics the FunC API and is almost identical to our <code>save_data()</code> FunC function. Third, we can see the derivation of the contract address from the code cell and data cell using the function <code>contractAddress</code>.</p>
+<p>Notice a few interesting things about this TypeScript code. First, it depends on the package <a href="https://www.npmjs.com/package/@ton/core">@ton/core</a> instead of <a href="https://www.npmjs.com/package/@ton/ton">ton</a>, which contains a small subset of base types and is therefore slower to change - an important feature when building a stable interface for our contract. Second, the code that creates the data cell mimics the FunC API and is almost identical to our <code>save_data()</code> FunC function. Third, we can see the derivation of the contract address from the code cell and data cell using the function <code>contractAddress</code>.</p>
 <p>The actual deployment involves sending the first message that will cause our contract to be deployed. We can piggyback any message that is directed towards our contract. This can even be the increment message with op #1, but we will do something simpler. We will just send some TON coins to our contract (an empty message) and piggyback that. Let's make this part of our interface. Add the function <code>sendDeploy()</code> to <code>wrappers/Counter.ts</code> - this function will send the deployment message:</p>
 <pre><code class="ts language-ts">// export default class Counter implements Contract {
 
@@ -136,7 +136,7 @@ export default class Counter implements Contract {
 <pre><code class="ts language-ts">import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, Cell, WalletContractV4 } from "ton";
+import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class from step 7
 
 export async function run() {
@@ -209,12 +209,12 @@ function sleep(ms: number) {
 
 // }
 </code></pre>
-<p>Notice that methods in the interface class that call getters must start with the word <code>get</code>. This prefix is a requirement of the <a href="https://www.npmjs.com/package/ton">ton</a> TypeScript library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts">this</a>.</p>
+<p>Notice that methods in the interface class that call getters must start with the word <code>get</code>. This prefix is a requirement of the <a href="https://www.npmjs.com/package/@ton/ton">ton</a> TypeScript library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts">this</a>.</p>
 <h3 id="executingthecall">Executing the call</h3>
 <p>Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.</p>
 <p>Let's create a new script called <code>getCounter.ts</code> in the <code>scripts</code> folder and use our shiny interface class to make the call. We're going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { TonClient, Address } from "ton";
+import { TonClient, Address } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
 export async function run() {
@@ -257,12 +257,12 @@ export async function run() {
 // }
 </code></pre>
 <p>As you recall, the increment message is an <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal message</a> that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).</p>
-<p>Notice that methods in the interface class that send messages must start with the word <code>send</code>, another prefix requirement of the <a href="https://www.npmjs.com/package/ton">ton</a> library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts">this</a>.</p>
+<p>Notice that methods in the interface class that send messages must start with the word <code>send</code>, another prefix requirement of the <a href="https://www.npmjs.com/package/@ton/ton">ton</a> library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts">this</a>.</p>
 <h3 id="executingthesend">Executing the send</h3>
 <p>The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script <code>sendIncrement.ts</code> in the <code>scripts</code> folder and use your wallet to fund the send:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "ton-crypto";
-import { TonClient, WalletContractV4, Address } from "ton";
+import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
 export async function run() {
