@@ -1,15 +1,15 @@
 
-# TON Hello World part 4: Step by step guide for testing your first smart contract
+# TON Hello World part 4: Step-by-step guide for testing your first smart contract
 
-Testing is a big part of smart contract development. Smart contracts often deal with money and we don't want any of our users losing money because the smart contract had a bug. This is why it's normally expected from smart contract developers to share an automated test suite next to their FunC implementation. Every user that wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.
+Testing is a big part of smart contract development. Smart contracts often deal with money, and we don't want any of our users to lose money because the smart contract had a bug. This is why it's normally expected from smart contract developers to share an automated test suite next to their FunC implementation. Every user who wants to be convinced that the contract is working as expected is welcome to execute the test suite and see for themselves.
 
-A thorough test suite is also a good signal to your users that you've taken your role as a contract developer seriously. I would personally be very hesitant to deposit a substantial amount of money in any contract that has no tests. Since *code is law*, any bug in the contract code is also part of the agreement, so a user wouldn't really have anyone to blame for money lost, but themselves.
+A thorough test suite is also a good signal to your users that you've taken your role as a contract developer seriously. I would personally be very hesitant to deposit a substantial amount of money in any contract that has no tests. Since *code is law*, any bug in the contract code is also part of the agreement, so a user wouldn't really have anyone to blame for money lost but themselves.
 
-Personally, I don't view testing as an afterthought taking place only when your code is complete. If done correctly, tests can be a powerful aid to the development process itself from the beginning, that will allow you to write better code faster.
+Personally, I don't view testing as an afterthought taking place only when your code is complete. If done correctly, tests can be a powerful aid to the development process itself from the beginning, which will allow you to write better code faster.
 
-## Oh so many ways to test
+## Oh, so many ways to test
 
-*Warning - this specific section is a bit more advanced than beginner, feel free to skip it directly to step 1 if you trust my judgement of how to test. If you're interested in an overly detailed overview of what other testing methodologies exist in our ecosystem please read on.*
+*Warning - This specific section is a bit more advanced than beginner. Feel free to skip directly to step 1 if you trust my judgment on how to test. If you're interested in an overly detailed overview of what other testing methodologies exist in our ecosystem, please read on.*
 
 Because testing is such as big deal in smart contract development, there's a surprising amount of tools and infrastructure in the TON ecosystem devoted to this topic. Before jumping in to the methodology that I believe in, I want to give a quick overview of the plethora of testing tools that are available out there:
 
@@ -27,7 +27,7 @@ So which method should you choose? You definitely don't need all of them.
 
 My team started building smart contracts on Ethereum in 2017, we've witnessed the evolution of the art of smart contract development almost from its infancy. While I'm well aware of [fundamental differences](https://blog.ton.org/six-unique-aspects-of-ton-blockchain-that-will-surprise-solidity-developers) between TON and the EVM, testing between the two platforms is not fundamentally different. All of the above approaches appeared on Ethereum at one point or another. And all of them practically disappeared - except two - the last two.
 
-1. Testnets were once popular on Ethereum (funny names like Ropsten, Rinkeby and Goerli) but turned out to be a bad tradeoff between convenience and realism - they're slow and often more difficult to work with than mainnet (some wallets aren't compatible) and useless for integration tests with other contracts (eg. your contract interacts with somebody else's token) because nobody bothers to maintain up-to-date versions of their projects on testnet.
+1. Testnets were once popular on Ethereum (funny names like Ropsten, Rinkeby and Goerli) but turned out to be a bad tradeoff between convenience and realism - they're slow and often more difficult to work with than mainnet (some wallets aren't compatible) and useless for integration tests with other contracts (e.g. your contract interacts with somebody else's token) because nobody bothers to maintain up-to-date versions of their projects on testnet.
 
 2. Local desktop versions of the entire blockchain, like [Ganache UI](https://trufflesuite.com/ganache/), proved to be too slow for unit tests and ineffective for integration tests (for the same reason as testnets). They also don't play nicely with [CI](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration). People often confuse [ganache-cli](https://github.com/trufflesuite/ganache) with a local blockchain, but it is actually a bare-bones EVM implemented in JavaScript.
 
@@ -41,7 +41,7 @@ After carefully considering all available approaches, I hope I convinced you why
 
 ## Step 1: Set up the project
 
-Since we're using TypeScript for tests, make sure [Nodejs](https://nodejs.org/) is installed by running `node -v` in terminal and the version is at least v18. If you have an old version, you can upgrade with [nvm](https://github.com/nvm-sh/nvm).
+Since we're using TypeScript for tests, make sure [Node.js](https://nodejs.org/) is installed by running `node -v` in terminal and the version is at least v18. If you have an old version, you can upgrade with [nvm](https://github.com/nvm-sh/nvm).
 
 Let's create a new directory for our project. Open terminal in the project directory and run the following:
 
@@ -134,7 +134,7 @@ describe("Counter tests", () => {
 });
 ```
 
-This code is remarkably similar to the deploy code we had in tutorial 2. This is the benefit of using the TypeScript interface class. No matter where we use our contract, we always access it in the same familiar way.
+This code is remarkably similar to the deployment code we had in tutorial 2. This is the benefit of using the TypeScript interface class. No matter where we use our contract, we always access it in the same familiar way.
 
 The only strange part in this snippet is the treasury. What is it exactly? A treasury is simply a wallet contract, very similar to the v4 wallet you used with [Tonkeeper](https://tonkeeper.com) in previous tutorials. What's useful with a treasury is that it's already pre initialized with a big TON coin balance. There's no need to fund it from a faucet.
 
@@ -170,7 +170,7 @@ Copy the skeleton to a new file named `step3.spec.ts` and add the following test
 
 The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/04-testing/test/step3.spec.ts).
 
-There's something interesting to notice in the assertion at the end of the test - the `expect()`. When we compare the counter value we don't compare it to the number `17`, but to `17n`. What is this notation? The `n` signifies that the number is a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). The FunC type returned from our getter is `int`. This TVM number type is [257 bit long](https://ton.org/docs/develop/func/types?id=atomic-types) (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript `number` type is limited to [64 bit](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.
+There's something interesting to notice in the assertion at the end of the test - the `expect()`. When we compare the counter value we don't compare it to the number `17`, but to `17n`. What is this notation? The `n` signifies that the number is a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). The FunC type returned from our getter is `int`. This TVM number type is [257 bit long](https://ton.org/docs/develop/func/types?id=atomic-types) (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript `number` type is limited to [64 bit](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number), so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.
 
 To execute the test, run in terminal:
 
@@ -223,7 +223,7 @@ Like before, the test should pass.
 
 ## Step 5: Debug by dumping variables
 
-Testing is fun as long as everything works as expected. But what happens when something doesn't work and you're not sure where the problem is? The most convenient method I found to debug your FunC code is to add debug prints in strategic places. This is very similar to debugging JavaScript by using `console.log(variable)` to [print](https://developer.mozilla.org/en-US/docs/Web/API/Console/log) the value of variables.
+Testing is fun as long as everything works as expected. But what happens when something doesn't work, and you're not sure where the problem is? The most convenient method I found to debug your FunC code is to add debug prints in strategic places. This is very similar to debugging JavaScript by using `console.log(variable)` to [print](https://developer.mozilla.org/en-US/docs/Web/API/Console/log) the value of variables.
 
 The TVM has a special instruction for [dumping variables](https://ton.org/docs/develop/func/builtins?id=dump-variable) in debug. Run `~dump(variable_name);` in your FunC code to use it. You can also print constants by using `~dump(12345);` which can be helpful to show that the VM indeed reached a certain line.
 
@@ -345,6 +345,6 @@ In this tutorial we created our project skeleton manually, mostly so we can unde
 npm create ton@latest
 ```
 
-If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available at [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
 Happy coding!

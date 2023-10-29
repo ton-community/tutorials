@@ -1,5 +1,5 @@
 
-# TON Hello World part 3: Step by step guide for building your first web client
+# TON Hello World part 3: Step-by-step guide for building your first web client
 
 In the previous tutorial we deployed a Counter smart contract to TON Blockchain (either testnet or mainnet). This contract acts as the *backend server* of our application. In this tutorial, we will implement the *frontend* or *client* and allow end-users to access it from a web browser.
 
@@ -21,7 +21,7 @@ During the course of this tutorial we will create a single codebase that will ac
 
 Before we can start writing code, we need to install certain developer tools on our computer.
 
-Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running `node -v` in terminal.
+Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Node.js. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v16 or v17. You can verify your Node.js version by running `node -v` in terminal.
 
 The second tool we need is an initialized TON wallet like [Tonkeeper](https://tonkeeper.com). If you don't have a wallet, please take a look at tutorial 1. The wallet will communicate with our dapp via a protocol called [TON Connect 2](https://github.com/ton-connect). If you choose a different wallet than Tonkeeper, please verify it supports this version of TON Connect. Don't forget to make sure your wallet is connected to the correct network - mainnet or testnet.
 
@@ -42,7 +42,7 @@ npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 ```
 
-Last but not least, we will need to overcome [ton](https://www.npmjs.com/package/ton) library's reliance on Nodejs `Buffer` that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:
+Last but not least, we will need to overcome [ton](https://www.npmjs.com/package/ton) library's reliance on Node.js `Buffer` that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:
 
 ```console
 npm install vite-plugin-node-polyfills

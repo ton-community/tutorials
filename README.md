@@ -43,9 +43,9 @@
   MNEMONIC="unfold sugar water ..."
   ```
 
-  > The official mnemonic appears in Github repo secrets since it's also used in CI. This should be the 24 word mnemonic for a deployed testnet v4 wallet that contains at least 1 TON.
+  > The official mnemonic appears in GitHub repo secrets since it's also used in CI. This should be the 24 word mnemonic for a deployed testnet v4 wallet that contains at least 1 TON.
 - Run `./build.sh`
-- Resulting files will be created in the `docs/` directory, ready for Github Pages
+- Resulting files will be created in the `docs/` directory, ready for GitHub Pages
 
 ### Notice
 

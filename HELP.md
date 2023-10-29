@@ -4,7 +4,7 @@ We're sorry you're having a hard time! Let's fix this!
 
 If something in the tutorial isn't working, these are the possible causes:
 
-1. **You have a typo or a mistake somewhere in your code and you didn't follow the tutorial closely enough.**
+1. **You have a typo or a mistake somewhere in your code, and you didn't follow the tutorial closely enough.**
 
     The bottom of every tutorial contains a link to the full code of all steps (in the *Conclusion* section). The code is written as an automated test that we run a few times a week. Compare your code to the test code and try to find where you did something different.
 

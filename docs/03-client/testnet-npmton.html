@@ -1,4 +1,4 @@
-<h1 id="tonhelloworldpart3stepbystepguideforbuildingyourfirstwebclient">TON Hello World part 3: Step by step guide for building your first web client</h1>
+<h1 id="tonhelloworldpart3stepbystepguideforbuildingyourfirstwebclient">TON Hello World part 3: Step-by-step guide for building your first web client</h1>
 <p>In the previous tutorial we deployed a Counter smart contract to TON Blockchain (either testnet or mainnet). This contract acts as the <em>backend server</em> of our application. In this tutorial, we will implement the <em>frontend</em> or <em>client</em> and allow end-users to access it from a web browser.</p>
 <p>We will also recall that the appilcation that we're building is <em>decentralized</em>. Decentralized apps (dapps) have special <a href="https://defi.org/ton/#app-safety-guidelines">properties</a>. For example, their frontend must only run client-side. This means that we're not supposed to rely on a backend server for serving our frontend. If we had such a server, by definition it would be centralized (our end-users will not have equal access to it), and thus make our entire app centralized as well.</p>
 <h2 id="step1defineusagepatterns">Step 1: Define usage patterns</h2>
@@ -10,7 +10,7 @@
 <p>During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.</p>
 <h2 id="step2setupyourlocalmachine">Step 2: Set up your local machine</h2>
 <p>Before we can start writing code, we need to install certain developer tools on our computer.</p>
-<p>Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
+<p>Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Node.js. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your Node.js version by running <code>node -v</code> in terminal.</p>
 <p>The second tool we need is an initialized TON wallet like <a href="https://tonkeeper.com">Tonkeeper</a>. If you don't have a wallet, please take a look at tutorial 1. The wallet will communicate with our dapp via a protocol called <a href="https://github.com/ton-connect">TON Connect 2</a>. If you choose a different wallet than Tonkeeper, please verify it supports this version of TON Connect. Don't forget to make sure your wallet is connected to the correct network - mainnet or testnet.</p>
 <h2 id="step3setuptheproject">Step 3: Set up the project</h2>
 <p>We will build our frontend with <a href="https://reactjs.org/">React</a>. To create our project we will rely on <a href="https://vitejs.dev/">Vite</a> and its React template. Choose a name for your project, for example <code>my-twa</code>, then open terminal and run the following:</p>
@@ -22,7 +22,7 @@ npm install
 <pre><code class="console language-console">npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 </code></pre>
-<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
+<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Node.js <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
 <pre><code class="console language-console">npm install vite-plugin-node-polyfills
 </code></pre>
 <p>Now modify the file <code>vite.config.ts</code> so it looks like this:</p>

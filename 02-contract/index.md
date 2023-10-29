@@ -1,5 +1,5 @@
 
-# TON Hello World part 2: Step by step guide for writing your first smart contract
+# TON Hello World part 2: Step-by-step guide for writing your first smart contract
 
 A smart contract is simply a computer program running on TON Blockchain - or more exactly its [TVM](https://ton-blockchain.github.io/docs/tvm.pdf) (TON Virtual Machine). The contract is made of code (compiled TVM instructions) and data (persistent state) that are stored in some address on TON Blockchain.
 
@@ -29,7 +29,7 @@ In later tutorials we will make this contract a little more advanced and allow T
 
 Before we can start writing code, we need to install certain developer tools on our computer.
 
-For convenience, our development environment will rely on several clever scripts for testing, compiling and deploying our code. The most convenient language for these scripts is JavaScript, executed by an engine called Node.js. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v18. You can verify your nodejs version by running `node -v` in terminal.
+For convenience, our development environment will rely on several clever scripts for testing, compiling and deploying our code. The most convenient language for these scripts is JavaScript, executed by an engine called Node.js. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v18. You can verify your Node.js version by running `node -v` in terminal.
 
 You will also need a decent IDE with FunC and TypeScript support. I recommend [Visual Studio Code](https://code.visualstudio.com/) - it's free and open source. Also install the [FunC Plugin](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode) to add syntax highlighting for the FunC language.
 
@@ -73,7 +73,7 @@ Before the first section, please remember to keep the following line of code at 
 
 ### Storage
 
-Let's start with the first section, *storage*, and implement two utility functions (which we will use later) for reading and writing variables to the contract's persistent state - `load_data()` and `save_data()`. The primary variable will be the counter value. We must persist this value to storage because we need to remember it between calls. The appropriate type for our counter variable is `int`. Notice [in the docs](https://ton.org/docs/develop/func/types#atomic-types) that the `int` TVM runtime type is always 257 bit long (256 bit signed) so it can hold huge huge numbers - I'm pretty sure the universe has less than 2^256 atoms in it, so you'll never have a number so large that you can't fit in it. Storing the full 257 bits in blockchain storage is somewhat wasteful because the contract pays rent proportionally to the total amount of data it keeps. To optimize costs, let's keep in persistent storage just the lowest 64 bits - capping our counter's maximum value at 2^64 which should be enough:
+Let's start with the first section, *storage*, and implement two utility functions (which we will use later) for reading and writing variables to the contract's persistent state - `load_data()` and `save_data()`. The primary variable will be the counter value. We must persist this value to storage because we need to remember it between calls. The appropriate type for our counter variable is `int`. Notice [in the docs](https://ton.org/docs/develop/func/types#atomic-types) that the `int` TVM runtime type is always 257 bit long (256 bit signed) so it can hold huge numbers - I'm pretty sure the universe has less than 2^256 atoms in it, so you'll never have a number so large that you can't fit in it. Storing the full 257 bits in blockchain storage is somewhat wasteful because the contract pays rent proportionally to the total amount of data it keeps. To optimize costs, let's keep in persistent storage just the lowest 64 bits - capping our counter's maximum value at 2^64 which should be enough:
 
 ```func
 (int) load_data() inline {                 ;; read function declaration - returns int as result
@@ -109,7 +109,7 @@ Let's continue to the next section, *messages*, and implement the main message h
 
 Messages sent between contracts are called [internal messages](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages). TON also supports [external messages](https://ton.org/docs/develop/smart-contracts/messages) through the handler `recv_external()`, but as a dapp developer you're never expected to use them. External messages are used for very specific cases, mainly when implementing wallet contracts, that you would normally never have to write by yourself. You can safely ignore them.
 
-Internal messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.
+Internal messages received by the contract may be empty. This is what happens for example when somebody sends TON coins to the contract from their wallet. This is useful for funding the contract, so it can pay fees. In order to be able to receive those incoming transfers we will have to return successfully when an empty message arrives.
 
 If an incoming message is not empty, the first thing to do is read its operation type. By convention, internal messages are [encoded](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) with a 32 bit unsigned int in the beginning that acts as operation type (op for short). We are free to assign any serial numbers we want to our different ops. In this case, we've assigned the number `1` to the *increment* action, which is handled by writing back to persistent state the current value counter plus 1.
 
@@ -340,7 +340,7 @@ function sleep(ms: number) {
 
 ---
 
-Before running this code, make sure you have enough TON in your wallet for the gas payments and the TON sent to the contract during the deploy.
+Before running this code, make sure you have enough TON in your wallet for the gas payments and the TON sent to the contract during the deployment.
 
 Another thing to watch out for is collisions between different users of this tutorial. As you recall, if the code and initial data of two contracts are identical, they will have the same address. If all followers of this tutorial would choose initial counter value of `1` - then all of them would collide and only the first would actually deploy the contract. To make sure this doesn't happen, the code above initializes the counter value to the current number of milliseconds since the epoch (something like 1674253934361). This guarantees that your contract for deployment is unique.
 
