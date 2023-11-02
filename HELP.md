@@ -8,7 +8,7 @@ If something in the tutorial isn't working, these are the possible causes:
 
     The bottom of every tutorial contains a link to the full code of all steps (in the *Conclusion* section). The code is written as an automated test that we run a few times a week. Compare your code to the test code and try to find where you did something different.
 
-    A common mistake is trying to send transactions from a wallet contract that isn't deployed or funded. This can happen if you're setting the wrong wallet version. As explained in the first tutorial, check your wallet address in an explorer and if your wallet has a different version from "wallet v4 r2" you will need to modify the example code. Let's say for example that your version is "wallet v3 r2" and you're using [ton](https://www.npmjs.com/package/ton) library, then replace `WalletContractV4` with `WalletContractV3R2`.
+    A common mistake is trying to send transactions from a wallet contract that isn't deployed or funded. This can happen if you're setting the wrong wallet version. As explained in the first tutorial, check your wallet address in an explorer and if your wallet has a different version from "wallet v4 r2" you will need to modify the example code. Let's say for example that your version is "wallet v3 r2" and you're using [@ton/ton](https://www.npmjs.com/package/@ton/ton) library, then replace `WalletContractV4` with `WalletContractV3R2`.
 
 2. **One of the libraries we depend on had a breaking change and the tutorial is out of date.**
 

@@ -25,7 +25,7 @@
       <div class="rightcol">
         <div class="menu">
           <div class="selectboxes">
-            
+
             <div class="selectbox" data-select="network">
               <h3 class="selectbox-title">Network</h3>
             <div class="selectbox-selected">
@@ -33,7 +33,7 @@
               <img src = '../assets/arrow-down.svg' />
             </div>
             <ul class="options">
-              
+
                 <li data-value="testnet" class="option">
                 <div class="option-name">
                   <h4>Testnet</h4>
@@ -44,7 +44,7 @@
                   <p class="cons">Cons: less reliable, requires special wallets</p>
                 </div>
                 </li>
-              
+
                 <li data-value="mainnet" class="option">
                 <div class="option-name">
                   <h4>Mainnet</h4>
@@ -55,10 +55,10 @@
                   <p class="cons">Cons: not free to use (but very cheap)</p>
                 </div>
                 </li>
-              
+
             </ul>
             </div>
-          
+
             <div class="selectbox" data-select="library">
               <h3 class="selectbox-title">Library</h3>
             <div class="selectbox-selected">
@@ -66,7 +66,7 @@
               <img src = '../assets/arrow-down.svg' />
             </div>
             <ul class="options">
-              
+
                 <li data-value="npmton" class="option">
                 <div class="option-name">
                   <h4>npm ton (JavaScript)</h4>
@@ -77,10 +77,10 @@
                   <p class="cons">Cons: no support for all ton services</p>
                 </div>
                 </li>
-              
+
             </ul>
             </div>
-          
+
           </div>
           <div class="more">
             <h3>Tutorials</h3>
@@ -100,7 +100,7 @@
         </div>
       </div>
       <div class="posts">
-        
+
          <div class="post" data-combination="mainnet-npmton">
             <h1 id="tonhelloworldpart3stepbystepguideforbuildingyourfirstwebclient">TON Hello World part 3: Step by step guide for building your first web client</h1>
 <div class="author">
@@ -134,7 +134,7 @@ npm install
 <pre><code class="console language-console">npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 </code></pre>
-<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
+<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/@ton/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
 <pre><code class="console language-console">npm install vite-plugin-node-polyfills
 </code></pre>
 <p>Now modify the file <code>vite.config.ts</code> so it looks like this:</p>
@@ -215,7 +215,7 @@ export function useAsyncInitialize&lt;T&gt;(func: () =&gt; Promise&lt;T&gt;, dep
 <p>Next, we're going to create another React hook that will rely on <code>useAsyncInitialize</code> and will initialize an RPC client in our app. An RPC service provider similar to <a href="https://infura.io">Infura</a> on Ethereum will allow us to query data from the chain. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Create the file <code>src/hooks/useTonClient.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from 'ton';
+import { TonClient } from "@ton/ton";
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
@@ -568,7 +568,7 @@ export default App
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
-        
+
          <div class="post" data-combination="testnet-npmton">
             <h1 id="tonhelloworldpart3stepbystepguideforbuildingyourfirstwebclient">TON Hello World part 3: Step by step guide for building your first web client</h1>
 <div class="author">
@@ -602,7 +602,7 @@ npm install
 <pre><code class="console language-console">npm install @ton/ton @ton/core @ton/crypto
 npm install @orbs-network/ton-access
 </code></pre>
-<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
+<p>Last but not least, we will need to overcome <a href="https://www.npmjs.com/package/@ton/ton">ton</a> library's reliance on Nodejs <code>Buffer</code> that isn't available in the browser. We can do that by installing a polyfill. Run the following in terminal:</p>
 <pre><code class="console language-console">npm install vite-plugin-node-polyfills
 </code></pre>
 <p>Now modify the file <code>vite.config.ts</code> so it looks like this:</p>
@@ -683,7 +683,7 @@ export function useAsyncInitialize&lt;T&gt;(func: () =&gt; Promise&lt;T&gt;, dep
 <p>Next, we're going to create another React hook that will rely on <code>useAsyncInitialize</code> and will initialize an RPC client in our app. An RPC service provider similar to <a href="https://infura.io">Infura</a> on Ethereum will allow us to query data from the chain. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Create the file <code>src/hooks/useTonClient.ts</code> with the following content:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from 'ton';
+import { TonClient } from "@ton/ton";
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
@@ -1036,7 +1036,7 @@ export default App
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
-        
+
       </div>
     </div>
   </body>
