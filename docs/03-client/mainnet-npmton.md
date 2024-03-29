@@ -15,7 +15,7 @@ The second usage pattern is a bit more special. Since TON Blockchain complements
 
 <video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay playsinline width=300></video><br>
 
-During the course of this tutorial we will create a single codebase that will accomodate both usage patterns.
+During the course of this tutorial we will create a single codebase that will accommodate both usage patterns.
 
 ## Step 2: Set up your local machine
 
