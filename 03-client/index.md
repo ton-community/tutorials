@@ -209,7 +209,8 @@ import { useEffect, useState } from 'react';
 import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
-import { Address, OpenedContract } from '@ton/core';
+import { OpenedContract } from '@ton/core';
+import { Address } from '@ton/ton';
 
 export function useCounterContract() {
   const client = useTonClient();
@@ -327,7 +328,8 @@ import Counter from '../contracts/counter';
 import { useTonClient } from './useTonClient';
 import { useAsyncInitialize } from './useAsyncInitialize';
 import { useTonConnect } from './useTonConnect';
-import { Address, OpenedContract } from '@ton/core';
+import { OpenedContract } from '@ton/core';
+import { Address } from '@ton/ton';
 
 export function useCounterContract() {
   const client = useTonClient();
