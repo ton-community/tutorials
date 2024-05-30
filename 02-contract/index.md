@@ -51,7 +51,7 @@ cd your_project_directory
 
 ## Step 4: Structuring our smart contract
 
-Much like everything else in life, smart contracts in FunC are divided into 3 sections. These sections are: *storage*, *messages* and *getters*.
+Much like everything else in life, smart contracts in FunC are divided into 3 sections. These sections are: *storage*, *messages* and *getters*. We are going to write these three sections of our first smart contract in the `./Counter/contract/counter.fc` file.
 
 The **storage** section deals with our contract's persistent data. Our contract will have to store data between calls from different users, for example the value of our *counter* variable. To write this data to state storage, we will need a write/encode function and to read this data back from state storage, we will need a read/decode function.
 
