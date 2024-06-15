@@ -11,7 +11,7 @@ TON Blockchain is inspired by and complementary to [Telegram](https://telegram.o
 
 The first usage pattern of our dapp would be through a regular web browser. Our frontend would be hosted on some domain using a service like [GitHub Pages](https://pages.github.com/). End-users would input the dapp URL in their favorite web browser and access our dapp using HTML and JavaScript. This is quite standard.
 
-The second usage pattern is a bit more special. Since TON Blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Web Apps](https://core.telegram.org/bots/webapps) (TWAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
+The second usage pattern is a bit more special. Since TON Blockchain complements the Telegram messenger, we will also want to embed our dapp right into the Telegram app itself. Telegram provides special API for building [Telegam Mini Apps](https://core.telegram.org/bots/webapps) (TMAs). These tiny apps closely resemble websites and also rely on HTML and JavaScript. They normally run within the context of a Telegram bot and provide a sleek user experience without ever leaving the host Telegram app.
 
 <video src="https://ton-community.github.io/tutorials/assets/twa.mp4" loop muted autoplay playsinline width=300></video><br>
 
@@ -21,7 +21,7 @@ During the course of this tutorial we will create a single codebase that will ac
 
 Before we can start writing code, we need to install certain developer tools on our computer.
 
-Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running `node -v` in terminal.
+Since our frontend will run inside a browser, it will be implemented in JavaScript. The most convenient runtime for developing JavaScript projects is Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node (at least v16). You can verify your nodejs version by running `node -v` in terminal.
 
 The second tool we need is an initialized TON wallet like [Tonkeeper](https://tonkeeper.com). If you don't have a wallet, please take a look at tutorial 1. The wallet will communicate with our dapp via a protocol called [TON Connect 2](https://github.com/ton-connect). If you choose a different wallet than Tonkeeper, please verify it supports this version of TON Connect. Don't forget to make sure your wallet is connected to the correct network - mainnet or testnet.
 
@@ -580,11 +580,11 @@ Once the website is published, we can finally access it from mobile. Take your m
 
 This is a good opportunity to try the mobile-mobile flow. In the mobile browser, tap on the "Connect Wallet" button and choose "Tonkeeper" (or any other supporting wallet you're using). This should switch you to the Tonkeeper mobile app where you can approve the connection. After approval, you should be switched back to the website. Now tap the "Increment" button. This should switch you to the Tonkeeper mobile app where you can approve the transaction. As you can see, in the mobile-mobile flow there are no QR codes involved since the dapp and the wallet run on the same device.
 
-## Step 10: Publish web app as TWA in Telegram
+## Step 10: Publish web app as TMA in Telegram
 
-Having our dapp accessible through a web browser is not enough. We want to make the most from the seamless integration into Telegram messenger. To feature our dapp in Telegram, we will also have to publish it as a TWA. Luckily, this is pretty easy to do.
+Having our dapp accessible through a web browser is not enough. We want to make the most from the seamless integration into Telegram messenger. To feature our dapp in Telegram, we will also have to publish it as a TMA. Luckily, this is pretty easy to do.
 
-The first step is to add the [TWA SDK](https://github.com/twa-dev) to our project. This will allow us to get theme properties while inside Telegram. Run in terminal:
+The first step is to add the [Telegram Mini Apps SDK](https://github.com/twa-dev) to our project. This will allow us to get theme properties while inside Telegram. Run in terminal:
 
 ```console
 npm install @twa-dev/sdk
@@ -606,7 +606,7 @@ Publish the updated website like we did in step 9, probably just by pushing it t
 
 The final step is to create a new Telegram bot and have it showcase our website when opened. To do that we will interact with another Telegram bot called "botfather". On a device where your Telegram messenger is logged in, open [https://t.me/botfather](https://t.me/botfather) and then switch to the bot inside the Telegram app. Choose "Start".
 
-To create a new bot select "/newbot". Choose a name for the bot and then a username according to the on-screen instructions. Make a note of the username since this is how end-users will access your TWA. Assuming that your bot username is `my_twa_bot`, it will be accessible in the Telegram chat by typing `@my_twa_bot` or through the URL [https://t.me/my_twa_bot](https://t.me/my_twa_bot). You can even purchase a premium Telegram username for your bot on the auction platform [Fragment](https://fragment.com).
+To create a new bot select "/newbot". Choose a name for the bot and then a username according to the on-screen instructions. Make a note of the username since this is how end-users will access your Telegram Mini App. Assuming that your bot username is `my_twa_bot`, it will be accessible in the Telegram chat by typing `@my_twa_bot` or through the URL [https://t.me/my_twa_bot](https://t.me/my_twa_bot). You can even purchase a premium Telegram username for your bot on the auction platform [Fragment](https://fragment.com).
 
 Back in botfather, tap the menu button and edit your bots by selecting "/mybots". Select the bot you've just created. Select "Bot Settings" and then select "Menu Button". Now select "Configure menu button" to edit the URL and type your published website URL:
 
@@ -614,7 +614,7 @@ Back in botfather, tap the menu button and edit your bots by selecting "/mybots"
 https://my-gituser.github.io/my-twa
 ```
 
-That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TWA. Congratulations!
+That's it! The bot should be ready. Start a Telegram chat with your bot via the username. Tap the menu button and voila - your published website will open inside Telegram as a TMA. Congratulations!
 
 <img src="https://i.imgur.com/lVL1Bl0.png" width=300/><br>
 
