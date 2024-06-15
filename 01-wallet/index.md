@@ -115,7 +115,7 @@ Is it possible for the same secret mnemonic to have multiple wallets deployed wi
 
 We're about to use code to access our wallet programmatically. Before we can start writing code, we need to install certain developer tools on our computer.
 
-The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running `node -v` in terminal.
+The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node (at least v16). You can verify your nodejs version by running `node -v` in terminal.
 
 For a choice of IDE, you will need anything that has decent TypeScript support. I recommend [Visual Studio Code](https://code.visualstudio.com) - it's free and open source.
 

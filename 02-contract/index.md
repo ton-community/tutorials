@@ -13,7 +13,7 @@ Dapps on TON Blockchain are usually made of 2 main projects:
 
 * Smart contracts in the [FunC](https://ton.org/docs/develop/func/overview) programming language that are deployed on-chain - these act as the *backend server* of the app, with a *database* for persistent storage.
 
-* Web frontend for interacting with the dapp from a web browser - this acts as the *frontend* or *client*, normally with special support for Telegram messenger in the form of a [Telegram Web App](https://core.telegram.org/bots/webapps).
+* Web frontend for interacting with the dapp from a web browser - this acts as the *frontend* or *client*, normally with special support for Telegram messenger in the form of a [Telegram Mini App](https://core.telegram.org/bots/webapps).
 
 Throughout this series of tutorials, we will build a full dapp together and see detailed implementations of both projects.
 
@@ -29,7 +29,7 @@ In later tutorials we will make this contract a little more advanced and allow T
 
 Before we can start writing code, we need to install certain developer tools on our computer.
 
-For convenience, our development environment will rely on several clever scripts for testing, compiling and deploying our code. The most convenient language for these scripts is JavaScript, executed by an engine called Node.js. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node like v18. You can verify your nodejs version by running `node -v` in terminal.
+For convenience, our development environment will rely on several clever scripts for testing, compiling and deploying our code. The most convenient language for these scripts is JavaScript, executed by an engine called Node.js. The installation instructions are [here](https://nodejs.org/). We will need a fairly recent version of node (at least v16). You can verify your nodejs version by running `node -v` in terminal.
 
 You will also need a decent IDE with FunC and TypeScript support. I recommend [Visual Studio Code](https://code.visualstudio.com/) - it's free and open source. Also install the [FunC Plugin](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode) to add syntax highlighting for the FunC language.
 
