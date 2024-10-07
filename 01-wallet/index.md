@@ -125,6 +125,22 @@ Let's create a new directory for our project and support TypeScript. Open termin
 npm install ts-node
 ```
 
+We also need to add a configuration file. Create the file `tsconfig.json` with the following content:
+
+```
+   {
+     "compilerOptions": {
+       "module": "commonjs",
+       "esModuleInterop": true,
+       "target": "es6",
+       "moduleResolution": "node",
+       "sourceMap": true,
+       "outDir": "dist"
+     },
+     "lib": ["es2015"]
+   }
+```
+
 ---
 library:npmton
 ---
