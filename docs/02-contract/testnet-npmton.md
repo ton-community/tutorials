@@ -223,7 +223,7 @@ Replace the current code in `scripts/deployCounter.ts` with a script that will u
 ```ts
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class from step 7
 
@@ -388,7 +388,7 @@ The messages can be sent from any TON wallet, not necessarily the deployer walle
 
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 

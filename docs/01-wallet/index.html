@@ -25,7 +25,7 @@
       <div class="rightcol">
         <div class="menu">
           <div class="selectboxes">
-
+            
             <div class="selectbox" data-select="network">
               <h3 class="selectbox-title">Network</h3>
             <div class="selectbox-selected">
@@ -33,7 +33,7 @@
               <img src = '../assets/arrow-down.svg' />
             </div>
             <ul class="options">
-
+              
                 <li data-value="testnet" class="option">
                 <div class="option-name">
                   <h4>Testnet</h4>
@@ -44,7 +44,7 @@
                   <p class="cons">Cons: less reliable, requires special wallets</p>
                 </div>
                 </li>
-
+              
                 <li data-value="mainnet" class="option">
                 <div class="option-name">
                   <h4>Mainnet</h4>
@@ -55,10 +55,10 @@
                   <p class="cons">Cons: not free to use (but very cheap)</p>
                 </div>
                 </li>
-
+              
             </ul>
             </div>
-
+          
             <div class="selectbox" data-select="library">
               <h3 class="selectbox-title">Library</h3>
             <div class="selectbox-selected">
@@ -66,7 +66,7 @@
               <img src = '../assets/arrow-down.svg' />
             </div>
             <ul class="options">
-
+              
                 <li data-value="npmton" class="option">
                 <div class="option-name">
                   <h4>npm ton (JavaScript)</h4>
@@ -77,7 +77,7 @@
                   <p class="cons">Cons: no support for all ton services</p>
                 </div>
                 </li>
-
+              
                 <li data-value="tonweb" class="option">
                 <div class="option-name">
                   <h4>TonWeb (JavaScript)</h4>
@@ -88,10 +88,10 @@
                   <p class="cons">Cons: mediocre TypeScript support</p>
                 </div>
                 </li>
-
+              
             </ul>
             </div>
-
+          
           </div>
           <div class="more">
             <h3>Tutorials</h3>
@@ -111,7 +111,7 @@
         </div>
       </div>
       <div class="posts">
-
+        
          <div class="post" data-combination="mainnet-npmton">
             <h1 id="tonhelloworldpart1stepbystepguideforworkingwithyourfirsttonwallet">TON Hello World part 1: Step by step guide for working with your first TON wallet</h1>
 <div class="author">
@@ -169,9 +169,12 @@
 <p>The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
 <p>For a choice of IDE, you will need anything that has decent TypeScript support. I recommend <a href="https://code.visualstudio.com">Visual Studio Code</a> - it's free and open source.</p>
 <p>Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:</p>
-<pre><code class="console language-console">npm install ts-node
+<pre><code class="console language-console">npm install typescript ts-node
 </code></pre>
-<p>Next, we're going to install a JavaScript package named <a href="https://www.npmjs.com/package/@ton/ton">ton</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
+<p>Next, we're going to initialize Typescript project:</p>
+<pre><code class="console language-console">npx tsc --init
+</code></pre>
+<p>Next, we're going to install a JavaScript package named <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
 <pre><code class="console language-console">npm install @ton/ton @ton/crypto @ton/core
 </code></pre>
 <h2 id="step7getthewalletaddressprogrammatically">Step 7: Get the wallet address programmatically</h2>
@@ -306,7 +309,7 @@ function sleep(ms: number) {
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
-
+        
          <div class="post" data-combination="mainnet-tonweb">
             <h1 id="tonhelloworldpart1stepbystepguideforworkingwithyourfirsttonwallet">TON Hello World part 1: Step by step guide for working with your first TON wallet</h1>
 <div class="author">
@@ -364,7 +367,10 @@ function sleep(ms: number) {
 <p>The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
 <p>For a choice of IDE, you will need anything that has decent TypeScript support. I recommend <a href="https://code.visualstudio.com">Visual Studio Code</a> - it's free and open source.</p>
 <p>Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:</p>
-<pre><code class="console language-console">npm install ts-node
+<pre><code class="console language-console">npm install typescript ts-node
+</code></pre>
+<p>Next, we're going to initialize Typescript project:</p>
+<pre><code class="console language-console">npx tsc --init
 </code></pre>
 <p>Next, we're going to install a JavaScript package named <a href="https://github.com/toncenter/tonweb">TonWeb</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
 <pre><code class="console language-console">npm install tonweb tonweb-mnemonic
@@ -499,7 +505,7 @@ function sleep(ms: number) {
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
-
+        
          <div class="post" data-combination="testnet-npmton">
             <h1 id="tonhelloworldpart1stepbystepguideforworkingwithyourfirsttonwallet">TON Hello World part 1: Step by step guide for working with your first TON wallet</h1>
 <div class="author">
@@ -559,9 +565,12 @@ function sleep(ms: number) {
 <p>The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
 <p>For a choice of IDE, you will need anything that has decent TypeScript support. I recommend <a href="https://code.visualstudio.com">Visual Studio Code</a> - it's free and open source.</p>
 <p>Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:</p>
-<pre><code class="console language-console">npm install ts-node
+<pre><code class="console language-console">npm install typescript ts-node
 </code></pre>
-<p>Next, we're going to install a JavaScript package named <a href="https://www.npmjs.com/package/@ton/ton">ton</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
+<p>Next, we're going to initialize Typescript project:</p>
+<pre><code class="console language-console">npx tsc --init
+</code></pre>
+<p>Next, we're going to install a JavaScript package named <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
 <pre><code class="console language-console">npm install @ton/ton @ton/crypto @ton/core
 </code></pre>
 <h2 id="step7getthewalletaddressprogrammatically">Step 7: Get the wallet address programmatically</h2>
@@ -696,7 +705,7 @@ function sleep(ms: number) {
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
-
+        
          <div class="post" data-combination="testnet-tonweb">
             <h1 id="tonhelloworldpart1stepbystepguideforworkingwithyourfirsttonwallet">TON Hello World part 1: Step by step guide for working with your first TON wallet</h1>
 <div class="author">
@@ -756,7 +765,10 @@ function sleep(ms: number) {
 <p>The libraries we're going to rely on are implemented in JavaScript. Accordingly, our scripts will be executed by an engine called Nodejs. The installation instructions are <a href="https://nodejs.org/">here</a>. We will need a fairly recent version of node like v16 or v17. You can verify your nodejs version by running <code>node -v</code> in terminal.</p>
 <p>For a choice of IDE, you will need anything that has decent TypeScript support. I recommend <a href="https://code.visualstudio.com">Visual Studio Code</a> - it's free and open source.</p>
 <p>Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:</p>
-<pre><code class="console language-console">npm install ts-node
+<pre><code class="console language-console">npm install typescript ts-node
+</code></pre>
+<p>Next, we're going to initialize Typescript project:</p>
+<pre><code class="console language-console">npx tsc --init
 </code></pre>
 <p>Next, we're going to install a JavaScript package named <a href="https://github.com/toncenter/tonweb">TonWeb</a> that will allow us to make TON API calls and manipulate TON objects. Install the package by opening terminal in the project directory and running:</p>
 <pre><code class="console language-console">npm install tonweb tonweb-mnemonic
@@ -891,7 +903,7 @@ function sleep(ms: number) {
 <p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
-
+        
       </div>
     </div>
   </body>
