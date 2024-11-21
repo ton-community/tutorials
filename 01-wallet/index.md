@@ -122,7 +122,13 @@ For a choice of IDE, you will need anything that has decent TypeScript support. 
 Let's create a new directory for our project and support TypeScript. Open terminal in the project directory and run the following:
 
 ```console
-npm install ts-node
+npm install typescript ts-node
+```
+
+Next, we're going to initialize Typescript project:
+
+```console
+npx tsc --init
 ```
 
 ---

@@ -1,6 +1,8 @@
 set -ev
 npm init --yes
 npm install dotenv
+npm install typescript
+npx tsc --init
 npm install ts-node
 npm install tonweb tonweb-mnemonic
 npm install @orbs-network/ton-access

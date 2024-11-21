@@ -226,7 +226,7 @@ network:testnet
 ```ts
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class from step 7
 
@@ -286,7 +286,7 @@ network:mainnet
 ```ts
 import * as fs from "fs";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class from step 7
 
@@ -501,7 +501,7 @@ network:testnet
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
@@ -553,7 +553,7 @@ network:mainnet
 ---
 ```ts
 import { getHttpEndpoint } from "@orbs-network/ton-access";
-import { mnemonicToWalletKey } from "ton-crypto";
+import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, Address } from "@ton/ton";
 import Counter from "../wrappers/Counter"; // this is the interface class we just implemented
 
