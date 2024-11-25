@@ -2,16 +2,14 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../../.env" });
 
 import * as fs from "fs";
-import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
 import Counter from "./counter.step7"; // this is the interface class from step 7
+import { retry } from "../../helpers/retry"
 
 export async function run() {
   // initialize ton rpc client on testnet
-  const endpoint = await getHttpEndpoint({ network: "testnet" });
-  const client = new TonClient({ endpoint });
-  //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
+  const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
 
   // prepare Counter's initial code and data cells for deployment
   const counterCode = Cell.fromBoc(fs.readFileSync("counter.cell"))[0]; // compilation output from step 6
@@ -46,7 +44,7 @@ export async function run() {
   while (currentSeqno == seqno) {
     //console.log("waiting for deploy transaction to confirm...");
     await sleep(1500);
-    currentSeqno = await walletContract.getSeqno();
+    await retry(async () => { currentSeqno = await walletContract.getSeqno(); }, {retries: 10, delay: 1000});
   }
   console.log("deploy transaction confirmed!");
 }
