@@ -2,7 +2,7 @@ set -ev
 npm init --yes
 npm install dotenv
 npm install typescript
-npx tsc --init
+npx tsc --init -t es2020
 npm install ts-node
 npm install @ton-community/func-js
 npm install @ton/ton @ton/core @ton/crypto

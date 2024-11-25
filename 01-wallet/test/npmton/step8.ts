@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "../../../.env" });
 
-import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
 
@@ -19,10 +18,10 @@ async function main() {
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
-  // initialize ton rpc client on testnet
-  const endpoint = await getHttpEndpoint({ network: "testnet" });
-  const client = new TonClient({ endpoint });
-  //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
+  const client = new TonClient({
+    endpoint: 'https://testnet.toncenter.com/api/v2/jsonRPC',
+    apiKey: 'f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460'
+  });
 
   // query balance from chain
   const balance = await client.getBalance(wallet.address);
