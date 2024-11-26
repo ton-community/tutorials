@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "../../.env" });
-
 import * as fs from "fs";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, Cell, WalletContractV4 } from "@ton/ton";
@@ -23,7 +20,8 @@ export async function run() {
   }
 
   // open wallet v4 (notice the correct wallet version here)
-  const mnemonic = process.env.MNEMONIC;
+  const mnemonic =
+    'table jungle security cargo adjust barrel dance net permit pig soap simple rabbit upgrade unique update firm between deer minor ship thought ride physical';
   const key = await mnemonicToWalletKey(mnemonic!.split(" "));
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
   if (!await client.isContractDeployed(wallet.address)) {
