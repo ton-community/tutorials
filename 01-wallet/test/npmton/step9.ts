@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config({ path: "../../../.env" });
 
-import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, internal } from "@ton/ton";
+import { retry } from "../../../helpers/retry"
 
 async function main() {
   // Notice:
@@ -20,9 +20,10 @@ async function main() {
   const wallet = WalletContractV4.create({ publicKey: key.publicKey, workchain: 0 });
 
   // initialize ton rpc client on testnet
-  const endpoint = await getHttpEndpoint({ network: "testnet" });
-  const client = new TonClient({ endpoint });
-  //const client = new TonClient({ endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC", apiKey: "f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460" });
+  const client = new TonClient({
+    endpoint: 'https://testnet.toncenter.com/api/v2/jsonRPC',
+    apiKey: 'f20ff0043ded8c132d0b4b870e678b4bbab3940788cbb8c8762491935cf3a460'
+  });
 
   // make sure wallet is deployed
   if (!await client.isContractDeployed(wallet.address)) {
@@ -50,7 +51,7 @@ async function main() {
   while (currentSeqno == seqno) {
     //console.log("waiting for transaction to confirm...");
     await sleep(1500);
-    currentSeqno = await walletContract.getSeqno();
+    await retry(async () => { currentSeqno = await walletContract.getSeqno(); }, {retries: 10, delay: 1000});
   }
   console.log("transaction confirmed!");
 }
