@@ -1,6 +1,6 @@
 set -ev
 rm -rf ./temp
-npm create vite@latest temp -- --template react-ts
+npm create --yes vite@5.5.5 temp -- --template react-ts
 cd temp
 npm install
 npm install @ton/ton @ton/core @ton/crypto
