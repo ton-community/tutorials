@@ -168,7 +168,7 @@ Copy the skeleton to a new file named `step3.spec.ts` and add the following test
   });
 ```
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/04-testing/test/step3.spec.ts).
+The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test/step3.spec.ts).
 
 There's something interesting to notice in the assertion at the end of the test - the `expect()`. When we compare the counter value we don't compare it to the number `17`, but to `17n`. What is this notation? The `n` signifies that the number is a [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt). The FunC type returned from our getter is `int`. This TVM number type is [257 bit long](https://ton.org/docs/develop/func/types?id=atomic-types) (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript `number` type is limited to [64 bit](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.
 
@@ -209,7 +209,7 @@ Copy the last test file to a new file named `step4.spec.ts` and add the followin
   })
 ```
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/04-testing/test/step4.spec.ts).
+The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test/step4.spec.ts).
 
 Notice that we already know from the previous test that the counter is indeed initialized to 17, so if our message was successful, we can use the getter to get the counter value and make sure it has been incremented to 18.
 
@@ -267,7 +267,7 @@ Copy the original test skeleton to a new file named `step5.spec.ts` and add the 
   })
 ```
 
-The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/04-testing/test/step5.spec.ts).
+The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test/step5.spec.ts).
 
 Run the test and take a close look at the console output in terminal:
 
@@ -337,7 +337,7 @@ Ready to claim your reward? Simply scan the QR code below or click <a href="ton:
 
 ## Conclusion
 
-For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/04-testing/test).
+For your convenience, all the code in this tutorial is available in executable form [here](https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test).
 
 In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called [Blueprint](https://github.com/ton-org/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:
 
@@ -345,6 +345,6 @@ In this tutorial we created our project skeleton manually, mostly so we can unde
 npm create ton@latest
 ```
 
-If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+If you found a mistake in this tutorial, please [submit a PR](https://helloworld.tonstudio.io/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
 Happy coding!

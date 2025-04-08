@@ -16,7 +16,7 @@ If something in the tutorial isn't working, these are the possible causes:
 
 3. **The tutorial has a mistake in it or is written in a confusing way.**
 
-    This can happen, we are only human. Try to investigate the problem and suggest a change in the tutorial to make it more clear for the next person. The source code of the tutorials is available [here](https://github.com/ton-community/tutorials/) in the directories `01-wallet`, `02-contract`, etc. You can submit your proposal for an edit by submitting a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Start by creating a [fork](https://github.com/ton-community/tutorials/fork) and then use GitHub's web UI to [open a new PR](https://github.com/ton-community/tutorials/pulls).
+    This can happen, we are only human. Try to investigate the problem and suggest a change in the tutorial to make it more clear for the next person. The source code of the tutorials is available [here](https://helloworld.tonstudio.io/tutorials/) in the directories `01-wallet`, `02-contract`, etc. You can submit your proposal for an edit by submitting a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Start by creating a [fork](https://helloworld.tonstudio.io/tutorials/fork) and then use GitHub's web UI to [open a new PR](https://helloworld.tonstudio.io/tutorials/pulls).
 
 4. **You are experiencing connectivity issues.**
 
@@ -62,5 +62,5 @@ If something in the tutorial isn't working, these are the possible causes:
 If you're really stuck, contact us in the following community channels:
 
 * Submit a question in https://answers.ton.org (a StackOverflow clone dedicated to TON)
-* Open an issue on the tutorials repo https://github.com/ton-community/tutorials/issues
+* Open an issue on the tutorials repo https://helloworld.tonstudio.io/tutorials/issues
 * Come chat with us on Telegram in https://t.me/tondev_eng
