@@ -126,7 +126,7 @@ int counter() method_id {        ;; getter declaration - returns int as result
 
 We can choose what input arguments the getter takes as input and what output it returns as result. Also notice the function modifier appearing in the declaration - [*method_id*](https://ton.org/docs/develop/func/functions#method_id). It is customary to place `method_id` on all getters.
 
-That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in `contracts/counter.fc`. This will be the FunC (`.fc` file extension) source file of our contract. The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.fc).
+That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in `contracts/counter.fc`. This will be the FunC (`.fc` file extension) source file of our contract. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.fc).
 
 ## Step 6: Build the counter contract
 
@@ -202,7 +202,7 @@ The actual deployment involves sending the first message that will cause our con
 
 In every deployment we need to send some TON coins to our contract so that its balance is not zero. Contracts need to continually pay rent fees otherwise they risk being deleted. According to the [docs](https://ton.org/docs/develop/smart-contracts/fees#storage-fee), storage fees are about 4 TON per MB per year. Since our contract stores less than 1 KB, a balance of 0.01 TON should be enough for more than 2 years. In any case you can always check this in an explorer and send more TON to the contract if it runs low.
 
-The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step7.ts).
+The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step7.ts).
 
 ## Step 8: Deploy the contract on-chain
 
@@ -393,7 +393,7 @@ Add the following to `wrappers/Counter.ts`:
 // }
 ```
 
-Notice that methods in the interface class that call getters must start with the word `get`. This prefix is a requirement of the [@ton/ton](https://www.npmjs.com/package/@ton/ton) TypeScript library. The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step9.ts).
+Notice that methods in the interface class that call getters must start with the word `get`. This prefix is a requirement of the [@ton/ton](https://www.npmjs.com/package/@ton/ton) TypeScript library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts).
 
 ### Executing the call
 
@@ -490,7 +490,7 @@ Add the following to `wrappers/Counter.ts`:
 
 As you recall, the increment message is an [internal message](https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages) that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).
 
-Notice that methods in the interface class that send messages must start with the word `send`, another prefix requirement of the [@ton/ton](https://www.npmjs.com/package/@ton/ton) library. The resulting source file should look like [this](https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step10.ts).
+Notice that methods in the interface class that send messages must start with the word `send`, another prefix requirement of the [@ton/ton](https://www.npmjs.com/package/@ton/ton) library. The resulting source file should look like [this](https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts).
 
 ### Executing the send
 
@@ -623,7 +623,7 @@ Ready to claim your reward? Simply scan the QR code below or click <a href="ton:
 
 ## Conclusion
 
-For your convenience, all the code in this tutorial is available in executable form [here](https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test).
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/02-contract/test).
 
 In this tutorial we handled the build and deploy processes manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have these processes managed automatically by an awesome dev tool called [Blueprint](https://github.com/ton-community/blueprint). To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:
 
@@ -631,6 +631,6 @@ In this tutorial we handled the build and deploy processes manually, mostly so w
 npm create ton@latest
 ```
 
-If you found a mistake in this tutorial, please [submit a PR](https://helloworld.tonstudio.io/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
 Happy coding!

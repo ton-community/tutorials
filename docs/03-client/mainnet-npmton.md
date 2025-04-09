@@ -605,10 +605,10 @@ Ready to claim your reward? Simply scan the QR code below or click <a href="ton:
 
 ## Conclusion
 
-For your convenience, all the code in this tutorial is available in executable form [here](https://helloworld.tonstudio.io/tutorials/blob/main/03-client/test).
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/03-client/test).
 
 In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new client project, you can start from a ready-made template that will save you most of the setup work:<br>[https://github.com/ton-community/twa-template](https://github.com/ton-community/twa-template)
 
-If you found a mistake in this tutorial, please [submit a PR](https://helloworld.tonstudio.io/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
 Happy coding!

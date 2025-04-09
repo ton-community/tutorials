@@ -94,7 +94,7 @@
           <div class="more">
             <h3>Help</h3>
             <ul>
-              <li><a href="https://helloworld.tonstudio.io/tutorials/blob/main/HELP.md">Problems with this tutorial?</a></li>
+              <li><a href="https://github.com/ton-community/tutorials/blob/main/HELP.md">Problems with this tutorial?</a></li>
             </ul>
           </div>
         </div>
@@ -186,7 +186,7 @@
 }
 </code></pre>
 <p>We can choose what input arguments the getter takes as input and what output it returns as result. Also notice the function modifier appearing in the declaration - <a href="https://ton.org/docs/develop/func/functions#method_id"><em>method_id</em></a>. It is customary to place <code>method_id</code> on all getters.</p>
-<p>That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in <code>contracts/counter.fc</code>. This will be the FunC (<code>.fc</code> file extension) source file of our contract. The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.fc">this</a>.</p>
+<p>That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in <code>contracts/counter.fc</code>. This will be the FunC (<code>.fc</code> file extension) source file of our contract. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.fc">this</a>.</p>
 <h2 id="step6buildthecountercontract">Step 6: Build the counter contract</h2>
 <p>Right now, the contract is just FunC source code. To get it to run on-chain, we need to convert it to TVM <a href="https://ton.org/docs/learn/tvm-instructions/instructions">bytecode</a>.</p>
 <p>In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called <a href="https://ton-blockchain.github.io/docs/fiftbase.pdf">Fift</a>. Just like FunC, Fift is another language that was designed specifically for TON Blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.</p>
@@ -236,7 +236,7 @@ export default class Counter implements Contract {
 // }
 </code></pre>
 <p>In every deployment we need to send some TON coins to our contract so that its balance is not zero. Contracts need to continually pay rent fees otherwise they risk being deleted. According to the <a href="https://ton.org/docs/develop/smart-contracts/fees#storage-fee">docs</a>, storage fees are about 4 TON per MB per year. Since our contract stores less than 1 KB, a balance of 0.01 TON should be enough for more than 2 years. In any case you can always check this in an explorer and send more TON to the contract if it runs low.</p>
-<p>The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step7.ts">this</a>.</p>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step7.ts">this</a>.</p>
 <h2 id="step8deploythecontractonchain">Step 8: Deploy the contract on-chain</h2>
 <p>Communicating with the live network for the deployment will require an RPC service provider - similar to <a href="https://infura.io">Infura</a> on Ethereum. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Install it by opening terminal in the project directory and running:</p>
@@ -321,7 +321,7 @@ function sleep(ms: number) {
 
 // }
 </code></pre>
-<p>Notice that methods in the interface class that call getters must start with the word <code>get</code>. This prefix is a requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> TypeScript library. The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step9.ts">this</a>.</p>
+<p>Notice that methods in the interface class that call getters must start with the word <code>get</code>. This prefix is a requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> TypeScript library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts">this</a>.</p>
 <h3 id="executingthecall">Executing the call</h3>
 <p>Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.</p>
 <p>Let's create a new script called <code>getCounter.ts</code> in the <code>scripts</code> folder and use our shiny interface class to make the call. We're going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:</p>
@@ -369,7 +369,7 @@ export async function run() {
 // }
 </code></pre>
 <p>As you recall, the increment message is an <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal message</a> that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).</p>
-<p>Notice that methods in the interface class that send messages must start with the word <code>send</code>, another prefix requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> library. The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step10.ts">this</a>.</p>
+<p>Notice that methods in the interface class that send messages must start with the word <code>send</code>, another prefix requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts">this</a>.</p>
 <h3 id="executingthesend">Executing the send</h3>
 <p>The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script <code>sendIncrement.ts</code> in the <code>scripts</code> folder and use your wallet to fund the send:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
@@ -430,11 +430,11 @@ function sleep(ms: number) {
 <p>Ready to claim your reward? Simply scan the QR code below or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a>:
 <img src="https://i.imgur.com/GEuOQjr.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/></p>
 <h2 id="conclusion">Conclusion</h2>
-<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test">here</a>.</p>
+<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test">here</a>.</p>
 <p>In this tutorial we handled the build and deploy processes manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have these processes managed automatically by an awesome dev tool called <a href="https://github.com/ton-community/blueprint">Blueprint</a>. To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:</p>
 <pre><code class="console language-console">npm create ton@latest
 </code></pre>
-<p>If you found a mistake in this tutorial, please <a href="https://helloworld.tonstudio.io/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
+<p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
         
@@ -523,7 +523,7 @@ function sleep(ms: number) {
 }
 </code></pre>
 <p>We can choose what input arguments the getter takes as input and what output it returns as result. Also notice the function modifier appearing in the declaration - <a href="https://ton.org/docs/develop/func/functions#method_id"><em>method_id</em></a>. It is customary to place <code>method_id</code> on all getters.</p>
-<p>That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in <code>contracts/counter.fc</code>. This will be the FunC (<code>.fc</code> file extension) source file of our contract. The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.fc">this</a>.</p>
+<p>That's it. We completed our 3 sections and the first version of our contract is ready. To get the complete code, simply concat the 3 snippets above and replace the existing code in <code>contracts/counter.fc</code>. This will be the FunC (<code>.fc</code> file extension) source file of our contract. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.fc">this</a>.</p>
 <h2 id="step6buildthecountercontract">Step 6: Build the counter contract</h2>
 <p>Right now, the contract is just FunC source code. To get it to run on-chain, we need to convert it to TVM <a href="https://ton.org/docs/learn/tvm-instructions/instructions">bytecode</a>.</p>
 <p>In TON, we don't compile FunC directly to bytecode, but instead go through another programming language called <a href="https://ton-blockchain.github.io/docs/fiftbase.pdf">Fift</a>. Just like FunC, Fift is another language that was designed specifically for TON Blockchain. It's a low level language that is very close to TVM opcodes. For us regular mortals, Fift is not very useful, so unless you're planning on some extra advanced things, I believe you can safely ignore it for now.</p>
@@ -573,7 +573,7 @@ export default class Counter implements Contract {
 // }
 </code></pre>
 <p>In every deployment we need to send some TON coins to our contract so that its balance is not zero. Contracts need to continually pay rent fees otherwise they risk being deleted. According to the <a href="https://ton.org/docs/develop/smart-contracts/fees#storage-fee">docs</a>, storage fees are about 4 TON per MB per year. Since our contract stores less than 1 KB, a balance of 0.01 TON should be enough for more than 2 years. In any case you can always check this in an explorer and send more TON to the contract if it runs low.</p>
-<p>The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step7.ts">this</a>.</p>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step7.ts">this</a>.</p>
 <h2 id="step8deploythecontractonchain">Step 8: Deploy the contract on-chain</h2>
 <p>Communicating with the live network for the deployment will require an RPC service provider - similar to <a href="https://infura.io">Infura</a> on Ethereum. These providers run TON Blockchain nodes and allow us to communicate with them over HTTP. <a href="https://orbs.com/ton-access">TON Access</a> is an awesome service that will provide us with unthrottled API access for free. It's also decentralized, which is the preferred way to access the network.</p>
 <p>Install it by opening terminal in the project directory and running:</p>
@@ -658,7 +658,7 @@ function sleep(ms: number) {
 
 // }
 </code></pre>
-<p>Notice that methods in the interface class that call getters must start with the word <code>get</code>. This prefix is a requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> TypeScript library. The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step9.ts">this</a>.</p>
+<p>Notice that methods in the interface class that call getters must start with the word <code>get</code>. This prefix is a requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> TypeScript library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step9.ts">this</a>.</p>
 <h3 id="executingthecall">Executing the call</h3>
 <p>Calling a getter is free and does not cost gas. The reason is that this call is read-only, so it does not require consensus by the validators and is not stored in a block on-chain for all eternity like transaction are.</p>
 <p>Let's create a new script called <code>getCounter.ts</code> in the <code>scripts</code> folder and use our shiny interface class to make the call. We're going to emulate a different developer interacting with our contract and since the contract is already deployed, they are likely to access it by address. Be sure to replace my deployed contract address with yours in the code below:</p>
@@ -706,7 +706,7 @@ export async function run() {
 // }
 </code></pre>
 <p>As you recall, the increment message is an <a href="https://ton.org/docs/develop/smart-contracts/guidelines/internal-messages">internal message</a> that is encoded by convention with a 32 bit unsigned int in the beginning to describe the op and a 64 bit unsigned int after to describe the query id. The query id is relevant for messages that expect a response message to be sent back (the request and the response share the same query id).</p>
-<p>Notice that methods in the interface class that send messages must start with the word <code>send</code>, another prefix requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> library. The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test/counter.step10.ts">this</a>.</p>
+<p>Notice that methods in the interface class that send messages must start with the word <code>send</code>, another prefix requirement of the <a href="https://www.npmjs.com/package/@ton/ton">@ton/ton</a> library. The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test/counter.step10.ts">this</a>.</p>
 <h3 id="executingthesend">Executing the send</h3>
 <p>The messages can be sent from any TON wallet, not necessarily the deployer wallet. Create a new script <code>sendIncrement.ts</code> in the <code>scripts</code> folder and use your wallet to fund the send:</p>
 <pre><code class="ts language-ts">import { getHttpEndpoint } from "@orbs-network/ton-access";
@@ -767,11 +767,11 @@ function sleep(ms: number) {
 <p>Ready to claim your reward? Simply scan the QR code below or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACACZ_fWVyQMr&amount=50000000">here</a>:
 <img src="https://i.imgur.com/GEuOQjr.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/></p>
 <h2 id="conclusion">Conclusion</h2>
-<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://helloworld.tonstudio.io/tutorials/blob/main/02-contract/test">here</a>.</p>
+<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/02-contract/test">here</a>.</p>
 <p>In this tutorial we handled the build and deploy processes manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have these processes managed automatically by an awesome dev tool called <a href="https://github.com/ton-community/blueprint">Blueprint</a>. To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:</p>
 <pre><code class="console language-console">npm create ton@latest
 </code></pre>
-<p>If you found a mistake in this tutorial, please <a href="https://helloworld.tonstudio.io/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
+<p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
         

@@ -61,7 +61,7 @@
           <div class="more">
             <h3>Help</h3>
             <ul>
-              <li><a href="https://helloworld.tonstudio.io/tutorials/blob/main/HELP.md">Problems with this tutorial?</a></li>
+              <li><a href="https://github.com/ton-community/tutorials/blob/main/HELP.md">Problems with this tutorial?</a></li>
             </ul>
           </div>
         </div>
@@ -190,7 +190,7 @@ describe("Counter tests", () =&gt; {
     expect(value).toEqual(17n);
   });
 </code></pre>
-<p>The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test/step3.spec.ts">this</a>.</p>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step3.spec.ts">this</a>.</p>
 <p>There's something interesting to notice in the assertion at the end of the test - the <code>expect()</code>. When we compare the counter value we don't compare it to the number <code>17</code>, but to <code>17n</code>. What is this notation? The <code>n</code> signifies that the number is a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a>. The FunC type returned from our getter is <code>int</code>. This TVM number type is <a href="https://ton.org/docs/develop/func/types?id=atomic-types">257 bit long</a> (256 signed) so it supports huge virtually unbounded numbers. The native JavaScript <code>number</code> type is limited to <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">64 bit</a> so it cannot necessarily hold the result. We use JavaScript big numbers to work around this limitation.</p>
 <p>To execute the test, run in terminal:</p>
 <pre><code class="console language-console">npx jest step3
@@ -217,7 +217,7 @@ describe("Counter tests", () =&gt; {
     expect(counterValue).toEqual(18n);
   })
 </code></pre>
-<p>The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test/step4.spec.ts">this</a>.</p>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step4.spec.ts">this</a>.</p>
 <p>Notice that we already know from the previous test that the counter is indeed initialized to 17, so if our message was successful, we can use the getter to get the counter value and make sure it has been incremented to 18.</p>
 <p>To execute the test, run in terminal:</p>
 <pre><code class="console language-console">npx jest step4
@@ -257,7 +257,7 @@ describe("Counter tests", () =&gt; {
     await counterContract.sendIncrement(wallet1.getSender());
   })
 </code></pre>
-<p>The resulting source file should look like <a href="https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test/step5.spec.ts">this</a>.</p>
+<p>The resulting source file should look like <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test/step5.spec.ts">this</a>.</p>
 <p>Run the test and take a close look at the console output in terminal:</p>
 <pre><code class="console language-console">npx jest step5
 </code></pre>
@@ -305,11 +305,11 @@ describe("Counter tests", () =&gt; {
 <p>Ready to claim your reward? Simply scan the QR code below or click <a href="ton://transfer/EQCZ52LU4PsK71IVjn4Ur599R4ZdsnT9ToAEqysot628BEdo?bin=te6cckEBAQEABgAACAAPmEfY662P&amount=50000000">here</a>:
   <img src="https://i.imgur.com/tewJ6Wg.png" width=300 alt="QR-code" style="display: block; margin-left: auto; margin-right: auto; width: 50%;"/></p>
 <h2 id="conclusion">Conclusion</h2>
-<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://helloworld.tonstudio.io/tutorials/blob/main/04-testing/test">here</a>.</p>
+<p>For your convenience, all the code in this tutorial is available in executable form <a href="https://github.com/ton-community/tutorials/blob/main/04-testing/test">here</a>.</p>
 <p>In this tutorial we created our project skeleton manually, mostly so we can understand what happens under the hood. When creating a new contract project, you can have an excellent skeleton created automatically by an awesome dev tool called <a href="https://github.com/ton-org/blueprint">Blueprint</a>. To create a new contract project with Blueprint, run in terminal and follow the on-screen instructions:</p>
 <pre><code class="console language-console">npm create ton@latest
 </code></pre>
-<p>If you found a mistake in this tutorial, please <a href="https://helloworld.tonstudio.io/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
+<p>If you found a mistake in this tutorial, please <a href="https://github.com/ton-community/tutorials/pulls">submit a PR</a> and help us fix it. This tutorial platform is fully open source and available on <a href="https://github.com/ton-community/tutorials">https://github.com/ton-community/tutorials</a>.</p>
 <p>Happy coding!</p>
          </div>
         

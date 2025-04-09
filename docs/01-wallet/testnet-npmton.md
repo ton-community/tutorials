@@ -280,8 +280,8 @@ If you're getting errors in this step, please triple check that the wallet contr
 
 ## Conclusion
 
-For your convenience, all the code in this tutorial is available in executable form [here](https://helloworld.tonstudio.io/tutorials/blob/main/01-wallet/test/npmton).
+For your convenience, all the code in this tutorial is available in executable form [here](https://github.com/ton-community/tutorials/blob/main/01-wallet/test/npmton).
 
-If you found a mistake in this tutorial, please [submit a PR](https://helloworld.tonstudio.io/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
+If you found a mistake in this tutorial, please [submit a PR](https://github.com/ton-community/tutorials/pulls) and help us fix it. This tutorial platform is fully open source and available on [https://github.com/ton-community/tutorials](https://github.com/ton-community/tutorials).
 
 Happy coding!
