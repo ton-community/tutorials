@@ -131,6 +131,22 @@ Next, we're going to initialize Typescript project:
 npx tsc --init
 ```
 
+We also need to add a configuration file. Create the file `tsconfig.json` with the following content:
+
+```
+   {
+     "compilerOptions": {
+       "module": "commonjs",
+       "esModuleInterop": true,
+       "target": "es6",
+       "moduleResolution": "node",
+       "sourceMap": true,
+       "outDir": "dist"
+     },
+     "lib": ["es2015"]
+   }
+```
+
 ---
 library:npmton
 ---
