@@ -11,7 +11,7 @@ export function useCounterContract() {
   const { sender } = useTonConnect();
 
   const sleep = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
-  
+
   const counterContract = useAsyncInitialize(async () => {
     if (!client) return;
     const contract = new Counter(
@@ -21,15 +21,24 @@ export function useCounterContract() {
   }, [client]);
 
   useEffect(() => {
+    let isCancelled = false;
+
     async function getValue() {
-      if (!counterContract) return;
+      if (!counterContract || isCancelled) return;
       setVal(null);
       const val = await counterContract.getCounter();
-      setVal(val.toString());
-      await sleep(5000); // sleep 5 seconds and poll value again
-      getValue();
+      if (!isCancelled) {
+        setVal(val.toString());
+        await sleep(5000); // sleep 5 seconds and poll value again
+        getValue();
+      }
     }
+
     getValue();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [counterContract]);
 
   return {
