@@ -165,7 +165,7 @@ network:testnet
 ---
 ```ts
 import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from "@ton/ton";
+import { TonClient } from '@ton/ton';
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
@@ -185,7 +185,7 @@ network:mainnet
 ---
 ```ts
 import { getHttpEndpoint } from '@orbs-network/ton-access';
-import { TonClient } from "@ton/ton";
+import { TonClient } from '@ton/ton';
 import { useAsyncInitialize } from './useAsyncInitialize';
 
 export function useTonClient() {
@@ -220,7 +220,7 @@ export function useCounterContract() {
     const contract = new Counter(
       Address.parse('EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb') // replace with your address from tutorial 2 step 8
     );
-    return client.open(contract) as OpenedContract<Counter>;
+    return client.open(contract);
   }, [client]);
 
   useEffect(() => {
@@ -341,7 +341,7 @@ export function useCounterContract() {
     const contract = new Counter(
       Address.parse('EQBYLTm4nsvoqJRvs_L-IGNKwWs5RKe19HBK_lFadf19FUfb') // replace with your address from tutorial 2 step 8
     );
-    return client.open(contract) as OpenedContract<Counter>;
+    return client.open(contract);
   }, [client]);
 
   useEffect(() => {
